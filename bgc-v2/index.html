@@ -4,161 +4,331 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Challenge: Rainier Vista Boys & Girls Club | HSI Seattle 2026</title>
-  <meta name="description" content="Hack for Social Impact Seattle 2026 — Help more Rainier Valley families find, trust, and join the Boys & Girls Club.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --blue:#0057A8; --blue-dk:#003f7a; --red:#D62828; --yellow:#F4A726;
-      --bg:#F8F9FB; --surface:#FFFFFF; --border:#E2E6EC;
-      --text:#1A1D23; --muted:#6B7280; --radius:12px; --shadow:0 2px 12px rgba(0,0,0,0.08);
+      --blue: #0057A8; --blue-dk: #003f7a; --blue-lt: #EBF3FF;
+      --red: #D62828; --red-lt: #FFF0F0;
+      --yellow: #F4A726; --yellow-lt: #FFF8E1;
+      --green: #1A8A5A; --green-lt: #EDFAF3;
+      --bg: #F5F7FA; --surface: #FFFFFF;
+      --border: #E4E8F0; --text: #111827; --muted: #6B7280;
+      --nav-h: 56px;
     }
     html { scroll-behavior: smooth; }
-    body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); font-size:16px; line-height:1.6; }
-    a { color:var(--blue); text-decoration:none; }
-    a:hover { text-decoration:underline; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.6; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
-    /* Language toggle */
-    .lang-en,.lang-ja { display:none; }
-    html[lang="en"] .lang-en { display:inline; }
-    html[lang="ja"] .lang-ja { display:inline; }
-    .lang-en-block,.lang-ja-block { display:none; }
-    html[lang="en"] .lang-en-block { display:block; }
-    html[lang="ja"] .lang-ja-block { display:block; }
+    /* ── Lang ── */
+    .en, .ja { display: none; }
+    html[lang="en"] .en { display: inline; }
+    html[lang="ja"] .ja { display: inline; }
+    .en-b, .ja-b { display: none; }
+    html[lang="en"] .en-b { display: block; }
+    html[lang="ja"] .ja-b { display: block; }
 
-    .container { max-width:860px; margin:0 auto; padding:0 24px; }
-    section { padding:72px 0; }
-    section:nth-child(even) { background:var(--surface); }
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      height: var(--nav-h);
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 28px;
+    }
+    .nav-left { display: flex; align-items: center; gap: 10px; }
+    .nav-dot { width: 8px; height: 8px; background: var(--blue); border-radius: 50%; }
+    .nav-title { font-size: 0.78rem; font-weight: 700; color: var(--muted); letter-spacing: 0.3px; }
+    .nav-right { display: flex; align-items: center; gap: 6px; }
+    .nav-pill {
+      font-size: 0.75rem; font-weight: 600; color: var(--muted);
+      padding: 4px 12px; border-radius: 20px; transition: all 0.15s;
+    }
+    .nav-pill:hover { background: var(--blue-lt); color: var(--blue); text-decoration: none; }
+    .lang-btn {
+      font-size: 0.75rem; font-weight: 700; color: var(--blue);
+      background: var(--blue-lt); border: none;
+      padding: 5px 14px; border-radius: 20px; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .lang-btn:hover { background: #D6E8FF; }
 
-    /* Nav */
-    nav { position:sticky; top:0; z-index:100; background:var(--surface); border-bottom:1px solid var(--border); padding:0 24px; }
-    .nav-inner { max-width:1100px; margin:0 auto; height:54px; display:flex; align-items:center; justify-content:space-between; }
-    .nav-brand { font-size:0.8rem; font-weight:700; color:var(--muted); letter-spacing:0.5px; }
-    .nav-links { display:flex; gap:16px; list-style:none; align-items:center; }
-    .nav-links a { font-size:0.82rem; font-weight:600; color:var(--muted); transition:color 0.2s; }
-    .nav-links a:hover { color:var(--blue); text-decoration:none; }
-    .lang-btn { background:rgba(0,87,168,0.1); color:var(--blue); border:1px solid rgba(0,87,168,0.25); border-radius:20px; padding:4px 14px; font-size:0.78rem; font-weight:700; cursor:pointer; transition:background 0.2s; }
-    .lang-btn:hover { background:rgba(0,87,168,0.18); }
+    /* ── Hero ── */
+    #hero {
+      min-height: 92vh;
+      background: linear-gradient(145deg, #001f4d 0%, #003f7a 45%, #0057A8 100%);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: calc(var(--nav-h) + 60px) 40px 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg-circle {
+      position: absolute; border-radius: 50%; pointer-events: none;
+    }
+    .hero-bg-circle-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(244,167,38,0.12) 0%, transparent 70%);
+      bottom: -100px; right: -100px;
+    }
+    .hero-bg-circle-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+      top: 60px; left: -60px;
+    }
+    .hero-inner { max-width: 820px; margin: 0 auto; width: 100%; position: relative; z-index: 1; }
+    .hero-eyebrow {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 32px;
+    }
+    .hero-eyebrow-badge {
+      font-size: 0.68rem; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--yellow); background: rgba(244,167,38,0.15);
+      border: 1px solid rgba(244,167,38,0.3);
+      padding: 5px 14px; border-radius: 30px;
+    }
+    .hero-eyebrow-sep { color: rgba(255,255,255,0.2); font-size: 0.8rem; }
+    .hero-eyebrow-org { font-size: 0.8rem; color: rgba(255,255,255,0.5); font-weight: 500; }
+    .hero-kicker {
+      font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+      color: rgba(255,255,255,0.45); margin-bottom: 16px;
+    }
+    .hero-title {
+      font-size: clamp(2rem, 5.5vw, 3.6rem);
+      font-weight: 900; color: #fff; line-height: 1.1;
+      letter-spacing: -1.5px; margin-bottom: 28px;
+    }
+    .hero-title em { font-style: normal; color: var(--yellow); }
+    .hero-body {
+      font-size: clamp(1rem, 1.8vw, 1.15rem);
+      color: rgba(255,255,255,0.65); line-height: 1.75;
+      max-width: 560px; margin-bottom: 44px;
+    }
+    .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-hero-primary {
+      background: #fff; color: var(--blue-dk);
+      font-weight: 800; font-size: 0.9rem;
+      padding: 14px 28px; border-radius: 10px;
+      border: none; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-hero-primary:hover { background: #EBF3FF; text-decoration: none; }
+    .btn-hero-ghost {
+      background: transparent; color: rgba(255,255,255,0.8);
+      border: 1.5px solid rgba(255,255,255,0.3);
+      font-weight: 700; font-size: 0.9rem;
+      padding: 14px 28px; border-radius: 10px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-hero-ghost:hover { background: rgba(255,255,255,0.08); text-decoration: none; color: #fff; }
+    .hero-scroll {
+      margin-top: 60px;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.75rem; color: rgba(255,255,255,0.3); font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .hero-scroll-line { width: 40px; height: 1px; background: rgba(255,255,255,0.2); }
 
-    /* Hero */
-    #hero { background:linear-gradient(150deg,#003f7a 0%,#0057A8 50%,#1975C8 100%); padding:88px 24px 80px; text-align:center; position:relative; overflow:hidden; }
-    #hero::after { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 70% 80%,rgba(244,167,38,0.15) 0%,transparent 60%); pointer-events:none; }
-    .hero-inner { position:relative; z-index:1; max-width:720px; margin:0 auto; }
-    .hero-tag { display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:40px; font-size:0.72rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.9); padding:5px 16px; margin-bottom:28px; }
-    .hero-title { font-size:clamp(1.8rem,5vw,3rem); font-weight:800; color:#fff; line-height:1.2; margin-bottom:20px; letter-spacing:-0.5px; }
-    .hero-subtitle { font-size:1.1rem; color:rgba(255,255,255,0.8); max-width:580px; margin:0 auto 36px; line-height:1.7; }
-    .hero-cta-group { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-    .btn { display:inline-block; padding:12px 24px; border-radius:8px; font-size:0.9rem; font-weight:700; cursor:pointer; border:none; transition:all 0.2s; }
-    .btn-white { background:#fff; color:var(--blue-dk); }
-    .btn-white:hover { background:#f0f4ff; text-decoration:none; }
-    .btn-outline-white { background:transparent; color:#fff; border:2px solid rgba(255,255,255,0.6); }
-    .btn-outline-white:hover { background:rgba(255,255,255,0.1); text-decoration:none; }
+    /* ── Quick Stats Bar ── */
+    .stats-bar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 40px;
+    }
+    .stats-bar-inner {
+      max-width: 820px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; divide-x: 1px solid var(--border);
+    }
+    .stat-item {
+      padding: 8px 24px;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+    .stat-item:first-child { padding-left: 0; text-align: left; }
+    .stat-item:last-child { border-right: none; }
+    .stat-val { font-size: 1.8rem; font-weight: 900; color: var(--blue); line-height: 1; letter-spacing: -1px; }
+    .stat-val.red { color: var(--red); }
+    .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 4px; line-height: 1.4; }
 
-    /* Section header */
-    .sec-badge { display:inline-block; font-size:0.68rem; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:var(--blue); background:rgba(0,87,168,0.08); padding:4px 12px; border-radius:20px; margin-bottom:12px; }
-    .sec-badge.red { color:var(--red); background:rgba(214,40,40,0.08); }
-    .sec-badge.yellow { color:#B97A00; background:rgba(244,167,38,0.12); }
-    h2 { font-size:clamp(1.4rem,3vw,2rem); font-weight:800; letter-spacing:-0.3px; line-height:1.25; margin-bottom:14px; }
-    .sec-desc { font-size:1rem; color:var(--muted); max-width:620px; margin-bottom:40px; line-height:1.7; }
+    /* ── Generic section ── */
+    .section { padding: 80px 40px; }
+    .section.alt { background: var(--surface); }
+    .wrap { max-width: 820px; margin: 0 auto; }
 
-    /* About */
-    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start; }
-    .about-stat-group { display:flex; flex-direction:column; gap:16px; }
-    .about-stat-item { background:var(--bg); border-radius:var(--radius); padding:20px 24px; border-left:4px solid var(--blue); }
-    .about-stat-item .num { font-size:1.8rem; font-weight:800; color:var(--blue); line-height:1; }
-    .about-stat-item .label { font-size:0.85rem; color:var(--muted); margin-top:4px; }
-    .about-text p { color:var(--muted); margin-bottom:14px; line-height:1.75; }
-    .program-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; }
-    .tag { background:rgba(0,87,168,0.08); color:var(--blue-dk); font-size:0.8rem; font-weight:600; padding:5px 12px; border-radius:20px; }
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.68rem; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--blue); margin-bottom: 14px;
+    }
+    .section-label::before { content: ''; display: block; width: 16px; height: 2px; background: var(--blue); border-radius: 2px; }
+    .section-label.red { color: var(--red); }
+    .section-label.red::before { background: var(--red); }
+    .section-label.yellow { color: #9A6400; }
+    .section-label.yellow::before { background: var(--yellow); }
+    .section-label.green { color: var(--green); }
+    .section-label.green::before { background: var(--green); }
 
-    /* Why */
-    .impact-box { background:linear-gradient(135deg,var(--blue) 0%,var(--blue-dk) 100%); border-radius:16px; padding:48px 40px; color:#fff; text-align:center; margin-bottom:40px; }
-    .impact-box .big-text { font-size:clamp(1.3rem,3.5vw,1.9rem); font-weight:700; line-height:1.4; margin-bottom:16px; }
-    .impact-box .sub { font-size:1rem; color:rgba(255,255,255,0.75); }
+    h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 900; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 14px; }
+    .section-sub { font-size: 1rem; color: var(--muted); max-width: 560px; margin-bottom: 48px; line-height: 1.7; }
 
-    /* Challenge */
-    .challenge-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:32px; }
-    .challenge-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px 20px; text-align:center; box-shadow:var(--shadow); }
-    .challenge-card .icon { font-size:1.8rem; margin-bottom:10px; }
-    .challenge-card .metric { font-size:1.6rem; font-weight:800; color:var(--red); line-height:1; margin-bottom:6px; }
-    .challenge-card .desc { font-size:0.82rem; color:var(--muted); line-height:1.4; }
-    .challenge-list { list-style:none; display:flex; flex-direction:column; gap:12px; }
-    .challenge-list li { display:flex; gap:14px; padding:16px 20px; background:var(--bg); border-radius:var(--radius); border-left:3px solid var(--red); align-items:flex-start; }
-    .challenge-list .ci { font-size:1.2rem; flex-shrink:0; margin-top:2px; }
-    .challenge-list .ct { font-size:0.92rem; color:var(--text); line-height:1.5; }
-    .challenge-list .ct strong { display:block; font-weight:700; margin-bottom:2px; }
+    /* ── About 2-col ── */
+    .about-cols { display: grid; grid-template-columns: 3fr 2fr; gap: 56px; align-items: start; }
+    .about-text p { color: var(--muted); margin-bottom: 16px; line-height: 1.8; font-size: 0.95rem; }
+    .prog-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .prog-tag { font-size: 0.78rem; font-weight: 600; padding: 5px 13px; border-radius: 20px; background: var(--blue-lt); color: var(--blue-dk); }
+    .about-stats { display: flex; flex-direction: column; gap: 12px; }
+    .a-stat { background: var(--bg); border-radius: 10px; padding: 18px 20px; border-left: 3px solid var(--blue); }
+    .a-stat .v { font-size: 1.6rem; font-weight: 900; color: var(--blue); line-height: 1; letter-spacing: -0.5px; }
+    .a-stat .l { font-size: 0.78rem; color: var(--muted); margin-top: 3px; line-height: 1.4; }
 
-    /* Constraints */
-    .constraint-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-    .constraint-item { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px 20px; display:flex; gap:14px; align-items:flex-start; }
-    .constraint-item .ci { font-size:1.3rem; flex-shrink:0; }
-    .constraint-item .ct { font-size:0.88rem; color:var(--text); line-height:1.5; }
-    .constraint-item .ct strong { display:block; font-weight:700; margin-bottom:3px; font-size:0.9rem; }
-    .constraint-note { margin-top:20px; padding:16px 20px; background:#FFF8E1; border-left:4px solid var(--yellow); border-radius:8px; font-size:0.88rem; color:#6B5200; line-height:1.6; }
+    /* ── Key Message ── */
+    .key-msg {
+      background: linear-gradient(130deg, var(--blue-dk) 0%, var(--blue) 100%);
+      border-radius: 20px; padding: 52px 52px;
+      color: #fff; margin-bottom: 48px; position: relative; overflow: hidden;
+    }
+    .key-msg::after {
+      content: '"'; position: absolute; right: 32px; top: -20px;
+      font-size: 14rem; font-weight: 900; color: rgba(255,255,255,0.04);
+      line-height: 1; pointer-events: none;
+    }
+    .key-msg-text {
+      font-size: clamp(1.2rem, 2.5vw, 1.7rem); font-weight: 700;
+      line-height: 1.45; margin-bottom: 16px; position: relative; z-index: 1;
+    }
+    .key-msg-text em { font-style: normal; color: var(--yellow); }
+    .key-msg-sub { font-size: 0.9rem; color: rgba(255,255,255,0.6); position: relative; z-index: 1; line-height: 1.7; }
 
-    /* Opportunity */
-    .opp-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
-    .opp-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px 22px; box-shadow:var(--shadow); transition:transform 0.2s,box-shadow 0.2s; }
-    .opp-card:hover { transform:translateY(-3px); box-shadow:0 6px 20px rgba(0,0,0,0.12); }
-    .opp-card .opp-num { font-size:0.7rem; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:var(--blue); margin-bottom:8px; }
-    .opp-card h3 { font-size:1rem; font-weight:700; margin-bottom:8px; }
-    .opp-card p { font-size:0.85rem; color:var(--muted); line-height:1.6; }
-    .opp-card .examples { margin-top:12px; display:flex; flex-wrap:wrap; gap:6px; }
-    .opp-card .ex-tag { font-size:0.72rem; font-weight:600; background:rgba(0,87,168,0.07); color:var(--blue-dk); padding:3px 9px; border-radius:12px; }
+    .three-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    .mini-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px 18px; text-align: center; }
+    .mini-card .mc-icon { font-size: 1.6rem; margin-bottom: 8px; }
+    .mini-card .mc-val { font-size: 1.2rem; font-weight: 800; color: var(--red); margin-bottom: 4px; }
+    .mini-card .mc-label { font-size: 0.78rem; color: var(--muted); line-height: 1.4; }
 
-    /* Journey */
-    .journey-steps { display:flex; flex-direction:column; gap:0; position:relative; }
-    .journey-steps::before { content:''; position:absolute; left:27px; top:28px; bottom:28px; width:2px; background:var(--border); }
-    .journey-step { display:flex; gap:20px; align-items:flex-start; padding:20px 0; position:relative; }
-    .step-num { width:56px; height:56px; flex-shrink:0; background:var(--blue); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1rem; z-index:1; box-shadow:0 0 0 4px var(--bg); }
-    .journey-step.friction .step-num { background:var(--red); }
-    .step-body { flex:1; padding-top:12px; }
-    .step-body h3 { font-size:0.95rem; font-weight:700; margin-bottom:4px; }
-    .step-body p { font-size:0.88rem; color:var(--muted); line-height:1.55; }
-    .friction-badge { display:inline-block; background:rgba(214,40,40,0.1); color:var(--red); font-size:0.68rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:2px 8px; border-radius:10px; margin-bottom:4px; }
+    /* ── Challenge list ── */
+    .challenge-list { display: flex; flex-direction: column; gap: 10px; }
+    .c-item {
+      display: grid; grid-template-columns: 48px 1fr;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden; transition: box-shadow 0.15s;
+    }
+    .c-item:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+    .c-num {
+      background: var(--red-lt); display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 800; color: var(--red); letter-spacing: 0.5px;
+    }
+    .c-body { padding: 18px 20px; }
+    .c-body strong { display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; color: var(--text); }
+    .c-body p { font-size: 0.83rem; color: var(--muted); line-height: 1.55; }
 
-    /* Metrics */
-    .metrics-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:32px; }
-    .metric-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px 20px; text-align:center; box-shadow:var(--shadow); }
-    .metric-card .m-icon { font-size:2rem; margin-bottom:10px; }
-    .metric-card .m-val { font-size:1.5rem; font-weight:800; color:var(--blue); line-height:1; margin-bottom:6px; }
-    .metric-card .m-label { font-size:0.82rem; color:var(--muted); line-height:1.4; }
-    .ideas-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
-    .idea-item { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; display:flex; gap:10px; align-items:flex-start; }
-    .idea-item .ii { font-size:1.2rem; flex-shrink:0; }
-    .idea-item .it { font-size:0.85rem; font-weight:600; line-height:1.4; }
+    /* ── Constraints ── */
+    .constraint-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .con-item {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 18px 20px; display: flex; gap: 14px;
+    }
+    .con-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .con-text strong { display: block; font-size: 0.87rem; font-weight: 700; margin-bottom: 3px; }
+    .con-text p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+    .note-box {
+      margin-top: 16px; padding: 16px 20px;
+      background: var(--yellow-lt); border-left: 3px solid var(--yellow);
+      border-radius: 8px; font-size: 0.85rem; color: #6B4700; line-height: 1.65;
+    }
 
-    /* Resources */
-    .resources-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
-    .resource-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; }
-    .resource-card h3 { font-size:0.92rem; font-weight:700; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
-    .resource-card ul { list-style:none; display:flex; flex-direction:column; gap:6px; }
-    .resource-card ul li { font-size:0.84rem; color:var(--muted); padding-left:14px; position:relative; line-height:1.5; }
-    .resource-card ul li::before { content:'·'; position:absolute; left:0; color:var(--blue); font-weight:800; }
-    .brand-colors { display:flex; gap:8px; margin-top:8px; }
-    .color-swatch { width:32px; height:32px; border-radius:6px; border:1px solid var(--border); }
+    /* ── Opportunity ── */
+    .opp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .opp-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      padding: 26px 24px; transition: all 0.2s;
+    }
+    .opp-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,87,168,0.1); border-color: rgba(0,87,168,0.2); }
+    .opp-n { font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); opacity: 0.5; margin-bottom: 10px; }
+    .opp-card h3 { font-size: 1rem; font-weight: 800; margin-bottom: 10px; line-height: 1.3; }
+    .opp-card p { font-size: 0.83rem; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+    .opp-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .opp-tag { font-size: 0.7rem; font-weight: 600; padding: 3px 10px; border-radius: 12px; background: var(--blue-lt); color: var(--blue-dk); }
 
-    /* FAQ */
-    .faq-list { display:flex; flex-direction:column; gap:0; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
-    details { border-bottom:1px solid var(--border); }
-    details:last-child { border-bottom:none; }
-    summary { padding:18px 22px; font-weight:600; font-size:0.92rem; cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center; gap:12px; background:var(--surface); transition:background 0.15s; }
-    summary:hover { background:var(--bg); }
-    summary::after { content:'+'; font-size:1.2rem; font-weight:300; color:var(--muted); flex-shrink:0; }
-    details[open] summary::after { content:'−'; }
-    .faq-answer { padding:0 22px 20px; font-size:0.88rem; color:var(--muted); line-height:1.7; background:var(--surface); }
-    .faq-answer strong { color:var(--text); }
+    /* ── Journey ── */
+    .journey { display: flex; flex-direction: column; gap: 0; position: relative; }
+    .journey::before { content: ''; position: absolute; left: 23px; top: 24px; bottom: 24px; width: 2px; background: var(--border); }
+    .j-step { display: flex; gap: 20px; padding: 18px 0; }
+    .j-num {
+      width: 48px; height: 48px; flex-shrink: 0; border-radius: 50%;
+      background: var(--blue); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.9rem; z-index: 1;
+      box-shadow: 0 0 0 4px var(--bg);
+    }
+    .j-step.bad .j-num { background: var(--red); }
+    .j-step.good .j-num { background: var(--green); }
+    .j-body { flex: 1; padding-top: 10px; }
+    .j-tag {
+      display: inline-block; font-size: 0.65rem; font-weight: 800;
+      letter-spacing: 1px; text-transform: uppercase;
+      padding: 2px 9px; border-radius: 10px; margin-bottom: 4px;
+    }
+    .j-tag.friction { background: var(--red-lt); color: var(--red); }
+    .j-tag.good { background: var(--green-lt); color: var(--green); }
+    .j-body h3 { font-size: 0.9rem; font-weight: 700; margin-bottom: 3px; }
+    .j-body p { font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
 
-    footer { background:var(--text); color:rgba(255,255,255,0.6); text-align:center; padding:36px 24px; font-size:0.84rem; }
-    footer a { color:rgba(255,255,255,0.8); }
+    /* ── Metrics ── */
+    .metrics-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 40px; }
+    .m-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px 20px; text-align: center; }
+    .m-card .m-icon { font-size: 2rem; margin-bottom: 12px; }
+    .m-card .m-val { font-size: 1.6rem; font-weight: 900; color: var(--blue); letter-spacing: -0.5px; margin-bottom: 6px; line-height: 1; }
+    .m-card .m-label { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
 
-    @media (max-width:680px) {
-      .about-grid,.challenge-grid,.constraint-grid,.opp-grid,.metrics-grid,.ideas-grid,.resources-grid { grid-template-columns:1fr; }
-      .nav-links { display:none; }
-      section { padding:52px 0; }
-      .impact-box { padding:32px 24px; }
+    .ideas-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+    .idea { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; gap: 10px; align-items: flex-start; }
+    .idea .i-icon { font-size: 1.1rem; flex-shrink: 0; }
+    .idea .i-text { font-size: 0.8rem; font-weight: 600; color: var(--text); line-height: 1.45; }
+
+    /* ── Resources ── */
+    .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .res-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; }
+    .res-card h3 { font-size: 0.85rem; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 7px; color: var(--text); }
+    .res-card ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .res-card li { font-size: 0.8rem; color: var(--muted); padding-left: 12px; position: relative; line-height: 1.5; }
+    .res-card li::before { content: '–'; position: absolute; left: 0; color: var(--blue); font-weight: 700; }
+    .swatches { display: flex; gap: 8px; margin-top: 10px; }
+    .swatch { width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); }
+
+    /* ── FAQ ── */
+    .faq { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+    details { border-bottom: 1px solid var(--border); }
+    details:last-child { border-bottom: none; }
+    summary {
+      padding: 17px 22px; font-size: 0.88rem; font-weight: 700;
+      cursor: pointer; list-style: none;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+      background: var(--surface); transition: background 0.15s; color: var(--text);
+    }
+    summary:hover { background: var(--bg); }
+    summary::after { content: '+'; font-size: 1.1rem; font-weight: 300; color: var(--muted); flex-shrink: 0; }
+    details[open] summary { background: var(--bg); }
+    details[open] summary::after { content: '−'; }
+    .faq-ans { padding: 0 22px 18px; font-size: 0.83rem; color: var(--muted); line-height: 1.7; background: var(--bg); }
+    .faq-ans strong { color: var(--text); }
+
+    /* ── Footer ── */
+    footer { background: #0D1117; color: rgba(255,255,255,0.4); text-align: center; padding: 40px 24px; font-size: 0.8rem; }
+    footer a { color: rgba(255,255,255,0.6); }
+    .footer-logo { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; }
+    .footer-dot { width: 10px; height: 10px; background: var(--blue); border-radius: 50%; }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .stats-bar-inner { grid-template-columns: 1fr 1fr; }
+      .about-cols, .constraint-grid, .opp-grid, .three-cards, .metrics-grid, .ideas-grid, .res-grid { grid-template-columns: 1fr; }
+      .nav-right .nav-pill { display: none; }
+      .section { padding: 56px 24px; }
+      .hero-title { letter-spacing: -0.5px; }
+      .key-msg { padding: 32px 28px; }
     }
   </style>
 </head>
@@ -166,542 +336,475 @@
 
 <!-- NAV -->
 <nav>
-  <div class="nav-inner">
-    <span class="nav-brand">HSI Seattle 2026 · <span class="lang-en">Challenge Pack</span><span class="lang-ja">チャレンジパック</span></span>
-    <ul class="nav-links">
-      <li><a href="#challenge"><span class="lang-en">Challenge</span><span class="lang-ja">課題</span></a></li>
-      <li><a href="#constraints"><span class="lang-en">Constraints</span><span class="lang-ja">制約</span></a></li>
-      <li><a href="#opportunities"><span class="lang-en">Opportunities</span><span class="lang-ja">機会</span></a></li>
-      <li><a href="#journey"><span class="lang-en">User Journey</span><span class="lang-ja">導線</span></a></li>
-      <li><a href="#metrics"><span class="lang-en">Success</span><span class="lang-ja">成功指標</span></a></li>
-      <li><a href="#resources"><span class="lang-en">Resources</span><span class="lang-ja">素材</span></a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><button class="lang-btn" id="lang-btn">日本語</button></li>
-    </ul>
+  <div class="nav-left">
+    <div class="nav-dot"></div>
+    <span class="nav-title">HSI Seattle 2026 &nbsp;·&nbsp; <span class="en">Challenge Pack</span><span class="ja">チャレンジパック</span></span>
+  </div>
+  <div class="nav-right">
+    <a href="#challenge" class="nav-pill"><span class="en">Challenge</span><span class="ja">課題</span></a>
+    <a href="#constraints" class="nav-pill"><span class="en">Constraints</span><span class="ja">制約</span></a>
+    <a href="#opportunities" class="nav-pill"><span class="en">Opportunities</span><span class="ja">機会</span></a>
+    <a href="#journey" class="nav-pill"><span class="en">Journey</span><span class="ja">導線</span></a>
+    <a href="#faq" class="nav-pill">FAQ</a>
+    <button class="lang-btn" id="lang-btn">日本語</button>
   </div>
 </nav>
 
-<!-- 1. HERO -->
+<!-- HERO -->
 <section id="hero">
+  <div class="hero-bg-circle hero-bg-circle-1"></div>
+  <div class="hero-bg-circle hero-bg-circle-2"></div>
   <div class="hero-inner">
-    <div class="hero-tag">Rainier Vista Boys &amp; Girls Club · Hack for Social Impact 2026</div>
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-badge">HSI Seattle 2026</span>
+      <span class="hero-eyebrow-sep">·</span>
+      <span class="hero-eyebrow-org">Rainier Vista Boys &amp; Girls Club</span>
+    </div>
+    <div class="hero-kicker"><span class="en">Challenge Brief</span><span class="ja">チャレンジブリーフ</span></div>
     <h1 class="hero-title">
-      <span class="lang-en">More kids could benefit from the Club—if they can find it, trust it, and join it.</span>
-      <span class="lang-ja">もっと多くの子どもたちがクラブの恩恵を受けられる——見つけられれば、信頼できれば、入会できれば。</span>
+      <span class="en">More kids could benefit<br>from the Club—if they can<br><em>find it, trust it, join it.</em></span>
+      <span class="ja">もっと多くの子どもたちが<br>クラブの恩恵を受けられる——<br><em>見つけ、信頼し、入会できれば。</em></span>
     </h1>
-    <p class="hero-subtitle">
-      <span class="lang-en">Rainier Vista Boys &amp; Girls Club has life-changing programs for youth in Rainier Valley. The problem isn't the programs. It's that too many families never find them.</span>
-      <span class="lang-ja">Rainier Vista B&Gクラブには子どもたちの人生を変えるプログラムがあります。問題はプログラムではありません——多くの家族がそれを知らないことです。</span>
+    <p class="hero-body">
+      <span class="en">The programs are real. The community needs them. The problem is that too many Rainier Valley families never make it to enrollment.</span>
+      <span class="ja">プログラムは本物。地域も必要としている。問題は、多くのRainier Valleyの家族が入会にたどり着けないことです。</span>
     </p>
-    <div class="hero-cta-group">
-      <a href="#challenge" class="btn btn-white"><span class="lang-en">See the Challenge</span><span class="lang-ja">課題を見る</span></a>
-      <a href="#opportunities" class="btn btn-outline-white"><span class="lang-en">Explore Opportunities</span><span class="lang-ja">アイデアを考える</span></a>
+    <div class="hero-cta">
+      <a href="#challenge" class="btn-hero-primary"><span class="en">See the Challenge →</span><span class="ja">課題を見る →</span></a>
+      <a href="#opportunities" class="btn-hero-ghost"><span class="en">Explore Ideas</span><span class="ja">アイデアを考える</span></a>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span class="en">Scroll to explore</span><span class="ja">スクロールして読む</span>
     </div>
   </div>
 </section>
 
-<!-- 2. ABOUT -->
-<section id="about">
-  <div class="container">
-    <div class="sec-badge"><span class="lang-en">About the Club</span><span class="lang-ja">クラブについて</span></div>
+<!-- QUICK STATS -->
+<div class="stats-bar">
+  <div class="stats-bar-inner">
+    <div class="stat-item">
+      <div class="stat-val">K–12</div>
+      <div class="stat-label"><span class="en">Youth served</span><span class="ja">対象年齢</span></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-val red">$0</div>
+      <div class="stat-label"><span class="en">Local marketing budget</span><span class="ja">ローカルマーケ予算</span></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-val">1</div>
+      <div class="stat-label"><span class="en">Marketing person, 30+ clubs</span><span class="ja">マーケ担当者、30以上のクラブ</span></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-val">Canva</div>
+      <div class="stat-label"><span class="en">Only available design tool</span><span class="ja">使えるデザインツール</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section alt" id="about">
+  <div class="wrap">
+    <div class="section-label"><span class="en">About the Club</span><span class="ja">クラブについて</span></div>
     <h2>Rainier Vista Boys &amp; Girls Club</h2>
-    <p class="sec-desc">
-      <span class="lang-en">A community anchor in South Seattle, providing after-school and teen programs for youth in one of the city's most diverse neighborhoods.</span>
-      <span class="lang-ja">シアトル南部のコミュニティの柱として、市内でも特に多様性の高い地域の子どもたちに放課後・ティーン向けプログラムを提供しています。</span>
-    </p>
-    <div class="about-grid">
+    <div class="about-cols">
       <div class="about-text">
-        <p>
-          <span class="lang-en">The Smilow Rainier Vista Boys &amp; Girls Club serves youth and teens in the Rainier Vista neighborhood — a vibrant, diverse community in Southeast Seattle. For many families in this area, the Club represents a safe, affordable, and enriching place for their kids after school.</span>
-          <span class="lang-ja">Smilow Rainier Vista B&Gクラブは、シアトル南東部の活気ある多様なコミュニティ、Rainier Vista地区の子どもたちとティーンを支援しています。この地域の多くの家族にとって、クラブは放課後の安全で手頃な居場所です。</span>
-        </p>
-        <p>
-          <span class="lang-en">The Club runs programs in sports, academic support, arts, and leadership — but the community it could serve is much larger than its current membership reflects.</span>
-          <span class="lang-ja">スポーツ・学習支援・アート・リーダーシップなど多彩なプログラムを展開していますが、届けられる可能性がある子どもたちに比べ、現在の会員数はまだまだ少ない状況です。</span>
-        </p>
-        <div class="program-tags">
-          <span class="tag">🏀 Basketball</span>
-          <span class="tag">🏈 Flag Football</span>
-          <span class="tag">📚 <span class="lang-en">Homework Help</span><span class="lang-ja">学習支援</span></span>
-          <span class="tag">🎨 <span class="lang-en">Arts &amp; Crafts</span><span class="lang-ja">アート</span></span>
-          <span class="tag">🎮 Teen Center</span>
-          <span class="tag">🌟 <span class="lang-en">Leadership</span><span class="lang-ja">リーダーシップ</span></span>
+        <p><span class="en">Smilow Rainier Vista Boys &amp; Girls Club is a community anchor in Southeast Seattle, serving a vibrant, multilingual neighborhood. For families here, the Club is a safe and affordable place for kids after school.</span><span class="ja">Smilow Rainier Vista B&Gクラブは、シアトル南東部の多様なコミュニティの柱。放課後の子どもたちに安全で手頃な居場所を提供しています。</span></p>
+        <p><span class="en">The programs are strong. Families who join, stay. The challenge is reaching the ones who haven't found the Club yet.</span><span class="ja">プログラムの質は本物。入会した家族は長く続けます。課題は、まだクラブを知らない家族に届けることです。</span></p>
+        <div class="prog-tags">
+          <span class="prog-tag">🏀 Basketball</span>
+          <span class="prog-tag">🏈 Flag Football</span>
+          <span class="prog-tag">📚 <span class="en">After-school</span><span class="ja">放課後サポート</span></span>
+          <span class="prog-tag">🎨 Arts</span>
+          <span class="prog-tag">🎮 Teen Center</span>
+          <span class="prog-tag">🌟 Leadership</span>
         </div>
       </div>
-      <div class="about-stat-group">
-        <div class="about-stat-item">
-          <div class="num">K–12</div>
-          <div class="label"><span class="lang-en">Youth served, elementary to high school</span><span class="lang-ja">小学生から高校生まで対象</span></div>
+      <div class="about-stats">
+        <div class="a-stat">
+          <div class="v">↓ <span class="en">Declining</span><span class="ja">減少中</span></div>
+          <div class="l"><span class="en">After-school &amp; teen membership</span><span class="ja">放課後・ティーン会員数</span></div>
         </div>
-        <div class="about-stat-item">
-          <div class="num">1</div>
-          <div class="label"><span class="lang-en">Marketing staff for 30+ clubs nationwide</span><span class="lang-ja">全国30以上のクラブを担当するマーケ担当者は1人</span></div>
+        <div class="a-stat">
+          <div class="v"><span class="en">Word of mouth</span><span class="ja">口コミ</span></div>
+          <div class="l"><span class="en">Primary discovery channel — not scalable</span><span class="ja">主な流入経路——スケールしない</span></div>
         </div>
-        <div class="about-stat-item">
-          <div class="num">$0</div>
-          <div class="label"><span class="lang-en">Local marketing budget</span><span class="lang-ja">ローカルのマーケティング予算</span></div>
-        </div>
-        <div class="about-stat-item">
-          <div class="num">Canva</div>
-          <div class="label"><span class="lang-en">Only design tool available to local staff</span><span class="lang-ja">現場スタッフが使える唯一のデザインツール</span></div>
+        <div class="a-stat">
+          <div class="v"><span class="en">Nearby rivals</span><span class="ja">近隣の競合</span></div>
+          <div class="l"><span class="en">More visible marketing from competing programs</span><span class="ja">競合プログラムはより積極的に宣伝している</span></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 3. WHY -->
-<section id="why">
-  <div class="container">
-    <div class="sec-badge"><span class="lang-en">Why This Matters</span><span class="lang-ja">なぜ重要か</span></div>
-    <h2>
-      <span class="lang-en">The gap between who the Club serves and who it <em>could</em> serve</span>
-      <span class="lang-ja">クラブが「今届けている」層と「届けられる可能性がある」層のギャップ</span>
-    </h2>
-    <div class="impact-box">
-      <div class="big-text">
-        <span class="lang-en">"The problem is not just awareness.<br>It's awareness + trust + the first step."</span>
-        <span class="lang-ja">「問題は認知だけではありません。<br>認知 ＋ 信頼 ＋ 最初の一歩、この三つです。」</span>
+<!-- CHALLENGE -->
+<section class="section" id="challenge">
+  <div class="wrap">
+    <div class="section-label red"><span class="en">The Challenge</span><span class="ja">チャレンジ</span></div>
+    <h2><span class="en">Help more families find, trust, and join the Club</span><span class="ja">より多くの家族がクラブを見つけ、信頼し、入会できるようにする</span></h2>
+
+    <div class="key-msg">
+      <div class="key-msg-text">
+        <span class="en">The problem is not just <em>awareness.</em><br>It's awareness + trust + the first step.</span>
+        <span class="ja">問題は「<em>認知</em>」だけではありません。<br>認知 ＋ 信頼 ＋ 最初の一歩——この三つです。</span>
       </div>
-      <div class="sub">
-        <span class="lang-en">Families must discover the Club, believe it's right for their child, and then successfully navigate enrollment. Any one of these steps can fail.</span>
-        <span class="lang-ja">家族はまずクラブを知り、自分の子どもに合っていると信じ、入会手続きを完了しなければなりません。どの段階でも離脱が起きます。</span>
+      <div class="key-msg-sub">
+        <span class="en">Any one of these three can fail — and often does.</span>
+        <span class="ja">どの段階でも離脱が起きます。そして実際に起きています。</span>
       </div>
     </div>
-    <div class="challenge-grid">
-      <div class="challenge-card">
-        <div class="icon">📉</div>
-        <div class="metric"><span class="lang-en">↓ Membership</span><span class="lang-ja">↓ 会員数</span></div>
-        <div class="desc"><span class="lang-en">After-school and teen enrollment has been declining</span><span class="lang-ja">放課後・ティーンの参加者数が減少傾向</span></div>
+
+    <div class="challenge-list">
+      <div class="c-item">
+        <div class="c-num">01</div>
+        <div class="c-body">
+          <strong><span class="en">Membership is declining</span><span class="ja">会員数が減少している</span></strong>
+          <p><span class="en">After-school and teen enrollment is down. Basketball and flag football have fewer new kids each season.</span><span class="ja">放課後・ティーンの参加者が減少。バスケ・フラッグフットボールへの新規参加者も毎シーズン少なくなっている。</span></p>
+        </div>
       </div>
-      <div class="challenge-card">
-        <div class="icon">🏙️</div>
-        <div class="metric"><span class="lang-en">Nearby rivals</span><span class="lang-ja">近隣の競合</span></div>
-        <div class="desc"><span class="lang-en">Competing programs are in the same neighborhood</span><span class="lang-ja">同じ地域に競合する放課後プログラムが存在</span></div>
+      <div class="c-item">
+        <div class="c-num">02</div>
+        <div class="c-body">
+          <strong><span class="en">Word-of-mouth doesn't scale</span><span class="ja">口コミはスケールしない</span></strong>
+          <p><span class="en">Most families find the Club through someone they know. Families without that connection simply miss it.</span><span class="ja">ほとんどの家族は知人経由でクラブを知ります。つながりのない家族には届きません。</span></p>
+        </div>
       </div>
-      <div class="challenge-card">
-        <div class="icon">🌍</div>
-        <div class="metric"><span class="lang-en">Multilingual</span><span class="lang-ja">多言語コミュニティ</span></div>
-        <div class="desc"><span class="lang-en">Many families don't speak English as their first language</span><span class="lang-ja">英語を母語としない家族も多く住む地域</span></div>
+      <div class="c-item">
+        <div class="c-num">03</div>
+        <div class="c-body">
+          <strong><span class="en">Flyers exist — but barely work</span><span class="ja">フライヤーはあるが機能していない</span></strong>
+          <p><span class="en">Some clubs hand out flyers at schools, but it's inconsistent and unprofessional. Canva-made by non-designers.</span><span class="ja">学校でフライヤーを配るクラブもあるが、不定期で品質もばらばら。デザイン経験のないスタッフがCanvaで作成。</span></p>
+        </div>
+      </div>
+      <div class="c-item">
+        <div class="c-num">04</div>
+        <div class="c-body">
+          <strong><span class="en">Enrollment page causes drop-off</span><span class="ja">申し込みページで離脱が起きる</span></strong>
+          <p><span class="en">The national signup page is complex. Phone enrollment exists but isn't advertised. Interested families give up.</span><span class="ja">全国共通の申し込みページは複雑。電話での手続きも可能だが知られていない。興味を持った家族が諦めてしまう。</span></p>
+        </div>
+      </div>
+      <div class="c-item">
+        <div class="c-num">05</div>
+        <div class="c-body">
+          <strong><span class="en">SNS: 1 person, 30+ clubs</span><span class="ja">SNS：担当1人、30以上のクラブ</span></strong>
+          <p><span class="en">One marketing person handles all clubs. Local events and programs go unannounced. Each club's story stays untold.</span><span class="ja">マーケ担当者1人が全クラブを担当。各クラブのイベントや情報はほとんど発信されない。</span></p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 4. CHALLENGE -->
-<section id="challenge">
-  <div class="container">
-    <div class="sec-badge red"><span class="lang-en">The Challenge</span><span class="lang-ja">チャレンジ</span></div>
-    <h2>
-      <span class="lang-en">Help more Rainier Valley families discover and join the Club</span>
-      <span class="lang-ja">Rainier Valleyの家族がクラブを見つけ、入会できるようにする</span>
-    </h2>
-    <p class="sec-desc">
-      <span class="lang-en">Today, most families find the Club through word of mouth or random luck. Here's what's making it hard to grow.</span>
-      <span class="lang-ja">現状、ほとんどの家族は口コミか偶然でクラブを知ります。成長を阻む要因を整理しました。</span>
-    </p>
-    <ul class="challenge-list">
-      <li>
-        <span class="ci">📊</span>
-        <div class="ct">
-          <strong><span class="lang-en">Membership is declining</span><span class="lang-ja">会員数が減少している</span></strong>
-          <span class="lang-en">After-school participation is down. Teen enrollment and elementary programs like basketball and flag football have fewer new members than before.</span>
-          <span class="lang-ja">放課後参加者が減少。バスケットボールやフラッグフットボールなど、ティーン・小学生向けプログラムへの新規参加者も以前より少ない。</span>
-        </div>
-      </li>
-      <li>
-        <span class="ci">📣</span>
-        <div class="ct">
-          <strong><span class="lang-en">Word-of-mouth is the main channel — but it doesn't scale</span><span class="lang-ja">口コミが主な流入経路——しかしスケールしない</span></strong>
-          <span class="lang-en">Most families hear about the Club from friends or neighbors. There's no reliable way to reach families who don't already know someone who's a member.</span>
-          <span class="lang-ja">ほとんどの家族は知人経由でクラブを知ります。まだ会員の知人がいない家族に届く仕組みがありません。</span>
-        </div>
-      </li>
-      <li>
-        <span class="ci">🗓️</span>
-        <div class="ct">
-          <strong><span class="lang-en">Flyers are inconsistent and manual</span><span class="lang-ja">フライヤー配布は不定期で手作り</span></strong>
-          <span class="lang-en">Some clubs distribute flyers at schools, but there's no system. Flyers are made in Canva by non-designers, and quality varies.</span>
-          <span class="lang-ja">学校でフライヤーを配るクラブもあるが仕組みがなく、Canvaでデザイン経験のないスタッフが作成。品質にばらつきがある。</span>
-        </div>
-      </li>
-      <li>
-        <span class="ci">🖥️</span>
-        <div class="ct">
-          <strong><span class="lang-en">Enrollment flow causes drop-off</span><span class="lang-ja">入会手続きで離脱が起きる</span></strong>
-          <span class="lang-en">The national signup page is complex. Families who get interested sometimes don't complete enrollment. Phone-based alternatives exist but aren't well known.</span>
-          <span class="lang-ja">全国共通の申し込みページは複雑。興味を持っても完了できない家族がいる。電話での手続きという選択肢もあるが、あまり知られていない。</span>
-        </div>
-      </li>
-      <li>
-        <span class="ci">📱</span>
-        <div class="ct">
-          <strong><span class="lang-en">Social media is not manageable at local scale</span><span class="lang-ja">SNSをローカルで継続運用できない</span></strong>
-          <span class="lang-en">One marketing person covers 30+ clubs. Local clubs can't maintain consistent social presence on their own.</span>
-          <span class="lang-ja">マーケティング担当者1人が30以上のクラブを担当。各クラブのイベントや情報発信は追いつかない。</span>
-        </div>
-      </li>
-      <li>
-        <span class="ci">🏢</span>
-        <div class="ct">
-          <strong><span class="lang-en">Competitors are visible; the Club is not</span><span class="lang-ja">競合は目立つ、クラブは見えない</span></strong>
-          <span class="lang-en">Other after-school programs have more visible marketing. Families looking for options may not encounter the Club.</span>
-          <span class="lang-ja">近隣の他の放課後プログラムはより積極的に宣伝している。選択肢を探している家族がクラブに出会えないことがある。</span>
-        </div>
-      </li>
-    </ul>
-  </div>
-</section>
+<!-- CONSTRAINTS -->
+<section class="section alt" id="constraints">
+  <div class="wrap">
+    <div class="section-label yellow"><span class="en">Constraints</span><span class="ja">制約条件</span></div>
+    <h2><span class="en">Work within these — no exceptions</span><span class="ja">これは変えられない——例外なし</span></h2>
+    <p class="section-sub"><span class="en">The best solutions fit these constraints. Understanding them now saves you from building something that can't be used.</span><span class="ja">最良のソリューションはこの制約に収まります。今把握しておくと、使えないものを作るリスクを避けられます。</span></p>
 
-<!-- 5. CONSTRAINTS -->
-<section id="constraints">
-  <div class="container">
-    <div class="sec-badge yellow"><span class="lang-en">Constraints</span><span class="lang-ja">制約条件</span></div>
-    <h2><span class="lang-en">What teams must work within</span><span class="lang-ja">チームが守るべき制約</span></h2>
-    <p class="sec-desc">
-      <span class="lang-en">These are hard limits — not flexible. Understanding them early will help you build something that could actually be used on Monday.</span>
-      <span class="lang-ja">これは変更できない制約です。早めに把握しておくことで、月曜から実際に使えるものが作れます。</span>
-    </p>
     <div class="constraint-grid">
-      <div class="constraint-item">
-        <span class="ci">🔒</span>
-        <div class="ct">
-          <strong><span class="lang-en">National enrollment page cannot be changed</span><span class="lang-ja">全国共通の申し込みページは変更不可</span></strong>
-          <span class="lang-en">The signup URL is managed by Boys &amp; Girls Clubs of America nationally. The local club has no ability to modify it.</span>
-          <span class="lang-ja">申し込みURLは全国本部が管理しており、ローカルクラブには変更権限がありません。</span>
+      <div class="con-item">
+        <span class="con-icon">🔒</span>
+        <div class="con-text">
+          <strong><span class="en">National enrollment page: read-only</span><span class="ja">全国申し込みページ：変更不可</span></strong>
+          <p><span class="en">Managed by BGCA nationally. The local club cannot touch it.</span><span class="ja">全国本部が管理。ローカルクラブには変更権限なし。</span></p>
         </div>
       </div>
-      <div class="constraint-item">
-        <span class="ci">✏️</span>
-        <div class="ct">
-          <strong><span class="lang-en">Local web page: limited edits only</span><span class="lang-ja">ローカルページは一部のみ編集可</span></strong>
-          <span class="lang-en">A local landing page exists and can be edited slightly, but it's within a national template system.</span>
-          <span class="lang-ja">ローカル用ページはありますが、全国テンプレートの範囲内での微修正のみ可能です。</span>
+      <div class="con-item">
+        <span class="con-icon">✏️</span>
+        <div class="con-text">
+          <strong><span class="en">Local web page: minor edits only</span><span class="ja">ローカルページ：微修正のみ可</span></strong>
+          <p><span class="en">A local page exists within a national template. Some fields editable.</span><span class="ja">全国テンプレート内のローカルページ。一部フィールドのみ編集可。</span></p>
         </div>
       </div>
-      <div class="constraint-item">
-        <span class="ci">💸</span>
-        <div class="ct">
-          <strong><span class="lang-en">No local marketing budget</span><span class="lang-ja">ローカルのマーケ予算はゼロ</span></strong>
-          <span class="lang-en">The Club does not have funds for paid ads, printed materials at scale, or new software subscriptions.</span>
-          <span class="lang-ja">有料広告、大量印刷、新しいソフトウェア導入に使える費用はありません。</span>
+      <div class="con-item">
+        <span class="con-icon">💸</span>
+        <div class="con-text">
+          <strong><span class="en">Zero local marketing budget</span><span class="ja">ローカルマーケ予算：ゼロ</span></strong>
+          <p><span class="en">No paid ads, no bulk printing, no new subscriptions.</span><span class="ja">有料広告・大量印刷・新規サブスク購入は不可。</span></p>
         </div>
       </div>
-      <div class="constraint-item">
-        <span class="ci">🎨</span>
-        <div class="ct">
-          <strong><span class="lang-en">Canva is the primary design tool</span><span class="lang-ja">デザインツールはCanvaのみ</span></strong>
-          <span class="lang-en">Staff are comfortable with Canva. Solutions requiring complex design or video skills won't be sustainable.</span>
-          <span class="lang-ja">スタッフが使い慣れているのはCanvaです。高度なデザインスキルが必要なものは継続できません。</span>
+      <div class="con-item">
+        <span class="con-icon">🎨</span>
+        <div class="con-text">
+          <strong><span class="en">Canva only — no professional design tools</span><span class="ja">Canvaのみ——デザインツールは限定</span></strong>
+          <p><span class="en">Staff are comfortable with Canva. That's the ceiling.</span><span class="ja">スタッフが使いこなせるのはCanvaだけ。</span></p>
         </div>
       </div>
-      <div class="constraint-item">
-        <span class="ci">☎️</span>
-        <div class="ct">
-          <strong><span class="lang-en">Phone enrollment support is possible</span><span class="lang-ja">電話での入会サポートは可能</span></strong>
-          <span class="lang-en">Staff can help families enroll by phone — but families need to know this option exists first.</span>
-          <span class="lang-ja">スタッフが電話で入会手続きをサポートできます——ただし、その選択肢があることを家族が知っている必要があります。</span>
+      <div class="con-item">
+        <span class="con-icon">☎️</span>
+        <div class="con-text">
+          <strong><span class="en">Phone enrollment: available, unknown</span><span class="ja">電話入会：可能だが知られていない</span></strong>
+          <p><span class="en">Staff can walk families through enrollment by phone. Most don't know this.</span><span class="ja">スタッフが電話でサポートできる。知っている家族はほぼいない。</span></p>
         </div>
       </div>
-      <div class="constraint-item">
-        <span class="ci">👤</span>
-        <div class="ct">
-          <strong><span class="lang-en">Staff capacity is limited</span><span class="lang-ja">スタッフのキャパシティは限られている</span></strong>
-          <span class="lang-en">Club staff are focused on running programs. Solutions requiring significant ongoing staff time are unlikely to stick.</span>
-          <span class="lang-ja">スタッフはプログラム運営に集中しています。継続的に大きな時間コストがかかる仕組みは定着しません。</span>
+      <div class="con-item">
+        <span class="con-icon">⏱️</span>
+        <div class="con-text">
+          <strong><span class="en">Staff time is precious</span><span class="ja">スタッフの時間は貴重</span></strong>
+          <p><span class="en">Staff run programs full-time. Anything that needs constant maintenance won't survive.</span><span class="ja">スタッフはプログラム運営で手一杯。継続的な手間が必要なものは定着しない。</span></p>
         </div>
       </div>
     </div>
-    <div class="constraint-note">
-      <strong><span class="lang-en">The sweet spot:</span><span class="lang-ja">理想のゾーン：</span></strong>
-      <span class="lang-en">Low-cost, low-maintenance solutions that a busy club director or volunteer could actually use — ideally things that get easier over time, not harder.</span>
-      <span class="lang-ja">忙しいクラブディレクターやボランティアが実際に使えるような、低コスト・低メンテナンスのもの。使うほど楽になるのが理想です。</span>
+    <div class="note-box">
+      <strong><span class="en">Sweet spot:</span><span class="ja">理想のゾーン：</span></strong>
+      <span class="en">Something a non-marketer can use in under 30 minutes a month — and that gets easier over time.</span>
+      <span class="ja">マーケ専門でない人が月30分以内で使えて、使うほど楽になるもの。</span>
     </div>
   </div>
 </section>
 
-<!-- 6. OPPORTUNITIES -->
-<section id="opportunities">
-  <div class="container">
-    <div class="sec-badge"><span class="lang-en">Opportunity Areas</span><span class="lang-ja">取り組める機会</span></div>
-    <h2><span class="lang-en">Where your team can make an impact</span><span class="lang-ja">チームがインパクトを出せる方向性</span></h2>
-    <p class="sec-desc">
-      <span class="lang-en">These are directions to explore — not requirements. The best ideas will focus on one area and go deep.</span>
-      <span class="lang-ja">これは探索の方向性であり、要件ではありません。最良のアイデアは一つの領域に絞って深掘りしたものです。</span>
-    </p>
+<!-- OPPORTUNITIES -->
+<section class="section" id="opportunities">
+  <div class="wrap">
+    <div class="section-label"><span class="en">Opportunity Areas</span><span class="ja">取り組める機会</span></div>
+    <h2><span class="en">Four directions to explore</span><span class="ja">探索できる4つの方向性</span></h2>
+    <p class="section-sub"><span class="en">Pick one. Go deep. The best submissions own a single area rather than trying to solve everything.</span><span class="ja">一つ選んで深掘りする。すべてを解こうとするより、一つの領域を極めた提案が評価されます。</span></p>
+
     <div class="opp-grid">
       <div class="opp-card">
-        <div class="opp-num">Area 01</div>
-        <h3>📣 <span class="lang-en">Awareness — Making the Club visible</span><span class="lang-ja">認知——クラブを見えるようにする</span></h3>
-        <p><span class="lang-en">Most families have never heard of the Club. How do you reach parents and kids who aren't already connected?</span><span class="lang-ja">多くの家族はクラブの存在を知りません。まだつながりのない保護者や子どもたちにどう届けますか？</span></p>
-        <div class="examples">
-          <span class="ex-tag"><span class="lang-en">QR codes at community spots</span><span class="lang-ja">地域スポットにQRコード</span></span>
-          <span class="ex-tag"><span class="lang-en">School outreach kits</span><span class="lang-ja">学校向け配布キット</span></span>
-          <span class="ex-tag"><span class="lang-en">Social media templates</span><span class="lang-ja">SNS投稿テンプレート</span></span>
+        <div class="opp-n">Area 01</div>
+        <h3>📣 <span class="en">Awareness</span><span class="ja">認知</span></h3>
+        <p><span class="en">Most families have never heard of the Club. How do you reach them before a competitor does?</span><span class="ja">多くの家族はクラブの存在を知りません。競合より先に届けるには？</span></p>
+        <div class="opp-tags">
+          <span class="opp-tag"><span class="en">QR at community spots</span><span class="ja">地域スポットにQR</span></span>
+          <span class="opp-tag"><span class="en">School outreach kit</span><span class="ja">学校向け配布キット</span></span>
+          <span class="opp-tag"><span class="en">SNS templates</span><span class="ja">SNSテンプレート</span></span>
         </div>
       </div>
       <div class="opp-card">
-        <div class="opp-num">Area 02</div>
-        <h3>🤝 <span class="lang-en">Trust — Helping families feel confident</span><span class="lang-ja">信頼——家族が安心できるようにする</span></h3>
-        <p><span class="lang-en">Even if families hear about the Club, they need to feel it's safe, welcoming, and right for their child.</span><span class="lang-ja">クラブを知っても、安全で歓迎されていて子どもに合っていると感じてもらう必要があります。</span></p>
-        <div class="examples">
-          <span class="ex-tag"><span class="lang-en">Multilingual info sheets</span><span class="lang-ja">多言語の案内資料</span></span>
-          <span class="ex-tag"><span class="lang-en">Parent testimonials format</span><span class="lang-ja">保護者の声フォーマット</span></span>
-          <span class="ex-tag"><span class="lang-en">Program explainer cards</span><span class="lang-ja">プログラム説明カード</span></span>
+        <div class="opp-n">Area 02</div>
+        <h3>🤝 <span class="en">Trust</span><span class="ja">信頼</span></h3>
+        <p><span class="en">Knowing about the Club isn't enough. Families need to feel it's safe, welcoming, and right for their kid.</span><span class="ja">知っているだけでは不十分。安全で歓迎されていて、子どもに合っていると感じてもらう必要があります。</span></p>
+        <div class="opp-tags">
+          <span class="opp-tag"><span class="en">Multilingual info</span><span class="ja">多言語案内</span></span>
+          <span class="opp-tag"><span class="en">Parent testimonials</span><span class="ja">保護者の声</span></span>
+          <span class="opp-tag"><span class="en">Program explainer</span><span class="ja">プログラム説明カード</span></span>
         </div>
       </div>
       <div class="opp-card">
-        <div class="opp-num">Area 03</div>
-        <h3>👣 <span class="lang-en">First Step — Lowering the barrier to join</span><span class="lang-ja">最初の一歩——入会の障壁を下げる</span></h3>
-        <p><span class="lang-en">Interested families drop off when the enrollment process feels unclear or too complex. How do you make the first step obvious and easy?</span><span class="lang-ja">興味を持っても、手続きが不明確・複雑だと離脱します。最初の一歩をわかりやすく簡単にするには？</span></p>
-        <div class="examples">
-          <span class="ex-tag"><span class="lang-en">Enrollment guide / cheat sheet</span><span class="lang-ja">入会ガイド・チートシート</span></span>
-          <span class="ex-tag"><span class="lang-en">CTA flyer with QR</span><span class="lang-ja">QR付きCTAフライヤー</span></span>
-          <span class="ex-tag"><span class="lang-en">Phone support awareness</span><span class="lang-ja">電話サポートの周知</span></span>
+        <div class="opp-n">Area 03</div>
+        <h3>👣 <span class="en">First Step</span><span class="ja">最初の一歩</span></h3>
+        <p><span class="en">Interested families drop off when enrollment feels confusing. Make the first step obvious, quick, and easy.</span><span class="ja">興味を持っても手続きが難しいと離脱します。最初の一歩を明確で簡単にする。</span></p>
+        <div class="opp-tags">
+          <span class="opp-tag"><span class="en">Enrollment cheat sheet</span><span class="ja">入会チートシート</span></span>
+          <span class="opp-tag"><span class="en">CTA flyer + QR</span><span class="ja">QR付きCTAフライヤー</span></span>
+          <span class="opp-tag"><span class="en">Phone option awareness</span><span class="ja">電話サポートの周知</span></span>
         </div>
       </div>
       <div class="opp-card">
-        <div class="opp-num">Area 04</div>
-        <h3>🛠️ <span class="lang-en">Staff Enablement — Making marketing sustainable</span><span class="lang-ja">スタッフ支援——マーケを続けられる仕組みにする</span></h3>
-        <p><span class="lang-en">Staff want to do outreach but don't have time or tools. Can you build something that makes it much easier for a non-marketer to promote the Club?</span><span class="lang-ja">スタッフは告知したくても時間もツールもない。マーケ専門でない人でも簡単にクラブをPRできるものを作れますか？</span></p>
-        <div class="examples">
-          <span class="ex-tag"><span class="lang-en">Canva template pack</span><span class="lang-ja">Canvaテンプレートパック</span></span>
-          <span class="ex-tag"><span class="lang-en">Event announcement playbook</span><span class="lang-ja">イベント告知プレイブック</span></span>
-          <span class="ex-tag"><span class="lang-en">Post automation ideas</span><span class="lang-ja">投稿自動化アイデア</span></span>
+        <div class="opp-n">Area 04</div>
+        <h3>🛠️ <span class="en">Staff Enablement</span><span class="ja">スタッフ支援</span></h3>
+        <p><span class="en">Staff want to promote the Club but have no time or tools. Build something a non-marketer can use every week.</span><span class="ja">スタッフは告知したいが時間もツールもない。マーケ専門でない人が毎週使えるものを作る。</span></p>
+        <div class="opp-tags">
+          <span class="opp-tag"><span class="en">Canva template pack</span><span class="ja">Canvaテンプレートパック</span></span>
+          <span class="opp-tag"><span class="en">Event playbook</span><span class="ja">イベント告知プレイブック</span></span>
+          <span class="opp-tag"><span class="en">30-min/month routine</span><span class="ja">月30分ルーティン</span></span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 7. JOURNEY -->
-<section id="journey">
-  <div class="container">
-    <div class="sec-badge"><span class="lang-en">Current Family Journey</span><span class="lang-ja">現在の家族の導線</span></div>
-    <h2><span class="lang-en">How families find — or fail to find — the Club today</span><span class="lang-ja">家族がクラブに出会う——あるいは出会えない——今の流れ</span></h2>
-    <p class="sec-desc"><span class="lang-en">This is the real path a family takes right now. Notice where it falls apart.</span><span class="lang-ja">これが現実の導線です。どこで崩れるかに注目してください。</span></p>
-    <div class="journey-steps">
-      <div class="journey-step">
-        <div class="step-num">1</div>
-        <div class="step-body">
-          <h3><span class="lang-en">Rare touchpoint: community event or word of mouth</span><span class="lang-ja">稀な接点：地域イベントや口コミ</span></h3>
-          <p><span class="lang-en">A small number of families encounter the Club at a local event or hear about it from a friend. This is the primary discovery channel — but it's unpredictable and limited in reach.</span><span class="lang-ja">ごく一部の家族が地域イベントや知人の紹介でクラブを知ります。これが主な発見経路ですが、偶発的でリーチに限界があります。</span></p>
+<!-- JOURNEY -->
+<section class="section alt" id="journey">
+  <div class="wrap">
+    <div class="section-label"><span class="en">Current Family Journey</span><span class="ja">現在の家族の導線</span></div>
+    <h2><span class="en">How families find — or don't find — the Club</span><span class="ja">家族がクラブに出会う、あるいは出会えない流れ</span></h2>
+    <p class="section-sub"><span class="en">Map your solution onto this journey. Where does it intervene?</span><span class="ja">あなたのソリューションはどのステップに介入しますか？</span></p>
+
+    <div class="journey">
+      <div class="j-step">
+        <div class="j-num">1</div>
+        <div class="j-body">
+          <h3><span class="en">Community event or friend referral</span><span class="ja">地域イベントや知人の紹介</span></h3>
+          <p><span class="en">A small number of families stumble upon the Club. Unpredictable, unscalable.</span><span class="ja">ごく一部の家族が偶然クラブを知る。偶発的でリーチに限界がある。</span></p>
         </div>
       </div>
-      <div class="journey-step friction">
-        <div class="step-num">2</div>
-        <div class="step-body">
-          <div class="friction-badge"><span class="lang-en">Friction point</span><span class="lang-ja">摩擦ポイント</span></div>
-          <h3><span class="lang-en">School flyers — inconsistent and unappealing</span><span class="lang-ja">学校へのフライヤー配布——不定期で訴求力が低い</span></h3>
-          <p><span class="lang-en">Some clubs distribute flyers at schools, but coverage is patchy. Made in Canva by non-designers, quality varies. Many families throw them away or never see them.</span><span class="lang-ja">学校でフライヤーを配るクラブもありますが、対象校が偏りがち。デザイン経験のないスタッフがCanvaで作るため品質にばらつきがあり、多くの家族が捨てるか見ていません。</span></p>
+      <div class="j-step bad">
+        <div class="j-num">2</div>
+        <div class="j-body">
+          <div class="j-tag friction"><span class="en">Friction</span><span class="ja">摩擦</span></div>
+          <h3><span class="en">School flyers — sporadic &amp; amateur</span><span class="ja">学校フライヤー——不定期・素人クオリティ</span></h3>
+          <p><span class="en">Some clubs try flyers, but no system. Quality varies. Many families ignore or miss them.</span><span class="ja">フライヤーを配るクラブもあるが仕組みがなく品質にばらつき。多くの家族に届かない。</span></p>
         </div>
       </div>
-      <div class="journey-step">
-        <div class="step-num">3</div>
-        <div class="step-body">
-          <h3><span class="lang-en">Family gets interested and looks for more info</span><span class="lang-ja">家族が興味を持ち、詳細を調べる</span></h3>
-          <p><span class="lang-en">If a family gets curious, they may search online or visit the local page. The information available can be hard to navigate or incomplete.</span><span class="lang-ja">気になった家族がオンラインで検索したりローカルページを訪れますが、情報が見つけにくかったり不完全だったりします。</span></p>
+      <div class="j-step">
+        <div class="j-num">3</div>
+        <div class="j-body">
+          <h3><span class="en">Family searches online</span><span class="ja">家族がオンラインで調べる</span></h3>
+          <p><span class="en">If interested, they look for more info. The local page is hard to find or incomplete.</span><span class="ja">興味を持った家族がオンラインで検索するが、ローカルページは見つけにくく情報も不完全。</span></p>
         </div>
       </div>
-      <div class="journey-step friction">
-        <div class="step-num">4</div>
-        <div class="step-body">
-          <div class="friction-badge"><span class="lang-en">Friction point</span><span class="lang-ja">摩擦ポイント</span></div>
-          <h3><span class="lang-en">Enrollment page is confusing or overwhelming</span><span class="lang-ja">申し込みページがわかりにくく圧倒される</span></h3>
-          <p><span class="lang-en">The national enrollment system is not optimized for a first-time family in Rainier Valley. Some families give up here. Phone enrollment is available but not well advertised.</span><span class="lang-ja">全国共通の申し込みシステムはRainier Valleyの初めての家族向けに最適化されていません。ここで諦める家族も。電話での手続きも可能ですが、あまり知られていません。</span></p>
+      <div class="j-step bad">
+        <div class="j-num">4</div>
+        <div class="j-body">
+          <div class="j-tag friction"><span class="en">Drop-off</span><span class="ja">離脱</span></div>
+          <h3><span class="en">Enrollment page is confusing</span><span class="ja">申し込みページがわかりにくい</span></h3>
+          <p><span class="en">National page, complex flow. Phone enrollment exists but no one knows. Some families give up here.</span><span class="ja">全国共通ページで手続きが複雑。電話サポートはあるが知られていない。ここで諦める家族がいる。</span></p>
         </div>
       </div>
-      <div class="journey-step friction">
-        <div class="step-num">5</div>
-        <div class="step-body">
-          <div class="friction-badge"><span class="lang-en">Structural problem</span><span class="lang-ja">構造的な問題</span></div>
-          <h3><span class="lang-en">Social media: one person, 30+ clubs</span><span class="lang-ja">SNS：担当1人で30以上のクラブ</span></h3>
-          <p><span class="lang-en">One marketing person manages social media for 30+ clubs. Local events and programs rarely get promoted. Each club's unique story goes untold.</span><span class="lang-ja">30以上のクラブのSNSを管理するマーケ担当者は1人。各クラブのイベントや活動はほとんど発信されず、地域の物語は伝わりません。</span></p>
+      <div class="j-step bad">
+        <div class="j-num">5</div>
+        <div class="j-body">
+          <div class="j-tag friction"><span class="en">Structural gap</span><span class="ja">構造的な問題</span></div>
+          <h3><span class="en">No local social presence to stay top-of-mind</span><span class="ja">ローカルSNSが存在せず、記憶に残らない</span></h3>
+          <p><span class="en">One marketer, 30+ clubs. Local events go unannounced. The Club stays invisible to families who might join.</span><span class="ja">マーケ担当者1人で30以上のクラブ。地域のイベントは告知されず、入会できたかもしれない家族に届かない。</span></p>
         </div>
       </div>
-      <div class="journey-step">
-        <div class="step-num">6</div>
-        <div class="step-body">
-          <h3><span class="lang-en">If a family makes it through: they love it</span><span class="lang-ja">乗り越えた家族は：大好きになる</span></h3>
-          <p><span class="lang-en">Members and families who join tend to stay. The Club's programs are genuinely strong — the barrier is reaching and enrolling new families, not retaining them.</span><span class="lang-ja">入会した会員・家族は長く続ける傾向があります。プログラムの質は本物です。課題は新しい家族にリーチして入会させることであり、定着率ではありません。</span></p>
+      <div class="j-step good">
+        <div class="j-num">✓</div>
+        <div class="j-body">
+          <div class="j-tag good"><span class="en">Happy outcome</span><span class="ja">ゴール</span></div>
+          <h3><span class="en">Families who join — love it and stay</span><span class="ja">入会した家族は大好きになり、続ける</span></h3>
+          <p><span class="en">Retention is strong. The programs are excellent. The only problem is getting here.</span><span class="ja">定着率は高い。プログラムは本物。問題はここに到達できる家族を増やすことだけ。</span></p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 8. SUCCESS METRICS -->
-<section id="metrics">
-  <div class="container">
-    <div class="sec-badge"><span class="lang-en">Success Metrics</span><span class="lang-ja">成功指標</span></div>
-    <h2><span class="lang-en">What a winning solution looks like</span><span class="lang-ja">成功する提案とはどんなものか</span></h2>
-    <p class="sec-desc"><span class="lang-en">A great hackathon submission doesn't have to solve everything — it should move one of these needles.</span><span class="lang-ja">すべてを解決する必要はありません。これらの指標のどれか一つを動かせれば十分です。</span></p>
+<!-- SUCCESS METRICS -->
+<section class="section" id="metrics">
+  <div class="wrap">
+    <div class="section-label green"><span class="en">Success</span><span class="ja">成功指標</span></div>
+    <h2><span class="en">What winning looks like</span><span class="ja">成功とはどんな状態か</span></h2>
+    <p class="section-sub"><span class="en">Move one of these needles. You don't need to solve everything.</span><span class="ja">これらの指標のどれか一つを動かす。すべてを解く必要はない。</span></p>
+
     <div class="metrics-grid">
-      <div class="metric-card">
+      <div class="m-card">
         <div class="m-icon">📈</div>
         <div class="m-val">+5%</div>
-        <div class="m-label"><span class="lang-en">After-school membership growth over next season</span><span class="lang-ja">来シーズンの放課後会員数の増加</span></div>
+        <div class="m-label"><span class="en">After-school membership next season</span><span class="ja">来シーズンの放課後会員数</span></div>
       </div>
-      <div class="metric-card">
+      <div class="m-card">
         <div class="m-icon">🏀</div>
-        <div class="m-val"><span class="lang-en">More kids</span><span class="lang-ja">参加者増加</span></div>
-        <div class="m-label"><span class="lang-en">New elementary &amp; middle school members, especially in basketball and flag football</span><span class="lang-ja">特にバスケ・フラッグフットボールでの小・中学生の新規参加者増加</span></div>
+        <div class="m-val"><span class="en">More kids</span><span class="ja">子ども増加</span></div>
+        <div class="m-label"><span class="en">New K–8 members, especially basketball &amp; flag football</span><span class="ja">特にバスケ・フラッグフットボールへのK〜8年生の新規参加</span></div>
       </div>
-      <div class="metric-card">
-        <div class="m-icon">⏱️</div>
-        <div class="m-val"><span class="lang-en">Less effort</span><span class="lang-ja">省力化</span></div>
-        <div class="m-label"><span class="lang-en">Club staff can do outreach without it becoming a second job</span><span class="lang-ja">スタッフが「もう一つの仕事」にならずにアウトリーチできる</span></div>
+      <div class="m-card">
+        <div class="m-icon">⚡</div>
+        <div class="m-val"><span class="en">30 min</span><span class="ja">月30分</span></div>
+        <div class="m-label"><span class="en">Staff can do marketing without a second job</span><span class="ja">スタッフが「もう一つの仕事」にならずに告知できる</span></div>
       </div>
     </div>
 
-    <div class="sec-badge" style="margin-top:36px;"><span class="lang-en">Ideas We'd Love to See</span><span class="lang-ja">こんな提案を期待しています</span></div>
-    <h2 style="margin-bottom:20px;"><span class="lang-en">What kinds of solutions could work?</span><span class="lang-ja">どんなソリューションが有効か？</span></h2>
+    <div class="section-label" style="margin-bottom:16px;"><span class="en">Ideas we'd love to see</span><span class="ja">こんな提案を期待しています</span></div>
     <div class="ideas-grid">
-      <div class="idea-item"><span class="ii">📄</span><span class="it"><span class="lang-en">Simple landing page concepts that tell the local story</span><span class="lang-ja">地域の物語を伝えるシンプルなランディングページ</span></span></div>
-      <div class="idea-item"><span class="ii">📢</span><span class="it"><span class="lang-en">Community outreach campaign ideas (events, schools, partners)</span><span class="lang-ja">コミュニティアウトリーチのキャンペーンアイデア</span></span></div>
-      <div class="idea-item"><span class="ii">🎨</span><span class="it"><span class="lang-en">Social media content kits staff can reuse each week</span><span class="lang-ja">毎週再利用できるSNSコンテンツキット</span></span></div>
-      <div class="idea-item"><span class="ii">📱</span><span class="it"><span class="lang-en">QR-based event outreach that requires no design skills</span><span class="lang-ja">デザインスキル不要のQRコード活用イベント告知</span></span></div>
-      <div class="idea-item"><span class="ii">👨‍👩‍👧</span><span class="it"><span class="lang-en">Parent-friendly enrollment guidance (multilingual welcome)</span><span class="lang-ja">保護者向け入会ガイド（多言語対応）</span></span></div>
-      <div class="idea-item"><span class="ii">📘</span><span class="it"><span class="lang-en">Staff marketing playbook: promote your club in 30 min/month</span><span class="lang-ja">スタッフ向けマーケプレイブック「月30分でクラブをPR」</span></span></div>
+      <div class="idea"><span class="i-icon">📄</span><span class="i-text"><span class="en">Local landing page that tells the Club's story</span><span class="ja">クラブの物語を伝えるローカルLP</span></span></div>
+      <div class="idea"><span class="i-icon">📢</span><span class="i-text"><span class="en">Community outreach campaign (schools, events, partners)</span><span class="ja">コミュニティアウトリーチキャンペーン</span></span></div>
+      <div class="idea"><span class="i-icon">🎨</span><span class="i-text"><span class="en">Reusable social media content kit</span><span class="ja">毎週再利用できるSNSコンテンツキット</span></span></div>
+      <div class="idea"><span class="i-icon">📱</span><span class="i-text"><span class="en">QR-based flyer requiring no design skills</span><span class="ja">デザインスキル不要のQRフライヤー</span></span></div>
+      <div class="idea"><span class="i-icon">🌐</span><span class="i-text"><span class="en">Multilingual enrollment guidance for parents</span><span class="ja">保護者向け多言語入会ガイド</span></span></div>
+      <div class="idea"><span class="i-icon">📘</span><span class="i-text"><span class="en">Staff marketing playbook: 30 min/month</span><span class="ja">スタッフ向けマーケプレイブック</span></span></div>
     </div>
-    <div class="constraint-note" style="margin-top:20px;">
-      <strong><span class="lang-en">Note:</span><span class="lang-ja">注意：</span></strong>
-      <span class="lang-en">Redesigning the national enrollment system is out of scope. Focus on what can be done locally, with minimal budget, using tools like Canva, Google Docs, or free web pages.</span>
-      <span class="lang-ja">全国の申し込みシステムの再設計はスコープ外です。CanvaやGoogle Docs、無料のウェブページなど、ローカルで最小限のコストでできることに集中してください。</span>
-    </div>
-  </div>
-</section>
-
-<!-- 9. RESOURCES -->
-<section id="resources">
-  <div class="container">
-    <div class="sec-badge"><span class="lang-en">Resources</span><span class="lang-ja">素材・情報</span></div>
-    <h2><span class="lang-en">Assets &amp; context for your team</span><span class="lang-ja">チームが使える素材とコンテキスト</span></h2>
-    <p class="sec-desc"><span class="lang-en">Use these to ground your solution in real context.</span><span class="lang-ja">現実に根ざしたソリューションを作るために活用してください。</span></p>
-    <div class="resources-grid">
-      <div class="resource-card">
-        <h3>🎨 <span class="lang-en">Brand</span><span class="lang-ja">ブランド</span></h3>
-        <ul>
-          <li><span class="lang-en">Primary: Boys &amp; Girls Club Blue (#0057A8)</span><span class="lang-ja">メインカラー：クラブブルー（#0057A8）</span></li>
-          <li><span class="lang-en">Accent: Red (#D62828), Yellow (#F4A726)</span><span class="lang-ja">アクセント：レッド（#D62828）、イエロー（#F4A726）</span></li>
-          <li><span class="lang-en">Design tool: Canva (staff-accessible)</span><span class="lang-ja">デザインツール：Canva（スタッフ利用可）</span></li>
-        </ul>
-        <div class="brand-colors" style="margin-top:12px;">
-          <div class="color-swatch" style="background:#0057A8;"></div>
-          <div class="color-swatch" style="background:#D62828;"></div>
-          <div class="color-swatch" style="background:#F4A726;"></div>
-        </div>
-      </div>
-      <div class="resource-card">
-        <h3>🌐 <span class="lang-en">Online Presence</span><span class="lang-ja">オンライン状況</span></h3>
-        <ul>
-          <li><span class="lang-en">National enrollment: bgca.net (cannot be changed)</span><span class="lang-ja">全国申し込み：bgca.net（変更不可）</span></li>
-          <li><span class="lang-en">Local page: limited editing within national template</span><span class="lang-ja">ローカルページ：全国テンプレート内で一部編集可</span></li>
-          <li><span class="lang-en">Social media: managed centrally, low local presence</span><span class="lang-ja">SNS：本部一元管理、ローカル発信はほぼゼロ</span></li>
-        </ul>
-      </div>
-      <div class="resource-card">
-        <h3>👥 <span class="lang-en">Target Audience</span><span class="lang-ja">ターゲット</span></h3>
-        <ul>
-          <li><span class="lang-en">Elementary school kids (K–5) — new participants</span><span class="lang-ja">小学生（K〜5年生）——新規参加者獲得が目標</span></li>
-          <li><span class="lang-en">Middle school teens (6–8) — especially sports programs</span><span class="lang-ja">中学生（6〜8年生）——特にスポーツ系プログラム</span></li>
-          <li><span class="lang-en">Parents and guardians making decisions</span><span class="lang-ja">入会を決める保護者・家族</span></li>
-          <li><span class="lang-en">Multilingual community</span><span class="lang-ja">多言語コミュニティ（英語が母語でない家族も多い）</span></li>
-        </ul>
-      </div>
-      <div class="resource-card">
-        <h3>📋 <span class="lang-en">Programs to Highlight</span><span class="lang-ja">注目プログラム</span></h3>
-        <ul>
-          <li><span class="lang-en">After-school program (main revenue + membership driver)</span><span class="lang-ja">放課後プログラム（収益・会員数の主軸）</span></li>
-          <li><span class="lang-en">Basketball team — strong community interest</span><span class="lang-ja">バスケットボールチーム——地域の関心が高い</span></li>
-          <li><span class="lang-en">Flag football — popular with middle schoolers</span><span class="lang-ja">フラッグフットボール——中学生に人気</span></li>
-          <li><span class="lang-en">Academic support / homework help</span><span class="lang-ja">学習支援・宿題サポート</span></li>
-          <li><span class="lang-en">Teen Center programs</span><span class="lang-ja">ティーンセンタープログラム</span></li>
-        </ul>
-      </div>
-      <div class="resource-card">
-        <h3>🤝 <span class="lang-en">Contacts &amp; Support</span><span class="lang-ja">連絡先・サポート</span></h3>
-        <ul>
-          <li><span class="lang-en">Point of contact: Club director (ask organizers for intro)</span><span class="lang-ja">窓口：クラブディレクター（運営者に紹介を依頼）</span></li>
-          <li><span class="lang-en">Staff available for questions during hackathon</span><span class="lang-ja">当日のハッカソン中にスタッフへ質問可能</span></li>
-          <li><span class="lang-en">Phone enrollment process can be demonstrated</span><span class="lang-ja">電話での入会プロセスのデモも可能</span></li>
-        </ul>
-      </div>
-      <div class="resource-card">
-        <h3>📁 <span class="lang-en">Files &amp; Materials</span><span class="lang-ja">ファイル・素材</span></h3>
-        <ul>
-          <li><span class="lang-en">Existing flyer examples (available via organizers)</span><span class="lang-ja">既存フライヤーのサンプル（運営者経由で入手可）</span></li>
-          <li><span class="lang-en">Program descriptions and schedules</span><span class="lang-ja">プログラム説明とスケジュール</span></li>
-          <li><span class="lang-en">Community demographic context</span><span class="lang-ja">地域の人口・デモグラフィクス情報</span></li>
-          <li><span class="lang-en">Google Drive: ask your team lead for the link</span><span class="lang-ja">Google Drive：チームリーダーにリンクを確認してください</span></li>
-        </ul>
-      </div>
+    <div class="note-box" style="margin-top:16px;">
+      <strong><span class="en">Out of scope:</span><span class="ja">スコープ外：</span></strong>
+      <span class="en">Redesigning the national enrollment system. Propose paid advertising. Building anything that needs a developer to maintain.</span>
+      <span class="ja">全国申し込みシステムの再設計。有料広告の提案。開発者が常に保守する必要があるもの。</span>
     </div>
   </div>
 </section>
 
-<!-- 10. FAQ -->
-<section id="faq">
-  <div class="container">
-    <div class="sec-badge">FAQ</div>
-    <h2><span class="lang-en">Frequently Asked Questions</span><span class="lang-ja">よくある質問</span></h2>
-    <p class="sec-desc"><span class="lang-en">Quick answers to the most common questions from hackathon participants.</span><span class="lang-ja">ハッカソン参加者からよく出る質問への回答です。</span></p>
-    <div class="faq-list">
-      <details>
-        <summary><span class="lang-en">Can we change the national enrollment page?</span><span class="lang-ja">全国の申し込みページは変更できますか？</span></summary>
-        <div class="faq-answer">
-          <span class="lang-en"><strong>No.</strong> The enrollment page at bgca.net is managed nationally. The local club has no ability to modify it. Your solution should work around this — not try to replace it.</span>
-          <span class="lang-ja"><strong>できません。</strong> bgca.netの申し込みページは全国本部が管理しており、ローカルクラブには変更権限がありません。制約の中でどう工夫するかを考えてください。</span>
+<!-- RESOURCES -->
+<section class="section alt" id="resources">
+  <div class="wrap">
+    <div class="section-label"><span class="en">Resources</span><span class="ja">素材・情報</span></div>
+    <h2><span class="en">What your team has to work with</span><span class="ja">チームが使える素材</span></h2>
+    <div class="res-grid">
+      <div class="res-card">
+        <h3>🎨 <span class="en">Brand</span><span class="ja">ブランド</span></h3>
+        <ul>
+          <li><span class="en">Blue #0057A8 · Red #D62828 · Yellow #F4A726</span><span class="ja">ブルー #0057A8 · レッド #D62828 · イエロー #F4A726</span></li>
+          <li><span class="en">Design tool: Canva (staff-accessible)</span><span class="ja">デザインツール：Canva</span></li>
+        </ul>
+        <div class="swatches">
+          <div class="swatch" style="background:#0057A8;"></div>
+          <div class="swatch" style="background:#D62828;"></div>
+          <div class="swatch" style="background:#F4A726;"></div>
         </div>
+      </div>
+      <div class="res-card">
+        <h3>🌐 <span class="en">Digital Presence</span><span class="ja">デジタル状況</span></h3>
+        <ul>
+          <li><span class="en">National enrollment: bgca.net (cannot change)</span><span class="ja">全国申し込み：bgca.net（変更不可）</span></li>
+          <li><span class="en">Local page: minor edits only</span><span class="ja">ローカルページ：微修正のみ</span></li>
+          <li><span class="en">Social: centrally managed, low local presence</span><span class="ja">SNS：本部管理、ローカル発信なし</span></li>
+        </ul>
+      </div>
+      <div class="res-card">
+        <h3>👥 <span class="en">Target Audience</span><span class="ja">ターゲット</span></h3>
+        <ul>
+          <li><span class="en">K–5 elementary kids — new members priority</span><span class="ja">小学生（K〜5）——新規会員獲得が目標</span></li>
+          <li><span class="en">Middle schoolers (6–8) — sports programs</span><span class="ja">中学生（6〜8）——スポーツ系プログラム</span></li>
+          <li><span class="en">Parents &amp; guardians — decision-makers</span><span class="ja">保護者——入会を決める人</span></li>
+          <li><span class="en">Multilingual community</span><span class="ja">多言語コミュニティ</span></li>
+        </ul>
+      </div>
+      <div class="res-card">
+        <h3>📋 <span class="en">Key Programs</span><span class="ja">注目プログラム</span></h3>
+        <ul>
+          <li><span class="en">After-school (main membership driver)</span><span class="ja">放課後プログラム（会員数の主軸）</span></li>
+          <li><span class="en">Basketball — strong community interest</span><span class="ja">バスケットボール——地域の関心大</span></li>
+          <li><span class="en">Flag football — popular with middle schoolers</span><span class="ja">フラッグフットボール——中学生に人気</span></li>
+          <li><span class="en">Homework help, Teen Center, Leadership</span><span class="ja">学習支援・ティーンセンター・リーダーシップ</span></li>
+        </ul>
+      </div>
+      <div class="res-card">
+        <h3>📁 <span class="en">Files Available</span><span class="ja">入手できる素材</span></h3>
+        <ul>
+          <li><span class="en">Existing flyer samples (ask organizers)</span><span class="ja">既存フライヤーのサンプル（運営者に確認）</span></li>
+          <li><span class="en">Program descriptions &amp; schedules</span><span class="ja">プログラム説明とスケジュール</span></li>
+          <li><span class="en">Community demographic context</span><span class="ja">地域のデモグラフィクス情報</span></li>
+          <li><span class="en">Google Drive — ask your team lead</span><span class="ja">Google Drive — チームリーダーに確認</span></li>
+        </ul>
+      </div>
+      <div class="res-card">
+        <h3>🤝 <span class="en">Day-of Support</span><span class="ja">当日のサポート</span></h3>
+        <ul>
+          <li><span class="en">Club director available for questions</span><span class="ja">クラブディレクターへの質問可能</span></li>
+          <li><span class="en">Staff can walk through phone enrollment</span><span class="ja">電話入会プロセスのデモ可能</span></li>
+          <li><span class="en">Ask organizers for intro to contact</span><span class="ja">窓口紹介は運営者に依頼</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="section-label">FAQ</div>
+    <h2><span class="en">Quick answers</span><span class="ja">よくある質問</span></h2>
+    <p class="section-sub"><span class="en">Read these before diving in — they'll save you time.</span><span class="ja">作業を始める前に読んでおくと時間を節約できます。</span></p>
+    <div class="faq">
+      <details>
+        <summary><span class="en">Can we change the national enrollment page?</span><span class="ja">全国の申し込みページは変更できますか？</span></summary>
+        <div class="faq-ans"><strong><span class="en">No.</span><span class="ja">できません。</span></strong> <span class="en">bgca.net is managed nationally. Work around it — don't try to replace it.</span><span class="ja">bgca.netは全国本部管理です。制約の中で工夫してください。</span></div>
       </details>
       <details>
-        <summary><span class="lang-en">Can we edit the local Club page?</span><span class="lang-ja">ローカルのクラブページは編集できますか？</span></summary>
-        <div class="faq-answer">
-          <span class="lang-en"><strong>Partially.</strong> A local landing page exists within the national template. Some elements can be edited. Ask the club contact what's editable.</span>
-          <span class="lang-ja"><strong>一部可能です。</strong> 全国テンプレートシステム内にローカルページがあり、一部の要素は編集できます。何が変更可能かをクラブ担当者に確認してください。</span>
-        </div>
+        <summary><span class="en">Can we edit the local Club page?</span><span class="ja">ローカルページは編集できますか？</span></summary>
+        <div class="faq-ans"><strong><span class="en">Partially.</span><span class="ja">一部可能です。</span></strong> <span class="en">Some fields are editable within the national template. Ask the club contact what's changeable.</span><span class="ja">全国テンプレートの一部フィールドのみ編集可。クラブ担当者に確認してください。</span></div>
       </details>
       <details>
-        <summary><span class="lang-en">Is there a budget for implementation?</span><span class="lang-ja">実施のための予算はありますか？</span></summary>
-        <div class="faq-answer">
-          <span class="lang-en"><strong>Essentially no.</strong> There is no local marketing budget. Solutions should rely on free tools (Canva, Google Docs, free web hosting, etc.). Paid ads or subscriptions are not feasible.</span>
-          <span class="lang-ja"><strong>ほぼありません。</strong> ローカルのマーケティング予算はゼロです。無料ツール（Canva、Google Docs、無料ホスティングなど）を前提で考えてください。</span>
-        </div>
+        <summary><span class="en">Is there any budget?</span><span class="ja">予算はありますか？</span></summary>
+        <div class="faq-ans"><strong><span class="en">Essentially zero.</span><span class="ja">ほぼゼロです。</span></strong> <span class="en">Free tools only — Canva, Google Docs, free hosting. No paid ads or subscriptions.</span><span class="ja">無料ツールのみ（Canva、Google Docs、無料ホスティング）。有料広告・サブスク不可。</span></div>
       </details>
       <details>
-        <summary><span class="lang-en">Who is the primary target audience?</span><span class="lang-ja">主なターゲットは誰ですか？</span></summary>
-        <div class="faq-answer">
-          <span class="lang-en"><strong>Elementary and middle school youth — and their parents.</strong> The Club especially wants to grow participation among K–8 kids, particularly for after-school programs, basketball, and flag football.</span>
-          <span class="lang-ja"><strong>小・中学生と保護者です。</strong> クラブは特にK〜8年生の参加拡大を目指しています（放課後プログラム、バスケ、フラッグフットボール）。入会を決めるのは多くの場合、保護者です。</span>
-        </div>
+        <summary><span class="en">Who is the target audience?</span><span class="ja">ターゲットは誰ですか？</span></summary>
+        <div class="faq-ans"><strong><span class="en">K–8 youth and their parents.</span><span class="ja">K〜8年生の子どもと保護者です。</span></strong> <span class="en">Especially kids interested in basketball and flag football. Parents are usually the decision-makers.</span><span class="ja">特にバスケ・フラッグフットボールに関心のある子ども。入会を決めるのは保護者です。</span></div>
       </details>
       <details>
-        <summary><span class="lang-en">Who should be able to use what we build?</span><span class="lang-ja">誰が使えるものを作ればいいですか？</span></summary>
-        <div class="faq-answer">
-          <span class="lang-en"><strong>Club staff and local leaders — not full-time marketers.</strong> If a busy Club director can use your solution in 30 minutes a month, that's ideal.</span>
-          <span class="lang-ja"><strong>クラブスタッフや地域リーダー——マーケ専任者でなくていい。</strong> 忙しいクラブディレクターが月30分で使えるなら理想的です。専門知識が必要なものは定着しません。</span>
-        </div>
+        <summary><span class="en">Who should be able to use what we build?</span><span class="ja">誰が使えるものを作ればいい？</span></summary>
+        <div class="faq-ans"><strong><span class="en">Non-marketers — staff and volunteers.</span><span class="ja">マーケ専門でないスタッフやボランティアです。</span></strong> <span class="en">30 minutes a month, no design skills needed. If it requires expertise, it won't stick.</span><span class="ja">月30分、デザインスキル不要。専門知識が必要なものは定着しません。</span></div>
       </details>
       <details>
-        <summary><span class="lang-en">Can families enroll by phone?</span><span class="lang-ja">電話で入会できますか？</span></summary>
-        <div class="faq-answer">
-          <span class="lang-en"><strong>Yes — but most families don't know this.</strong> Staff can support phone-based enrollment. This is an underutilized option that could reduce drop-off.</span>
-          <span class="lang-ja"><strong>はい——でもほとんどの家族が知りません。</strong> スタッフが電話で入会手続きをサポートできます。オンライン手続きに戸惑う家族の離脱を減らせる、使われていない選択肢です。</span>
-        </div>
+        <summary><span class="en">Can families enroll by phone?</span><span class="ja">電話で入会できますか？</span></summary>
+        <div class="faq-ans"><strong><span class="en">Yes — but most don't know it.</span><span class="ja">はい——でもほとんどの家族が知りません。</span></strong> <span class="en">Staff can walk families through enrollment over the phone. This is underused and worth surfacing.</span><span class="ja">スタッフが電話で入会をサポートできます。活用されていない選択肢で、周知する価値があります。</span></div>
       </details>
       <details>
-        <summary><span class="lang-en">What kinds of solutions are NOT welcome?</span><span class="lang-ja">どんな提案は歓迎されませんか？</span></summary>
-        <div class="faq-answer">
-          <span class="lang-en"><strong>Don't redesign the enrollment system, propose paid ad campaigns, or build tools requiring ongoing tech maintenance.</strong> The best solutions are low-cost, low-maintenance, and immediately usable.</span>
-          <span class="lang-ja"><strong>申し込みシステムの再設計、有料広告キャンペーン、技術的な保守が必要なツールは避けてください。</strong> 最良のソリューションは低コスト・低メンテナンスで、すぐに使えるものです。</span>
-        </div>
-      </details>
-      <details>
-        <summary><span class="lang-en">What does a great submission look like?</span><span class="lang-ja">優れた提案とはどんなものですか？</span></summary>
-        <div class="faq-answer">
-          <span class="lang-en"><strong>Small scope, real impact, actually usable.</strong> A Canva template pack the Club can use next week beats a complex app that requires months of development.</span>
-          <span class="lang-ja"><strong>スモールスコープ、リアルなインパクト、実際に使えるもの。</strong> 来週クラブが使えるCanvaテンプレートパックは、数ヶ月かかる複雑なアプリより価値があります。</span>
-        </div>
+        <summary><span class="en">What makes a great submission?</span><span class="ja">優れた提案とは？</span></summary>
+        <div class="faq-ans"><strong><span class="en">Small scope. Real impact. Usable on Monday.</span><span class="ja">スモールスコープ。リアルなインパクト。月曜から使えるもの。</span></strong> <span class="en">A Canva template pack ready for next week beats a complex app that needs 6 months to build.</span><span class="ja">来週から使えるCanvaテンプレートパックは、6ヶ月かかる複雑なアプリより価値があります。</span></div>
       </details>
     </div>
   </div>
@@ -709,45 +812,38 @@
 
 <!-- FOOTER -->
 <footer>
-  <p>Hack for Social Impact Seattle 2026 &nbsp;·&nbsp; <a href="../index.html"><span class="lang-en">Back to main site</span><span class="lang-ja">メインサイトへ</span></a></p>
-  <p style="margin-top:8px; font-size:0.78rem; opacity:0.5;">
-    <span class="lang-en">Challenge pack for Rainier Vista Boys &amp; Girls Club · April 26, 2026</span>
-    <span class="lang-ja">Rainier Vista B&Gクラブ チャレンジパック · 2026年4月26日</span>
+  <div class="footer-logo">
+    <div class="footer-dot"></div>
+    <span style="color:rgba(255,255,255,0.3); font-size:0.8rem; font-weight:700;">Hack for Social Impact · Seattle 2026</span>
+  </div>
+  <p><a href="../index.html"><span class="en">← Back to main site</span><span class="ja">← メインサイトへ</span></a></p>
+  <p style="margin-top:10px; font-size:0.72rem; opacity:0.4;">
+    <span class="en">Challenge pack · Rainier Vista Boys &amp; Girls Club · April 26, 2026</span>
+    <span class="ja">チャレンジパック · Rainier Vista B&Gクラブ · 2026年4月26日</span>
   </p>
 </footer>
 
 <script>
 (function () {
-  'use strict';
-  var currentLang = localStorage.getItem('hsi-bgc-v2-lang') || 'en';
-
-  function setLanguage(lang) {
-    currentLang = lang;
-    localStorage.setItem('hsi-bgc-v2-lang', lang);
-    document.documentElement.lang = lang;
+  var lang = localStorage.getItem('hsi-bgc-v2-lang') || 'en';
+  function setLang(l) {
+    lang = l;
+    localStorage.setItem('hsi-bgc-v2-lang', l);
+    document.documentElement.lang = l;
     var btn = document.getElementById('lang-btn');
-    if (btn) btn.textContent = lang === 'en' ? '日本語' : 'English';
+    if (btn) btn.textContent = l === 'en' ? '日本語' : 'English';
   }
-
-  var langBtn = document.getElementById('lang-btn');
-  if (langBtn) {
-    langBtn.addEventListener('click', function () {
-      setLanguage(currentLang === 'en' ? 'ja' : 'en');
-    });
-  }
-
-  document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-    anchor.addEventListener('click', function (e) {
-      var t = this.getAttribute('href');
-      if (t === '#') return;
-      var el = document.querySelector(t);
+  var btn = document.getElementById('lang-btn');
+  if (btn) btn.addEventListener('click', function () { setLang(lang === 'en' ? 'ja' : 'en'); });
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var el = document.querySelector(this.getAttribute('href'));
       if (!el) return;
       e.preventDefault();
       window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 60, behavior: 'smooth' });
     });
   });
-
-  setLanguage(currentLang);
+  setLang(lang);
 })();
 </script>
 </body>
