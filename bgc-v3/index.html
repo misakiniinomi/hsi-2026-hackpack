@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BGC Rainier Vista — HSI 2026 Hackpack</title>
+<style>
+  :root {
+    --blue: #003087;
+    --red: #BE2026;
+    --yellow: #FFD000;
+    --white: #fff;
+    --light: #F5F7FA;
+    --text: #1a1a2e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--light);
+    color: var(--text);
+    overflow: hidden;
+  }
+
+  /* ── Slide system ── */
+  .deck { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: none;
+    overflow: hidden;
+  }
+  .slide.active { display: flex; flex-direction: column; }
+
+  /* ── Navigation ── */
+  .nav-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 52px;
+    background: rgba(0,48,135,0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    z-index: 999;
+    backdrop-filter: blur(8px);
+  }
+  .nav-bar button {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-bar button:hover { background: rgba(255,255,255,0.35); }
+  .nav-counter { color: rgba(255,255,255,0.7); font-size: 13px; min-width: 60px; text-align: center; }
+  .nav-dots { display: flex; gap: 6px; }
+  .nav-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .nav-dot.active { background: var(--yellow); transform: scale(1.3); }
+
+  /* ── Progress ── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 4px;
+    background: var(--yellow);
+    transition: width 0.35s cubic-bezier(.4,0,.2,1);
+    z-index: 999;
+  }
+
+  /* ── Slide content helpers ── */
+  .slide-inner {
+    flex: 1;
+    padding: 40px 60px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* ── Typography ── */
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+  .tag--blue { background: var(--blue); color: #fff; }
+  .tag--red  { background: var(--red);  color: #fff; }
+  .tag--yellow { background: var(--yellow); color: var(--blue); }
+  .tag--outline { border: 2px solid var(--blue); color: var(--blue); }
+
+  .slide-title {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .slide-sub {
+    font-size: clamp(14px, 1.6vw, 18px);
+    color: #5a6275;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  /* ── Layout helpers ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 16px;
+  }
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+    margin-top: 20px;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 22px 20px;
+    border: 1px solid #e5e7ee;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .card--blue { background: var(--blue); color: #fff; border: none; }
+  .card--red  { background: var(--red);  color: #fff; border: none; }
+  .card--yellow { background: var(--yellow); color: var(--blue); border: none; }
+  .card--light { background: var(--light); border: 1px solid #dde1ea; }
+
+  .card-icon { font-size: 28px; margin-bottom: 10px; }
+  .card-title { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
+  .card-body { font-size: 13px; line-height: 1.6; opacity: 0.85; }
+
+  /* ── Stat callouts ── */
+  .stat-row {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .stat-box {
+    flex: 1;
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px 16px;
+    text-align: center;
+    border: 1px solid #e5e7ee;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .stat-box .num {
+    font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 900;
+    line-height: 1;
+    color: var(--blue);
+  }
+  .stat-box .num.red { color: var(--red); }
+  .stat-box .lbl {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  /* ── Highlight band ── */
+  .highlight-band {
+    background: var(--blue);
+    color: #fff;
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-top: 20px;
+    font-size: clamp(14px, 1.5vw, 17px);
+    line-height: 1.6;
+  }
+  .highlight-band strong { color: var(--yellow); }
+
+  /* ── Journey steps ── */
+  .journey { display: flex; gap: 0; margin-top: 20px; align-items: stretch; }
+  .journey-step {
+    flex: 1;
+    background: #fff;
+    border-radius: 0;
+    padding: 16px 14px;
+    border: 1px solid #e5e7ee;
+    border-right: none;
+    position: relative;
+    font-size: 12px;
+    color: #4b5563;
+    line-height: 1.5;
+  }
+  .journey-step:first-child { border-radius: 12px 0 0 12px; }
+  .journey-step:last-child  { border-radius: 0 12px 12px 0; border-right: 1px solid #e5e7ee; }
+  .journey-step .step-num {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .journey-step .step-title { font-size: 12px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+  .journey-step.pain { background: #FFF1F1; border-color: #fca5a5; }
+  .journey-step.pain .step-num { color: var(--red); }
+
+  /* ── HMW ── */
+  .hmw-box {
+    background: linear-gradient(135deg, var(--blue) 0%, #1a4db5 100%);
+    border-radius: 18px;
+    padding: 30px 36px;
+    margin-top: 20px;
+    color: #fff;
+  }
+  .hmw-label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 12px;
+  }
+  .hmw-text {
+    font-size: clamp(18px, 2.2vw, 26px);
+    font-weight: 700;
+    line-height: 1.4;
+    color: #fff;
+  }
+  .hmw-text mark {
+    background: var(--yellow);
+    color: var(--blue);
+    padding: 0 4px;
+    border-radius: 4px;
+  }
+
+  /* ── Direction cards ── */
+  .dir-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px 18px;
+    border: 2px solid #e5e7ee;
+    position: relative;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .dir-card:hover { border-color: var(--blue); box-shadow: 0 4px 18px rgba(0,48,135,0.1); }
+  .dir-card.featured {
+    border-color: var(--yellow);
+    box-shadow: 0 4px 18px rgba(255,208,0,0.2);
+  }
+  .dir-card .featured-badge {
+    position: absolute;
+    top: -12px; left: 16px;
+    background: var(--yellow);
+    color: var(--blue);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 10px;
+  }
+  .dir-card .dir-letter {
+    width: 36px; height: 36px;
+    background: var(--light);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--blue);
+    margin-bottom: 12px;
+  }
+  .dir-card.featured .dir-letter { background: var(--yellow); }
+  .dir-card h3 { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 8px; line-height: 1.3; }
+  .dir-card p  { font-size: 12px; color: #6b7280; line-height: 1.6; }
+
+  /* ── Bullet list ── */
+  .check-list { list-style: none; margin-top: 10px; }
+  .check-list li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f2f7;
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.5;
+  }
+  .check-list li:last-child { border-bottom: none; }
+  .check-list li::before {
+    content: '✓';
+    color: var(--blue);
+    font-weight: 900;
+    font-size: 13px;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+  .check-list li.pain::before { content: '⚠'; color: var(--red); }
+
+  /* ── Hero slide ── */
+  .hero-slide {
+    background: var(--blue);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-slide::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,208,0,0.18) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-slide::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(190,32,38,0.25) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    flex: 1;
+    padding: 60px 80px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-event { font-size: 12px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 16px; }
+  .hero-title { font-size: clamp(34px, 5vw, 64px); font-weight: 900; color: #fff; line-height: 1.05; margin-bottom: 16px; }
+  .hero-title span { color: var(--yellow); }
+  .hero-sub { font-size: clamp(14px, 1.8vw, 20px); color: rgba(255,255,255,0.72); line-height: 1.6; max-width: 680px; margin-bottom: 32px; }
+  .hero-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .hero-chip {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 7px 16px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+  }
+
+  /* ── Color stripe header ── */
+  .stripe-header {
+    height: 8px;
+    background: linear-gradient(90deg, var(--blue) 0%, var(--blue) 50%, var(--red) 50%, var(--red) 100%);
+    flex-shrink: 0;
+  }
+
+  /* ── Section header bar ── */
+  .section-bar {
+    background: var(--text);
+    color: #fff;
+    padding: 14px 60px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+  .section-bar .icon { font-size: 20px; }
+  .section-bar .label { font-size: 13px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--yellow); }
+  .section-bar .title { font-size: 20px; font-weight: 800; color: #fff; }
+  .section-bar .slide-num { margin-left: auto; font-size: 12px; color: rgba(255,255,255,0.35); }
+
+  /* ── Constraint / constraint row ── */
+  .constraint-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .constraint-item {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px 18px;
+    border-left: 4px solid var(--red);
+    border: 1px solid #e5e7ee;
+    border-left: 4px solid var(--red);
+    font-size: 13px;
+    color: #374151;
+    line-height: 1.5;
+  }
+  .constraint-item strong { display: block; color: var(--red); font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+
+  /* ── Opportunity pillars ── */
+  .pillar-row { display: flex; gap: 16px; margin-top: 20px; }
+  .pillar {
+    flex: 1;
+    border-radius: 16px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .pillar--awareness { background: linear-gradient(145deg, #EBF1FF, #D1E0FF); border: 1px solid #A8BFFF; }
+  .pillar--trust     { background: linear-gradient(145deg, #FFF4E5, #FFE9CC); border: 1px solid #FFD08A; }
+  .pillar--action    { background: linear-gradient(145deg, #E5FFF3, #CCFAE3); border: 1px solid #6EE7B7; }
+  .pillar-icon { font-size: 32px; margin-bottom: 10px; }
+  .pillar-title { font-size: 16px; font-weight: 900; color: var(--text); margin-bottom: 8px; }
+  .pillar-desc { font-size: 13px; color: #4b5563; line-height: 1.5; }
+
+  /* ── Success metrics ── */
+  .metric-row { display: flex; gap: 16px; margin-top: 20px; }
+  .metric-item {
+    flex: 1;
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px 16px;
+    border: 1px solid #e5e7ee;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .metric-item .m-num { font-size: 28px; font-weight: 900; color: var(--blue); line-height: 1; }
+  .metric-item .m-lbl { font-size: 12px; color: #6b7280; margin-top: 6px; line-height: 1.4; }
+  .metric-item .m-icon { font-size: 24px; margin-bottom: 8px; }
+
+  /* ── FAQ ── */
+  .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+  .faq-item {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    border: 1px solid #e5e7ee;
+  }
+  .faq-q { font-size: 12px; font-weight: 800; color: var(--blue); margin-bottom: 5px; }
+  .faq-a { font-size: 12px; color: #374151; line-height: 1.5; }
+  .faq-a.no { color: var(--red); font-weight: 700; }
+  .faq-a.yes { color: #059669; font-weight: 700; }
+
+  /* ── Tips slide ── */
+  .tip-strip { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+  .tip-row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px 18px;
+    border: 1px solid #e5e7ee;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .tip-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .tip-text { font-size: 13px; color: #374151; line-height: 1.6; }
+  .tip-text strong { color: var(--blue); }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<div class="deck">
+
+  <!-- ─── SLIDE 1: HERO ─── -->
+  <div class="slide active hero-slide">
+    <div class="hero-inner">
+      <div class="hero-event">Hack for Social Impact Seattle 2026 · April 26 · Challenge Partner</div>
+      <h1 class="hero-title">Smilow Rainier Vista<br><span>Boys & Girls Club</span></h1>
+      <p class="hero-sub">
+        Great programs exist. Kids need them. But families don't know the door is open.<br>
+        <strong style="color:#fff;">Your team builds the bridge.</strong>
+      </p>
+      <div class="hero-chips">
+        <span class="hero-chip">🏀 Youth Engagement</span>
+        <span class="hero-chip">📱 Digital Outreach</span>
+        <span class="hero-chip">🌍 Rainier Valley, Seattle</span>
+        <span class="hero-chip">🎯 K–12 Community</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE 2: ABOUT ─── -->
+  <div class="slide">
+    <div class="stripe-header"></div>
+    <div class="section-bar">
+      <span class="icon">🏢</span>
+      <div>
+        <div class="label">About</div>
+        <div class="title">Who is Boys & Girls Club?</div>
+      </div>
+      <span class="slide-num">2 / 9</span>
+    </div>
+    <div class="slide-inner">
+      <div class="two-col">
+        <div>
+          <ul class="check-list">
+            <li>Youth ages <strong>5–18</strong> in Rainier Valley, Seattle</li>
+            <li><strong>40,000 sq ft</strong> — gym, music studio, tech lab, café</li>
+            <li>Annual membership: <strong>$50</strong> (scholarships available)</li>
+            <li>Open <strong>Mon–Fri, 2–6pm</strong> · Summer up to <strong>12h/day</strong></li>
+            <li>Part of Boys & Girls Clubs of King County (501c3)</li>
+          </ul>
+          <div style="margin-top:16px;padding:14px 16px;background:var(--light);border-radius:12px;font-size:13px;color:#374151;">
+            <strong style="color:var(--blue);">On-site experts</strong><br>
+            Kelly Guy — Area Director<br>
+            Denise Overton-Lewis — Site Director
+          </div>
+        </div>
+        <div>
+          <div class="stat-row" style="flex-direction:column;gap:10px;">
+            <div style="background:var(--blue);border-radius:14px;padding:18px;color:#fff;display:flex;gap:16px;align-items:center;">
+              <div style="font-size:36px;font-weight:900;color:var(--yellow);line-height:1;">186</div>
+              <div style="font-size:13px;line-height:1.5;color:rgba(255,255,255,0.85);">teens earned CPR / First Aid in 2025</div>
+            </div>
+            <div style="background:var(--red);border-radius:14px;padding:18px;color:#fff;display:flex;gap:16px;align-items:center;">
+              <div style="font-size:36px;font-weight:900;color:var(--yellow);line-height:1;">146</div>
+              <div style="font-size:13px;line-height:1.5;color:rgba(255,255,255,0.85);">teens got paid work experience through Club partnerships</div>
+            </div>
+            <div style="background:#fff;border:1px solid #e5e7ee;border-radius:14px;padding:18px;display:flex;gap:16px;align-items:center;">
+              <div style="font-size:36px;font-weight:900;color:var(--blue);line-height:1;">2,294</div>
+              <div style="font-size:13px;line-height:1.5;color:#6b7280;">free meals served last summer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE 3: THE PROBLEM ─── -->
+  <div class="slide">
+    <div class="stripe-header" style="background:var(--red);height:8px;"></div>
+    <div class="section-bar" style="background:var(--red);">
+      <span class="icon">⚠️</span>
+      <div>
+        <div class="label">The Challenge</div>
+        <div class="title">Good Programs. Empty Seats.</div>
+      </div>
+      <span class="slide-num">3 / 9</span>
+    </div>
+    <div class="slide-inner">
+      <div class="two-col">
+        <div>
+          <p style="font-size:13px;color:#6b7280;margin-bottom:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">What's going wrong</p>
+          <ul class="check-list">
+            <li class="pain">After-school & teen enrollment declining for <strong>2 years</strong></li>
+            <li class="pain">4 competitors within 2.5 miles — 3 are <strong>completely free</strong></li>
+            <li class="pain">YMCA has <strong>school partnerships</strong> — gets chosen automatically</li>
+            <li class="pain">Only marketing tool: <strong>Canva</strong>. No budget, 1 person.</li>
+            <li class="pain"><strong>225 kids</strong> participated last year but never became members</li>
+          </ul>
+        </div>
+        <div>
+          <p style="font-size:13px;color:#6b7280;margin-bottom:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">What the Club has (but can't show)</p>
+          <ul class="check-list">
+            <li>Life-changing programs — CareerLaunch, robotics, sports</li>
+            <li>Real certifications: OSHA 10, ServSafe, CPR</li>
+            <li>Dedicated, passionate staff</li>
+            <li>24 members enrolled in 4-year universities after graduating</li>
+          </ul>
+          <div class="highlight-band" style="margin-top:14px;padding:14px 18px;font-size:14px;">
+            The barrier isn't the <strong>$50</strong>.<br>The barrier is <strong>invisibility</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE 4: CONSTRAINTS ─── -->
+  <div class="slide">
+    <div class="stripe-header"></div>
+    <div class="section-bar">
+      <span class="icon">🔒</span>
+      <div>
+        <div class="label">Constraints</div>
+        <div class="title">What You're Working With</div>
+      </div>
+      <span class="slide-num">4 / 9</span>
+    </div>
+    <div class="slide-inner">
+      <p class="slide-sub">Design for these realities — not around them.</p>
+      <div class="constraint-grid">
+        <div class="constraint-item">
+          <strong>❌ Cannot change</strong>
+          National sign-up page — enrollment form is fixed, can't be modified.
+        </div>
+        <div class="constraint-item">
+          <strong>🔧 Slight edits only</strong>
+          Local club page allows minor text/image edits. No full redesign.
+        </div>
+        <div class="constraint-item">
+          <strong>💸 No marketing budget</strong>
+          No paid ads, no sponsored content. Zero money available.
+        </div>
+        <div class="constraint-item">
+          <strong>👤 1 person, 30+ clubs</strong>
+          1 marketing person supports all clubs and activities. Can't do everything.
+        </div>
+      </div>
+      <div class="highlight-band" style="margin-top:18px;font-size:14px;">
+        Best solutions: <strong>low-effort to maintain</strong> · <strong>staff can use without training</strong> · <strong>small but spreads</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE 5: USER JOURNEY ─── -->
+  <div class="slide">
+    <div class="stripe-header"></div>
+    <div class="section-bar">
+      <span class="icon">🚶</span>
+      <div>
+        <div class="label">Current Reality</div>
+        <div class="title">A Family's Journey (Today)</div>
+      </div>
+      <span class="slide-num">5 / 9</span>
+    </div>
+    <div class="slide-inner">
+      <div class="journey">
+        <div class="journey-step">
+          <span class="step-num">Step 1</span>
+          <div class="step-title">Hears about it</div>
+          Sees a flyer at school or hears from a friend — rarely, inconsistently
+        </div>
+        <div class="journey-step pain">
+          <span class="step-num">Drop-off ⚠</span>
+          <div class="step-title">Flyer quality</div>
+          Staff-made Canva flyers. Not all clubs distribute them or do it regularly
+        </div>
+        <div class="journey-step">
+          <span class="step-num">Step 2</span>
+          <div class="step-title">Gets interested</div>
+          Checks website or asks around — hard to visualize what the Club actually is
+        </div>
+        <div class="journey-step pain">
+          <span class="step-num">Drop-off ⚠</span>
+          <div class="step-title">Sign-up friction</div>
+          National enrollment page is confusing — families get stuck here
+        </div>
+        <div class="journey-step">
+          <span class="step-num">Step 3</span>
+          <div class="step-title">Shows up</div>
+          Visits the Club — but by now, many families have already dropped off
+        </div>
+        <div class="journey-step">
+          <span class="step-num">Goal</span>
+          <div class="step-title">Becomes a member</div>
+          Pays $50, joins — and their life gets better. This is the target.
+        </div>
+      </div>
+      <div style="margin-top:18px;display:flex;gap:14px;">
+        <div class="card card--light" style="flex:1;padding:14px 16px;font-size:13px;">
+          <strong style="color:var(--blue);">Who to reach:</strong> Elementary &amp; middle school kids — or their parents
+        </div>
+        <div class="card card--light" style="flex:1;padding:14px 16px;font-size:13px;">
+          <strong style="color:var(--blue);">Who should use it:</strong> Club leaders who need simple marketing tools
+        </div>
+        <div class="card card--light" style="flex:1;padding:14px 16px;font-size:13px;">
+          <strong style="color:var(--blue);">Access reality:</strong> Most Rainier Valley families are on smartphones, not desktops
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE 6: OPPORTUNITY ─── -->
+  <div class="slide">
+    <div class="stripe-header"></div>
+    <div class="section-bar">
+      <span class="icon">💡</span>
+      <div>
+        <div class="label">Opportunity</div>
+        <div class="title">Three Places to Intervene</div>
+      </div>
+      <span class="slide-num">6 / 9</span>
+    </div>
+    <div class="slide-inner">
+      <div class="pillar-row">
+        <div class="pillar pillar--awareness">
+          <div class="pillar-icon">📢</div>
+          <div class="pillar-title">Awareness</div>
+          <div class="pillar-desc">More families in Rainier Valley need to know the Club exists and what it actually does — before they ever visit.</div>
+        </div>
+        <div class="pillar pillar--trust">
+          <div class="pillar-icon">🤝</div>
+          <div class="pillar-title">Trust</div>
+          <div class="pillar-desc">Show what happens inside. Real faces, real programs, real outcomes. A family needs to feel safe before they show up.</div>
+        </div>
+        <div class="pillar pillar--action">
+          <div class="pillar-icon">🚪</div>
+          <div class="pillar-title">First Step</div>
+          <div class="pillar-desc">Lower the barrier to trying. The first visit or sign-up should feel easy, not like a commitment or a maze.</div>
+        </div>
+      </div>
+      <div class="hmw-box">
+        <div class="hmw-label">How Might We...</div>
+        <div class="hmw-text">
+          Help Rainier Valley families <mark>discover</mark>, get <mark>excited about</mark>, and take their <mark>first step into</mark> Boys & Girls Club?
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE 7: DIRECTIONS ─── -->
+  <div class="slide">
+    <div class="stripe-header"></div>
+    <div class="section-bar">
+      <span class="icon">🗺️</span>
+      <div>
+        <div class="label">Directions</div>
+        <div class="title">Three Ways to Tackle This</div>
+      </div>
+      <span class="slide-num">7 / 9</span>
+    </div>
+    <div class="slide-inner">
+      <div class="three-col">
+        <div class="dir-card featured">
+          <div class="featured-badge">★ Recommended</div>
+          <div class="dir-letter">A</div>
+          <h3>"A Day in the Life"<br>Experience</h3>
+          <p>Let a kid or parent explore what actually happens at B&G Club — hour by hour, program by program. Interactive, personalized, mobile-friendly.</p>
+        </div>
+        <div class="dir-card">
+          <div class="dir-letter">B</div>
+          <h3>The $50<br>Value Calculator</h3>
+          <p>Show parents the concrete value of membership — certifications earned, meals provided, jobs connected. What does $50 actually buy your kid?</p>
+        </div>
+        <div class="dir-card">
+          <div class="dir-letter">C</div>
+          <h3>AI Outreach Kit<br>for Staff</h3>
+          <p>Staff inputs an event → AI outputs an Instagram post, TikTok script, school flyer, parent email. No marketing skill needed. Replaces Canva-only workflow.</p>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding:12px 18px;background:#f0f4ff;border-radius:10px;font-size:12px;color:#4b5563;">
+        💡 Directions can be combined. Direction C works well as a stretch goal within Direction A.
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE 8: SUCCESS METRICS ─── -->
+  <div class="slide">
+    <div class="stripe-header"></div>
+    <div class="section-bar">
+      <span class="icon">📊</span>
+      <div>
+        <div class="label">Success</div>
+        <div class="title">What Does Winning Look Like?</div>
+      </div>
+      <span class="slide-num">8 / 9</span>
+    </div>
+    <div class="slide-inner">
+      <div class="metric-row">
+        <div class="metric-item">
+          <div class="m-icon">📈</div>
+          <div class="m-num">+5%</div>
+          <div class="m-lbl">After-school membership growth</div>
+        </div>
+        <div class="metric-item">
+          <div class="m-icon">🏀</div>
+          <div class="m-num">↑</div>
+          <div class="m-lbl">New kids joining basketball &amp; flag football teams</div>
+        </div>
+        <div class="metric-item">
+          <div class="m-icon">🙌</div>
+          <div class="m-num">↑</div>
+          <div class="m-lbl">Elementary &amp; middle school new enrollees</div>
+        </div>
+        <div class="metric-item">
+          <div class="m-icon">⚡</div>
+          <div class="m-num">Less</div>
+          <div class="m-lbl">Time staff spend on manual outreach &amp; marketing</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;">
+        <p style="font-size:13px;color:#6b7280;margin-bottom:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Judge your solution by...</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div style="background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e5e7ee;font-size:13px;color:#374151;">
+            ✅ Could a Club leader use this with <strong>zero training</strong>?
+          </div>
+          <div style="background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e5e7ee;font-size:13px;color:#374151;">
+            ✅ Does it work on a <strong>smartphone</strong>?
+          </div>
+          <div style="background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e5e7ee;font-size:13px;color:#374151;">
+            ✅ Could it start <strong>small and grow</strong> without extra budget?
+          </div>
+          <div style="background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e5e7ee;font-size:13px;color:#374151;">
+            ✅ Does a kid say <strong>"I want to go there"</strong> after seeing it?
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE 9: FAQ + TIPS ─── -->
+  <div class="slide">
+    <div class="stripe-header"></div>
+    <div class="section-bar">
+      <span class="icon">🚀</span>
+      <div>
+        <div class="label">Before You Start</div>
+        <div class="title">FAQ & Tips for Today</div>
+      </div>
+      <span class="slide-num">9 / 9</span>
+    </div>
+    <div class="slide-inner">
+      <div class="two-col" style="gap:28px;">
+        <div>
+          <p style="font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#6b7280;margin-bottom:10px;">Quick Answers</p>
+          <div class="faq-grid" style="grid-template-columns:1fr;">
+            <div class="faq-item">
+              <div class="faq-q">Can we change the sign-up page?</div>
+              <div class="faq-a no">No — national page is locked.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-q">Can we edit the local Club page?</div>
+              <div class="faq-a yes">Yes — minor edits are possible.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-q">Is there a budget?</div>
+              <div class="faq-a no">No. Solutions must be zero-cost.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-q">Who is the target audience?</div>
+              <div class="faq-a">Elementary & middle schoolers, or their parents.</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#6b7280;margin-bottom:10px;">Mentor Tips</p>
+          <div class="tip-strip">
+            <div class="tip-row">
+              <div class="tip-icon">🗣️</div>
+              <div class="tip-text"><strong>Talk to Kelly or Denise first.</strong> 10 minutes with the on-site experts beats 2 hours of assumptions.</div>
+            </div>
+            <div class="tip-row">
+              <div class="tip-icon">🎯</div>
+              <div class="tip-text"><strong>Pick one persona and go deep.</strong> A 10-year-old vs. a 16-year-old is a completely different experience.</div>
+            </div>
+            <div class="tip-row">
+              <div class="tip-icon">📱</div>
+              <div class="tip-text"><strong>Mobile-first.</strong> Most Rainier Valley families use the internet on their phone.</div>
+            </div>
+            <div class="tip-row">
+              <div class="tip-icon">🏆</div>
+              <div class="tip-text"><strong>Show, don't tell.</strong> "We have robotics" means nothing. A specific story about a real kid means everything.</div>
+            </div>
+          </div>
+          <div style="margin-top:14px;background:var(--blue);color:#fff;border-radius:12px;padding:14px 18px;font-size:13px;line-height:1.5;">
+            <strong style="color:var(--yellow);">Submit by 3:45pm:</strong> Demo (prototype or mockup) + 5-slide deck + 1-page README
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<!-- Navigation -->
+<div class="nav-bar">
+  <button onclick="prev()" title="Previous">‹</button>
+  <div class="nav-dots" id="dots"></div>
+  <span class="nav-counter" id="counter">1 / 9</span>
+  <button onclick="next()" title="Next">›</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let cur = 0;
+
+  // Build dots
+  const dotsEl = document.getElementById('dots');
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => show(i);
+    dotsEl.appendChild(d);
+  });
+
+  function show(n) {
+    slides[cur].classList.remove('active');
+    dotsEl.children[cur].classList.remove('active');
+    cur = ((n % total) + total) % total;
+    slides[cur].classList.add('active');
+    dotsEl.children[cur].classList.add('active');
+    document.getElementById('counter').textContent = (cur + 1) + ' / ' + total;
+    document.getElementById('progress').style.width = ((cur + 1) / total * 100) + '%';
+  }
+  function next() { show(cur + 1); }
+  function prev() { show(cur - 1); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') next();
+    if (e.key === 'ArrowLeft') prev();
+  });
+
+  // Init
+  document.getElementById('progress').style.width = (1 / total * 100) + '%';
+</script>
+</body>
+</html>
