@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Challenge: Hopelink | HSI Seattle 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal: #007A6E; --teal-dk: #005750; --teal-lt: #E6F5F3;
+      --orange: #E8620A; --orange-lt: #FFF3EB;
+      --purple: #5E3A9E; --purple-lt: #F2EEFF;
+      --yellow: #F59E0B; --yellow-lt: #FFFBEB;
+      --red: #DC2626; --red-lt: #FEF2F2;
+      --green: #16A34A; --green-lt: #F0FDF4;
+      --bg: #F5F7FA; --surface: #FFFFFF;
+      --border: #E4E8F0; --text: #111827; --muted: #6B7280;
+      --nav-h: 56px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.6; }
+    a { color: var(--teal); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Lang */
+    .en, .ja { display: none; }
+    html[lang="en"] .en { display: inline; }
+    html[lang="ja"] .ja { display: inline; }
+    .en-b, .ja-b { display: none; }
+    html[lang="en"] .en-b { display: block; }
+    html[lang="ja"] .ja-b { display: block; }
+
+    /* Nav */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      height: var(--nav-h);
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 28px;
+    }
+    .nav-left { display: flex; align-items: center; gap: 10px; }
+    .nav-dot { width: 8px; height: 8px; background: var(--teal); border-radius: 50%; }
+    .nav-title { font-size: 0.78rem; font-weight: 700; color: var(--muted); }
+    .nav-right { display: flex; align-items: center; gap: 6px; }
+    .nav-pill { font-size: 0.75rem; font-weight: 600; color: var(--muted); padding: 4px 12px; border-radius: 20px; transition: all 0.15s; }
+    .nav-pill:hover { background: var(--teal-lt); color: var(--teal); text-decoration: none; }
+    .lang-btn { font-size: 0.75rem; font-weight: 700; color: var(--teal); background: var(--teal-lt); border: none; padding: 5px 14px; border-radius: 20px; cursor: pointer; transition: background 0.15s; }
+    .lang-btn:hover { background: #C0E8E4; }
+
+    /* Hero */
+    #hero {
+      min-height: 92vh;
+      background: linear-gradient(145deg, #00322E 0%, #005750 40%, #007A6E 100%);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: calc(var(--nav-h) + 60px) 40px 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero-orb {
+      position: absolute; border-radius: 50%; pointer-events: none;
+    }
+    .hero-orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(232,98,10,0.15) 0%, transparent 70%); bottom: -80px; right: -60px; }
+    .hero-orb-2 { width: 350px; height: 350px; background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%); top: 40px; left: -40px; }
+    .hero-inner { max-width: 820px; margin: 0 auto; width: 100%; position: relative; z-index: 1; }
+    .hero-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
+    .hero-badge { font-size: 0.68rem; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--yellow); background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); padding: 5px 14px; border-radius: 30px; }
+    .hero-sep { color: rgba(255,255,255,0.2); }
+    .hero-org { font-size: 0.8rem; color: rgba(255,255,255,0.5); font-weight: 500; }
+    .hero-kicker { font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+    .hero-title { font-size: clamp(2rem, 5.5vw, 3.6rem); font-weight: 900; color: #fff; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 28px; }
+    .hero-title em { font-style: normal; color: var(--yellow); }
+    .hero-body { font-size: clamp(1rem, 1.8vw, 1.15rem); color: rgba(255,255,255,0.65); line-height: 1.75; max-width: 580px; margin-bottom: 44px; }
+    .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary { background: #fff; color: var(--teal-dk); font-weight: 800; font-size: 0.9rem; padding: 14px 28px; border-radius: 10px; border: none; cursor: pointer; transition: all 0.2s; }
+    .btn-primary:hover { background: var(--teal-lt); text-decoration: none; }
+    .btn-ghost { background: transparent; color: rgba(255,255,255,0.8); border: 1.5px solid rgba(255,255,255,0.3); font-weight: 700; font-size: 0.9rem; padding: 14px 28px; border-radius: 10px; cursor: pointer; transition: all 0.2s; }
+    .btn-ghost:hover { background: rgba(255,255,255,0.08); text-decoration: none; color: #fff; }
+    .hero-scroll { margin-top: 56px; display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: rgba(255,255,255,0.25); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+    .hero-line { width: 40px; height: 1px; background: rgba(255,255,255,0.2); }
+
+    /* Stats bar */
+    .stats-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 28px 40px; }
+    .stats-inner { max-width: 820px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); }
+    .stat-item { padding: 8px 24px; border-right: 1px solid var(--border); text-align: center; }
+    .stat-item:first-child { padding-left: 0; text-align: left; }
+    .stat-item:last-child { border-right: none; }
+    .stat-val { font-size: 1.8rem; font-weight: 900; color: var(--teal); line-height: 1; letter-spacing: -1px; }
+    .stat-val.org { color: var(--orange); }
+    .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+
+    /* Section */
+    .section { padding: 80px 40px; }
+    .section.alt { background: var(--surface); }
+    .wrap { max-width: 820px; margin: 0 auto; }
+
+    .sec-label { display: inline-flex; align-items: center; gap: 8px; font-size: 0.68rem; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+    .sec-label::before { content: ''; display: block; width: 16px; height: 2px; background: var(--teal); border-radius: 2px; }
+    .sec-label.org { color: var(--orange); }
+    .sec-label.org::before { background: var(--orange); }
+    .sec-label.purple { color: var(--purple); }
+    .sec-label.purple::before { background: var(--purple); }
+    .sec-label.green { color: var(--green); }
+    .sec-label.green::before { background: var(--green); }
+    .sec-label.yellow { color: #92620A; }
+    .sec-label.yellow::before { background: var(--yellow); }
+
+    h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 900; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 14px; }
+    .sec-sub { font-size: 1rem; color: var(--muted); max-width: 580px; margin-bottom: 48px; line-height: 1.7; }
+
+    /* Key Message */
+    .key-msg { background: linear-gradient(130deg, var(--teal-dk) 0%, var(--teal) 100%); border-radius: 20px; padding: 52px; color: #fff; margin-bottom: 48px; position: relative; overflow: hidden; }
+    .key-msg::after { content: '?'; position: absolute; right: 32px; top: -20px; font-size: 14rem; font-weight: 900; color: rgba(255,255,255,0.04); line-height: 1; pointer-events: none; }
+    .key-msg-text { font-size: clamp(1.2rem, 2.5vw, 1.7rem); font-weight: 700; line-height: 1.45; margin-bottom: 16px; position: relative; z-index: 1; }
+    .key-msg-text em { font-style: normal; color: var(--yellow); }
+    .key-msg-sub { font-size: 0.9rem; color: rgba(255,255,255,0.6); position: relative; z-index: 1; line-height: 1.7; }
+
+    /* Phase cards */
+    .phase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 32px; }
+    .phase-card { border-radius: 14px; padding: 28px 24px; }
+    .phase-card.now { background: var(--orange-lt); border: 1.5px solid rgba(232,98,10,0.2); }
+    .phase-card.future { background: var(--teal-lt); border: 1.5px solid rgba(0,122,110,0.2); }
+    .phase-label { font-size: 0.68rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+    .phase-card.now .phase-label { color: var(--orange); }
+    .phase-card.future .phase-label { color: var(--teal); }
+    .phase-card h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; line-height: 1.3; }
+    .phase-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+    .phase-card ul { list-style: none; display: flex; flex-direction: column; gap: 7px; margin-top: 10px; }
+    .phase-card li { font-size: 0.82rem; color: var(--muted); padding-left: 16px; position: relative; line-height: 1.5; }
+    .phase-card.now li::before { content: '✗'; position: absolute; left: 0; color: var(--orange); font-size: 0.75rem; font-weight: 700; }
+    .phase-card.future li::before { content: '✓'; position: absolute; left: 0; color: var(--teal); font-size: 0.75rem; font-weight: 700; }
+
+    /* Problem list */
+    .prob-list { display: flex; flex-direction: column; gap: 10px; }
+    .p-item { display: grid; grid-template-columns: 48px 1fr; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: box-shadow 0.15s; }
+    .p-item:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
+    .p-num { background: var(--orange-lt); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 800; color: var(--orange); letter-spacing: 0.5px; }
+    .p-body { padding: 18px 20px; }
+    .p-body strong { display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+    .p-body p { font-size: 0.83rem; color: var(--muted); line-height: 1.55; }
+
+    /* Personas */
+    .persona-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    .persona-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 20px; }
+    .persona-avatar { font-size: 2.4rem; margin-bottom: 12px; }
+    .persona-tag { display: inline-block; font-size: 0.65rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 10px; margin-bottom: 10px; }
+    .persona-tag.p1 { background: var(--purple-lt); color: var(--purple); }
+    .persona-tag.p2 { background: var(--teal-lt); color: var(--teal-dk); }
+    .persona-tag.p3 { background: var(--orange-lt); color: var(--orange); }
+    .persona-card h3 { font-size: 0.95rem; font-weight: 800; margin-bottom: 6px; }
+    .persona-card .persona-desc { font-size: 0.8rem; color: var(--muted); margin-bottom: 14px; line-height: 1.5; }
+    .persona-pains { display: flex; flex-direction: column; gap: 5px; }
+    .pain { font-size: 0.78rem; color: var(--text); padding: 5px 10px; background: var(--bg); border-radius: 6px; border-left: 3px solid var(--orange); line-height: 1.4; }
+
+    /* Journey compare */
+    .journey-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .jc-col { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+    .jc-head { padding: 16px 20px; font-size: 0.75rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; }
+    .jc-head.now { background: var(--red-lt); color: var(--red); }
+    .jc-head.future { background: var(--green-lt); color: var(--green); }
+    .jc-steps { padding: 8px 0; }
+    .jc-step { display: flex; gap: 12px; align-items: flex-start; padding: 12px 20px; border-bottom: 1px solid var(--border); }
+    .jc-step:last-child { border-bottom: none; }
+    .jc-dot { width: 24px; height: 24px; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 800; }
+    .jc-col.now-col .jc-dot { background: var(--red-lt); color: var(--red); }
+    .jc-col.future-col .jc-dot { background: var(--green-lt); color: var(--green); }
+    .jc-text { font-size: 0.83rem; color: var(--text); line-height: 1.5; flex: 1; padding-top: 2px; }
+    .jc-text span { font-size: 0.75rem; color: var(--muted); display: block; margin-top: 2px; }
+
+    /* Constraints */
+    .con-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .con-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; display: flex; gap: 14px; }
+    .con-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .con-text strong { display: block; font-size: 0.87rem; font-weight: 700; margin-bottom: 3px; }
+    .con-text p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+    /* Ideas */
+    .ideas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .idea-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px 20px; }
+    .idea-num { font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+    .idea-card h3 { font-size: 0.92rem; font-weight: 800; margin-bottom: 8px; line-height: 1.3; }
+    .idea-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+
+    /* Logic */
+    .logic-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 24px; }
+    .logic-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; }
+    .logic-icon { font-size: 1.6rem; margin-bottom: 8px; }
+    .logic-label { font-size: 0.8rem; font-weight: 700; }
+    .logic-sub { font-size: 0.72rem; color: var(--muted); margin-top: 3px; }
+
+    /* Scope */
+    .scope-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .scope-card { border-radius: 12px; padding: 20px 22px; }
+    .scope-card.in { background: var(--green-lt); border: 1px solid rgba(22,163,74,0.2); }
+    .scope-card.out { background: var(--red-lt); border: 1px solid rgba(220,38,38,0.15); }
+    .scope-card h3 { font-size: 0.8rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+    .scope-card.in h3 { color: var(--green); }
+    .scope-card.out h3 { color: var(--red); }
+    .scope-card ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .scope-card li { font-size: 0.82rem; color: var(--text); padding-left: 18px; position: relative; line-height: 1.45; }
+    .scope-card.in li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 800; font-size: 0.75rem; }
+    .scope-card.out li::before { content: '✗'; position: absolute; left: 0; color: var(--red); font-weight: 800; font-size: 0.75rem; }
+
+    /* Deliverables */
+    .del-list { display: flex; flex-direction: column; gap: 10px; }
+    .del-item { display: flex; gap: 16px; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; }
+    .del-num { width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%; background: var(--teal); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; }
+    .del-body strong { display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 3px; }
+    .del-body p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+    /* Success */
+    .success-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+    .suc-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px 18px; text-align: center; }
+    .suc-icon { font-size: 1.8rem; margin-bottom: 10px; }
+    .suc-text { font-size: 0.85rem; font-weight: 700; line-height: 1.45; }
+
+    /* FAQ */
+    .faq { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+    details { border-bottom: 1px solid var(--border); }
+    details:last-child { border-bottom: none; }
+    summary { padding: 17px 22px; font-size: 0.88rem; font-weight: 700; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; background: var(--surface); transition: background 0.15s; }
+    summary:hover { background: var(--bg); }
+    summary::after { content: '+'; font-size: 1.1rem; font-weight: 300; color: var(--muted); flex-shrink: 0; }
+    details[open] summary { background: var(--bg); }
+    details[open] summary::after { content: '−'; }
+    .faq-ans { padding: 0 22px 18px; font-size: 0.83rem; color: var(--muted); line-height: 1.7; background: var(--bg); }
+    .faq-ans strong { color: var(--text); }
+
+    .note-box { margin-top: 16px; padding: 16px 20px; background: var(--yellow-lt); border-left: 3px solid var(--yellow); border-radius: 8px; font-size: 0.85rem; color: #7A5200; line-height: 1.65; }
+
+    footer { background: #0D1117; color: rgba(255,255,255,0.4); text-align: center; padding: 40px 24px; font-size: 0.8rem; }
+    footer a { color: rgba(255,255,255,0.6); }
+    .footer-logo { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; }
+    .footer-dot { width: 10px; height: 10px; background: var(--teal); border-radius: 50%; }
+
+    @media (max-width: 700px) {
+      .stats-inner, .persona-grid, .logic-grid, .success-grid { grid-template-columns: 1fr 1fr; }
+      .phase-grid, .journey-compare, .con-grid, .ideas-grid, .scope-grid { grid-template-columns: 1fr; }
+      .section { padding: 56px 24px; }
+      nav .nav-pill { display: none; }
+      .key-msg { padding: 32px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <div class="nav-dot"></div>
+    <span class="nav-title">HSI Seattle 2026 &nbsp;·&nbsp; <span class="en">Challenge Pack</span><span class="ja">チャレンジパック</span></span>
+  </div>
+  <div class="nav-right">
+    <a href="#problem" class="nav-pill"><span class="en">Problem</span><span class="ja">課題</span></a>
+    <a href="#personas" class="nav-pill"><span class="en">Personas</span><span class="ja">ペルソナ</span></a>
+    <a href="#journey" class="nav-pill"><span class="en">Journey</span><span class="ja">導線</span></a>
+    <a href="#ideas" class="nav-pill"><span class="en">Ideas</span><span class="ja">アイデア</span></a>
+    <a href="#scope" class="nav-pill"><span class="en">Scope</span><span class="ja">スコープ</span></a>
+    <a href="#faq" class="nav-pill">FAQ</a>
+    <button class="lang-btn" id="lang-btn">日本語</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <span class="hero-badge">HSI Seattle 2026</span>
+      <span class="hero-sep">·</span>
+      <span class="hero-org">Hopelink · <span class="en">Transportation Access</span><span class="ja">交通アクセス</span></span>
+    </div>
+    <div class="hero-kicker"><span class="en">Challenge Brief</span><span class="ja">チャレンジブリーフ</span></div>
+    <h1 class="hero-title">
+      <span class="en">Transportation exists.<br>Access doesn't.<br><em>Fix the gap.</em></span>
+      <span class="ja">交通手段はある。<br>でも使えない。<br><em>そのギャップを埋める。</em></span>
+    </h1>
+    <p class="hero-body">
+      <span class="en">Washington state has dozens of transportation services for people who need them. Most people never find them — and those who do face a maze of separate applications, documents, and eligibility rules.</span>
+      <span class="ja">ワシントン州には必要な人のための交通サービスが数多くあります。でも多くの人はそれを見つけられず、見つけても複数の申請・書類・条件の迷宮に直面します。</span>
+    </p>
+    <div class="hero-cta">
+      <a href="#problem" class="btn-primary"><span class="en">See the Problem →</span><span class="ja">課題を見る →</span></a>
+      <a href="#ideas" class="btn-ghost"><span class="en">Explore Ideas</span><span class="ja">アイデアを考える</span></a>
+    </div>
+    <div class="hero-scroll"><div class="hero-line"></div><span class="en">Scroll to explore</span><span class="ja">スクロールして読む</span></div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-val">18+</div>
+      <div class="stat-label"><span class="en">Languages in community</span><span class="ja">地域の使用言語数</span></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-val org">∞</div>
+      <div class="stat-label"><span class="en">Separate applications needed</span><span class="ja">別々の申請が必要なサービス</span></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-val">3</div>
+      <div class="stat-label"><span class="en">Key user types to design for</span><span class="ja">設計対象となる主なユーザー</span></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-val">Phase 2</div>
+      <div class="stat-label"><span class="en">One-click application — your challenge</span><span class="ja">ワンクリック申請——あなたへの挑戦</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<section class="section alt" id="overview">
+  <div class="wrap">
+    <div class="sec-label"><span class="en">Overview</span><span class="ja">概要</span></div>
+    <h2><span class="en">Services exist. They're just invisible and inaccessible.</span><span class="ja">サービスはある。ただ見えないし、使えない。</span></h2>
+
+    <div class="phase-grid">
+      <div class="phase-card now">
+        <div class="phase-label"><span class="en">Phase 1 — Exists today</span><span class="ja">Phase 1 — 現在</span></div>
+        <h3><span class="en">"Find a Ride" — you can search</span><span class="ja">「Find a Ride」——検索はできる</span></h3>
+        <p><span class="en">Hopelink built a tool to search available transportation services. Not on Google. Doesn't appear in regular searches.</span><span class="ja">HopelinkはFind a Rideというツールを作りました。でもGoogleには出てこない。普通の検索では見つけられない。</span></p>
+        <ul>
+          <li><span class="en">Can search available services</span><span class="ja">利用可能なサービスを検索できる</span></li>
+          <li><span class="en">Cannot apply from there</span><span class="ja">そこから申請はできない</span></li>
+          <li><span class="en">Eligibility is still unclear</span><span class="ja">自分が対象かどうかがまだわからない</span></li>
+        </ul>
+      </div>
+      <div class="phase-card future">
+        <div class="phase-label"><span class="en">Phase 2 — Your challenge</span><span class="ja">Phase 2 — あなたへの挑戦</span></div>
+        <h3><span class="en">"One-click application" — design it</span><span class="ja">「ワンクリック申請」——設計する</span></h3>
+        <p><span class="en">A user fills in their information once and can apply to multiple services. No re-entry. No surprises mid-way.</span><span class="ja">一度情報を入力すれば、複数のサービスに申請できる。何度も入力しない。途中で「書類が足りない」という戻りがない。</span></p>
+        <ul>
+          <li><span class="en">Understand which services you qualify for</span><span class="ja">自分が対象のサービスがわかる</span></li>
+          <li><span class="en">Apply to multiple at once</span><span class="ja">まとめて申請できる</span></li>
+          <li><span class="en">Track application progress</span><span class="ja">申請の進捗を確認できる</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section" id="problem">
+  <div class="wrap">
+    <div class="sec-label org"><span class="en">The Problem</span><span class="ja">問題</span></div>
+    <h2><span class="en">Why people give up before they even start</span><span class="ja">なぜ人は始める前に諦めてしまうのか</span></h2>
+    <p class="sec-sub"><span class="en">This isn't a transportation problem. It's an access problem.</span><span class="ja">これは交通の問題ではありません。アクセスの問題です。</span></p>
+
+    <div class="key-msg">
+      <div class="key-msg-text">
+        <span class="en">The challenge is not building more services.<br>It's making <em>existing ones reachable.</em></span>
+        <span class="ja">課題は新しいサービスを作ることではありません。<br><em>すでにあるサービスに届けること</em>です。</span>
+      </div>
+      <div class="key-msg-sub">
+        <span class="en">People don't fail because they don't want help. They fail because the system is built for administrators, not users.</span>
+        <span class="ja">人々が使えないのは助けを求めていないからではありません。このシステムが利用者ではなく管理者向けに設計されているからです。</span>
+      </div>
+    </div>
+
+    <div class="prob-list">
+      <div class="p-item">
+        <div class="p-num">01</div>
+        <div class="p-body">
+          <strong><span class="en">Services aren't findable</span><span class="ja">サービスが見つからない</span></strong>
+          <p><span class="en">"Find a Ride" exists but doesn't show up on Google. Most people search online first and never find it.</span><span class="ja">「Find a Ride」はあるがGoogleで出てこない。ほとんどの人はまずネット検索し、見つけられないまま終わる。</span></p>
+        </div>
+      </div>
+      <div class="p-item">
+        <div class="p-num">02</div>
+        <div class="p-body">
+          <strong><span class="en">Eligibility is a mystery</span><span class="ja">対象かどうかわからない</span></strong>
+          <p><span class="en">Each service has different rules — age, income, disability, location. Users can't tell what they qualify for without reading dense documentation.</span><span class="ja">サービスごとに年齢・収入・障害・地域などの条件が異なる。難しい資料を読まないと自分が対象かどうかわからない。</span></p>
+        </div>
+      </div>
+      <div class="p-item">
+        <div class="p-num">03</div>
+        <div class="p-body">
+          <strong><span class="en">Every service = a separate application</span><span class="ja">サービスごとに別々の申請が必要</span></strong>
+          <p><span class="en">Users who need multiple services must fill out overlapping forms — the same name, address, and situation repeated again and again.</span><span class="ja">複数のサービスが必要な場合、名前・住所・状況などを何度も繰り返し入力しなければならない。</span></p>
+        </div>
+      </div>
+      <div class="p-item">
+        <div class="p-num">04</div>
+        <div class="p-body">
+          <strong><span class="en">Document surprises cause abandonment</span><span class="ja">途中で「書類が足りない」と出戻りが起きる</span></strong>
+          <p><span class="en">Some services require income proof, doctor's notes, or other documents. Users only discover this mid-application — and give up.</span><span class="ja">収入証明・医師の診断書などが必要なサービスも。申請途中で初めてわかり、最初からやり直しになって諦める。</span></p>
+        </div>
+      </div>
+      <div class="p-item">
+        <div class="p-num">05</div>
+        <div class="p-body">
+          <strong><span class="en">Systems don't talk to each other</span><span class="ja">システムが連携していない</span></strong>
+          <p><span class="en">Each provider has separate rules, separate portals, and separate data. Even if you apply to ten services, each one starts from zero.</span><span class="ja">提供者ごとにルール・ポータル・データが分断されている。10のサービスに申請しても、それぞれがゼロからのスタート。</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERSONAS -->
+<section class="section alt" id="personas">
+  <div class="wrap">
+    <div class="sec-label purple"><span class="en">User Personas</span><span class="ja">ユーザーペルソナ</span></div>
+    <h2><span class="en">Who are you designing for?</span><span class="ja">誰のために設計するのか？</span></h2>
+    <p class="sec-sub"><span class="en">Three very different people — but all blocked by the same broken system.</span><span class="ja">三者三様のユーザー——でも全員が同じシステムの問題に阻まれています。</span></p>
+
+    <div class="persona-grid">
+      <div class="persona-card">
+        <div class="persona-avatar">👵</div>
+        <div class="persona-tag p1"><span class="en">Persona 1</span><span class="ja">ペルソナ①</span></div>
+        <h3><span class="en">Older adult needing medical transport</span><span class="ja">通院が必要な高齢者</span></h3>
+        <p class="persona-desc"><span class="en">Not comfortable with digital tools. Needs to get to appointments regularly. Has limited support network.</span><span class="ja">デジタルツールが苦手。定期的な通院が必要。サポートできる人が少ない。</span></p>
+        <div class="persona-pains">
+          <div class="pain"><span class="en">Forms are too complex</span><span class="ja">フォームが難しすぎる</span></div>
+          <div class="pain"><span class="en">Can't tell what's available</span><span class="ja">何が使えるかわからない</span></div>
+          <div class="pain"><span class="en">Typing is difficult</span><span class="ja">入力が大変</span></div>
+        </div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-avatar">👩‍💼</div>
+        <div class="persona-tag p2"><span class="en">Persona 2</span><span class="ja">ペルソナ②</span></div>
+        <h3><span class="en">Social worker supporting multiple clients</span><span class="ja">複数の利用者を支援するソーシャルワーカー</span></h3>
+        <p class="persona-desc"><span class="en">Manages transportation needs for many clients. Spends huge amounts of time on paperwork and repetitive data entry.</span><span class="ja">多くの利用者の交通手段を管理。書類仕事と繰り返しのデータ入力に膨大な時間を使っている。</span></p>
+        <div class="persona-pains">
+          <div class="pain"><span class="en">Same info entered over and over</span><span class="ja">同じ情報を何度も入力</span></div>
+          <div class="pain"><span class="en">Managing 10+ systems at once</span><span class="ja">10以上のシステムを同時管理</span></div>
+          <div class="pain"><span class="en">No time to spare</span><span class="ja">時間がない</span></div>
+        </div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-avatar">👨</div>
+        <div class="persona-tag p3"><span class="en">Persona 3</span><span class="ja">ペルソナ③</span></div>
+        <h3><span class="en">Low-income adult needing work transport</span><span class="ja">通勤手段が必要な低所得者</span></h3>
+        <p class="persona-desc"><span class="en">No car. Needs reliable transport to get to work. Primarily uses smartphone. Hesitant about government processes.</span><span class="ja">車なし。通勤に移動手段が必要。スマホ中心。申請プロセスへの不安がある。</span></p>
+        <div class="persona-pains">
+          <div class="pain"><span class="en">Doesn't know if they qualify</span><span class="ja">対象かどうかわからない</span></div>
+          <div class="pain"><span class="en">Application process feels intimidating</span><span class="ja">手続きが怖い・難しそう</span></div>
+          <div class="pain"><span class="en">Mobile-first, limited data</span><span class="ja">スマホ主体・通信量が限られる</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section class="section" id="journey">
+  <div class="wrap">
+    <div class="sec-label"><span class="en">User Journey</span><span class="ja">ユーザージャーニー</span></div>
+    <h2><span class="en">Now vs. what you'll design</span><span class="ja">現状 vs. あなたが設計する未来</span></h2>
+    <p class="sec-sub"><span class="en">Use this to find where your solution fits in.</span><span class="ja">あなたのソリューションがどこに介入するかを考えてください。</span></p>
+
+    <div class="journey-compare">
+      <div class="jc-col now-col">
+        <div class="jc-head now">❌ <span class="en">Current experience</span><span class="ja">現在の流れ</span></div>
+        <div class="jc-steps">
+          <div class="jc-step">
+            <div class="jc-dot">1</div>
+            <div class="jc-text"><span class="en">Search online</span><span class="ja">ネットで検索する</span><span><span class="en">Find a Ride not indexed</span><span class="ja">Find a Rideは検索に出てこない</span></span></div>
+          </div>
+          <div class="jc-step">
+            <div class="jc-dot">2</div>
+            <div class="jc-text"><span class="en">Find a service — maybe</span><span class="ja">サービスを見つける——かもしれない</span><span><span class="en">Info is often incomplete</span><span class="ja">情報が不完全なことが多い</span></span></div>
+          </div>
+          <div class="jc-step">
+            <div class="jc-dot">3</div>
+            <div class="jc-text"><span class="en">Call to ask eligibility</span><span class="ja">電話で対象か問い合わせ</span><span><span class="en">Long wait times, frustrating</span><span class="ja">待ち時間が長く、手間</span></span></div>
+          </div>
+          <div class="jc-step">
+            <div class="jc-dot">4</div>
+            <div class="jc-text"><span class="en">Fill out multiple separate forms</span><span class="ja">複数のフォームを別々に記入</span><span><span class="en">Same info, again and again</span><span class="ja">同じ情報を何度も繰り返す</span></span></div>
+          </div>
+          <div class="jc-step">
+            <div class="jc-dot">5</div>
+            <div class="jc-text"><span class="en">Discover missing documents</span><span class="ja">「書類が足りない」と発覚</span><span><span class="en">Start over. Many give up.</span><span class="ja">最初からやり直し。諦める人が多い。</span></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="jc-col future-col">
+        <div class="jc-head future">✅ <span class="en">Future experience (design this)</span><span class="ja">未来の流れ（これを設計する）</span></div>
+        <div class="jc-steps">
+          <div class="jc-step">
+            <div class="jc-dot">1</div>
+            <div class="jc-text"><span class="en">Explore without logging in</span><span class="ja">ログインなしで探索する</span><span><span class="en">Low barrier to start</span><span class="ja">始めるハードルが低い</span></span></div>
+          </div>
+          <div class="jc-step">
+            <div class="jc-dot">2</div>
+            <div class="jc-text"><span class="en">See which services I qualify for</span><span class="ja">自分が対象のサービスを把握する</span><span><span class="en">Smart eligibility matching</span><span class="ja">スマートな対象判定</span></span></div>
+          </div>
+          <div class="jc-step">
+            <div class="jc-dot">3</div>
+            <div class="jc-text"><span class="en">Guided application — step by step</span><span class="ja">ガイド付きで申請——ステップ形式</span><span><span class="en">Simple UI, clear progress</span><span class="ja">シンプルなUI、進捗が見える</span></span></div>
+          </div>
+          <div class="jc-step">
+            <div class="jc-dot">4</div>
+            <div class="jc-text"><span class="en">Apply to multiple at once</span><span class="ja">まとめて申請する</span><span><span class="en">One entry, many services</span><span class="ja">一度の入力で複数サービスへ</span></span></div>
+          </div>
+          <div class="jc-step">
+            <div class="jc-dot">5</div>
+            <div class="jc-text"><span class="en">Track application status</span><span class="ja">申請状況を確認する</span><span><span class="en">Transparent, no mystery</span><span class="ja">透明で、不安がない</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONSTRAINTS -->
+<section class="section alt" id="constraints">
+  <div class="wrap">
+    <div class="sec-label yellow"><span class="en">Constraints</span><span class="ja">考慮すべき制約</span></div>
+    <h2><span class="en">Design with these in mind</span><span class="ja">これを念頭に設計する</span></h2>
+    <div class="con-grid">
+      <div class="con-item">
+        <span class="con-icon">🔒</span>
+        <div class="con-text">
+          <strong><span class="en">Privacy (PII) is critical</span><span class="ja">プライバシー（個人情報）は最重要</span></strong>
+          <p><span class="en">Income, health, location data. Decide: what to store, what not to. Be intentional.</span><span class="ja">収入・健康・位置情報を扱う。何を保存するか・しないかを意図的に決める。</span></p>
+        </div>
+      </div>
+      <div class="con-item">
+        <span class="con-icon">♿</span>
+        <div class="con-text">
+          <strong><span class="en">Accessibility is non-negotiable</span><span class="ja">アクセシビリティは必須</span></strong>
+          <p><span class="en">Disability support, low digital literacy. Design for the least capable user, not the most.</span><span class="ja">障害対応、デジタルリテラシーが低い人への対応。最も使いにくい人に合わせて設計する。</span></p>
+        </div>
+      </div>
+      <div class="con-item">
+        <span class="con-icon">🌍</span>
+        <div class="con-text">
+          <strong><span class="en">18+ languages in the community</span><span class="ja">コミュニティには18言語以上</span></strong>
+          <p><span class="en">English may not be the user's primary language. Consider voice input as an option.</span><span class="ja">英語が主言語でないユーザーも多い。音声入力も選択肢として考える。</span></p>
+        </div>
+      </div>
+      <div class="con-item">
+        <span class="con-icon">📱</span>
+        <div class="con-text">
+          <strong><span class="en">Mobile-first, today</span><span class="ja">現在はモバイルが中心</span></strong>
+          <p><span class="en">Current users are primarily on mobile. Future design should be flexible across devices.</span><span class="ja">現在の利用者はスマホ中心。将来的にはデバイスを問わない設計が理想。</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="note-box">
+      <strong><span class="en">Key question:</span><span class="ja">重要な問い：</span></strong>
+      <span class="en">How do you collect enough information to determine eligibility — without making the experience feel like an interrogation?</span>
+      <span class="ja">尋問のように感じさせずに、対象判定に必要な情報をどう集めるか？</span>
+    </div>
+  </div>
+</section>
+
+<!-- IDEAS -->
+<section class="section" id="ideas">
+  <div class="wrap">
+    <div class="sec-label"><span class="en">Idea Directions</span><span class="ja">アイデアの方向性</span></div>
+    <h2><span class="en">Five angles to explore</span><span class="ja">探索できる5つの方向性</span></h2>
+    <p class="sec-sub"><span class="en">These aren't exclusive — great solutions often combine two or three. But start with one.</span><span class="ja">これらは排他的ではありません。優れたソリューションは2〜3つを組み合わせることも。でもまず一つから始める。</span></p>
+
+    <div class="ideas-grid">
+      <div class="idea-card">
+        <div class="idea-num">① <span class="en">Smart Input</span><span class="ja">スマート入力</span></div>
+        <h3>💬 <span class="en">Chat or step-by-step form</span><span class="ja">チャット形式またはステップ形式</span></h3>
+        <p><span class="en">Replace intimidating long forms with a conversational interface. "How old are you?" feels different from a 20-field form.</span><span class="ja">圧迫感のある長いフォームを対話型UIに置き換える。「何歳ですか？」という質問は、20項目のフォームとは全然違う。</span></p>
+      </div>
+      <div class="idea-card">
+        <div class="idea-num">② <span class="en">Eligibility Engine</span><span class="ja">適格判定エンジン</span></div>
+        <h3>🎯 <span class="en">Simple questions → automatic matching</span><span class="ja">簡単な質問 → 自動マッチング</span></h3>
+        <p><span class="en">Ask a few questions and show which services the user qualifies for — before they start filling out anything. No surprises.</span><span class="ja">いくつかの質問に答えると、申請前に自分が対象のサービスが見える。途中でのサプライズなし。</span></p>
+      </div>
+      <div class="idea-card">
+        <div class="idea-num">③ <span class="en">Data Reuse</span><span class="ja">データ再利用</span></div>
+        <h3>♻️ <span class="en">Enter once, apply everywhere</span><span class="ja">一度入力→どこでも使い回す</span></h3>
+        <p><span class="en">Capture user information once and pre-fill it across all eligible applications. No more re-typing the same address 10 times.</span><span class="ja">一度入力した情報を全ての申請に自動入力。同じ住所を10回入力する必要がない。</span></p>
+      </div>
+      <div class="idea-card">
+        <div class="idea-num">④ <span class="en">Voice &amp; Language</span><span class="ja">音声・多言語</span></div>
+        <h3>🎙️ <span class="en">Speak to apply, auto-translate</span><span class="ja">話すだけで申請・自動翻訳</span></h3>
+        <p><span class="en">For users with low literacy or who don't type well, voice input removes the biggest barrier. Combined with 18+ languages.</span><span class="ja">リテラシーが低い・入力が苦手なユーザーには、音声入力が最大の障壁を取り除く。18言語以上への対応も。</span></p>
+      </div>
+      <div class="idea-card">
+        <div class="idea-num">⑤ <span class="en">Proxy / Social Worker Mode</span><span class="ja">代理人・ソーシャルワーカーモード</span></div>
+        <h3>👤 <span class="en">Apply on behalf of someone else</span><span class="ja">誰かの代わりに申請する</span></h3>
+        <p><span class="en">Social workers often do applications for clients. A dedicated mode that manages multiple cases and pre-fills shared data could save hours every week.</span><span class="ja">ソーシャルワーカーは利用者の代わりに申請することが多い。複数ケースを管理し共通データを事前入力する専用モードで毎週何時間も節約できる。</span></p>
+      </div>
+      <div class="idea-card">
+        <div class="idea-num">⑥ <span class="en">Progress Transparency</span><span class="ja">進捗の見える化</span></div>
+        <h3>📊 <span class="en">Track what happens after you apply</span><span class="ja">申請後に何が起きているか追う</span></h3>
+        <p><span class="en">After applying, users often hear nothing for weeks. A simple status tracker — even just "received / under review / approved" — reduces anxiety dramatically.</span><span class="ja">申請後、何週間も連絡がないことがよくある。「受付済・審査中・承認済」だけでもステータス表示があれば不安が大きく減る。</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ELIGIBILITY LOGIC -->
+<section class="section alt" id="logic">
+  <div class="wrap">
+    <div class="sec-label purple"><span class="en">Eligibility Logic</span><span class="ja">判定ロジック</span></div>
+    <h2><span class="en">What determines who gets what</span><span class="ja">誰がどのサービスを受けられるかを決めるもの</span></h2>
+    <p class="sec-sub"><span class="en">Services are determined by these four factors — in different combinations for each service. Your challenge: make this invisible to the user.</span><span class="ja">サービスごとに、この4つの要素の組み合わせで対象が決まります。課題：これをユーザーに意識させないこと。</span></p>
+
+    <div class="logic-grid">
+      <div class="logic-item">
+        <div class="logic-icon">💰</div>
+        <div class="logic-label"><span class="en">Income</span><span class="ja">収入</span></div>
+        <div class="logic-sub"><span class="en">Proof often required</span><span class="ja">証明書類が必要なことも</span></div>
+      </div>
+      <div class="logic-item">
+        <div class="logic-icon">🎂</div>
+        <div class="logic-label"><span class="en">Age</span><span class="ja">年齢</span></div>
+        <div class="logic-sub"><span class="en">Senior programs, youth programs</span><span class="ja">高齢者・若者向けプログラム</span></div>
+      </div>
+      <div class="logic-item">
+        <div class="logic-icon">♿</div>
+        <div class="logic-label"><span class="en">Disability</span><span class="ja">障害</span></div>
+        <div class="logic-sub"><span class="en">Doctor's note may be required</span><span class="ja">医師の診断書が必要な場合も</span></div>
+      </div>
+      <div class="logic-item">
+        <div class="logic-icon">📍</div>
+        <div class="logic-label"><span class="en">Location</span><span class="ja">地域</span></div>
+        <div class="logic-sub"><span class="en">Service areas vary by provider</span><span class="ja">提供者によってサービス地域が異なる</span></div>
+      </div>
+    </div>
+
+    <div class="note-box">
+      <strong><span class="en">Hackathon tip:</span><span class="ja">ハッカソンのヒント：</span></strong>
+      <span class="en">Don't try to model all services. Pick 3–4. Include a mix: one simple (age only), one complex (income + disability + doctor's note). Show how your system handles both.</span>
+      <span class="ja">全サービスをモデル化しようとしないこと。3〜4個に絞る。簡単なもの（年齢のみ）と複雑なもの（収入＋障害＋医師診断書）を混ぜて、両方への対応を示す。</span>
+    </div>
+  </div>
+</section>
+
+<!-- SCOPE -->
+<section class="section" id="scope">
+  <div class="wrap">
+    <div class="sec-label green"><span class="en">Hackathon Scope</span><span class="ja">ハッカソンのスコープ</span></div>
+    <h2><span class="en">What's in — and what's not</span><span class="ja">スコープ内・スコープ外</span></h2>
+    <p class="sec-sub"><span class="en">Focus makes better solutions. You don't need to solve everything.</span><span class="ja">絞り込みが良いソリューションを生みます。すべてを解く必要はありません。</span></p>
+
+    <div class="scope-grid">
+      <div class="scope-card in">
+        <h3><span class="en">✓ In scope</span><span class="ja">✓ スコープ内</span></h3>
+        <ul>
+          <li><span class="en">Eligibility matching for 3–4 services</span><span class="ja">3〜4サービスの対象判定</span></li>
+          <li><span class="en">Streamlined application UX/UI</span><span class="ja">申請フローのUX/UI改善</span></li>
+          <li><span class="en">Pre-fill / data reuse across applications</span><span class="ja">複数申請へのデータ自動入力</span></li>
+          <li><span class="en">Document checklist before starting</span><span class="ja">申請前の必要書類チェックリスト</span></li>
+          <li><span class="en">Mobile-friendly interface</span><span class="ja">モバイル対応インターフェース</span></li>
+          <li><span class="en">Status tracking after submission</span><span class="ja">提出後の申請状況追跡</span></li>
+        </ul>
+      </div>
+      <div class="scope-card out">
+        <h3><span class="en">✗ Out of scope</span><span class="ja">✗ スコープ外</span></h3>
+        <ul>
+          <li><span class="en">Building all 50+ services</span><span class="ja">50以上の全サービスの構築</span></li>
+          <li><span class="en">Real backend / actual data integration</span><span class="ja">本番バックエンド・実データ連携</span></li>
+          <li><span class="en">Replacing existing provider systems</span><span class="ja">既存の提供者システムの置き換え</span></li>
+          <li><span class="en">Solving legal / policy constraints</span><span class="ja">法律・政策上の制約の解決</span></li>
+          <li><span class="en">Full HIPAA-compliant implementation</span><span class="ja">HIPAA完全準拠の実装</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DELIVERABLES & SUCCESS -->
+<section class="section alt" id="deliverables">
+  <div class="wrap">
+    <div class="sec-label green"><span class="en">Success &amp; Deliverables</span><span class="ja">成功条件と成果物</span></div>
+    <h2><span class="en">What a winning submission looks like</span><span class="ja">優れた提案とはどんなものか</span></h2>
+
+    <p class="sec-sub"><span class="en">If the user thinks "<em>this is easy</em>" — you've succeeded.</span><span class="ja">ユーザーが「<em>これ、簡単じゃん</em>」と思ったら成功です。</span></p>
+
+    <div class="success-grid" style="margin-bottom:40px;">
+      <div class="suc-item"><div class="suc-icon">✅</div><div class="suc-text"><span class="en">Easy to use — for the least tech-savvy user</span><span class="ja">最もデジタルが苦手なユーザーでも使える</span></div></div>
+      <div class="suc-item"><div class="suc-icon">✅</div><div class="suc-text"><span class="en">Reduces drop-off at every step</span><span class="ja">各ステップでの離脱を減らす</span></div></div>
+      <div class="suc-item"><div class="suc-icon">✅</div><div class="suc-text"><span class="en">Hides complexity from the user</span><span class="ja">複雑さをユーザーから隠す</span></div></div>
+      <div class="suc-item"><div class="suc-icon">✅</div><div class="suc-text"><span class="en">Works for all three personas</span><span class="ja">3つのペルソナ全員に機能する</span></div></div>
+      <div class="suc-item"><div class="suc-icon">✅</div><div class="suc-text"><span class="en">Realistic — could actually be built</span><span class="ja">現実的——実際に作れる</span></div></div>
+      <div class="suc-item"><div class="suc-icon">✅</div><div class="suc-text"><span class="en">Considers privacy &amp; accessibility</span><span class="ja">プライバシーとアクセシビリティを考慮</span></div></div>
+    </div>
+
+    <div class="sec-label" style="margin-bottom:16px;"><span class="en">Required deliverables</span><span class="ja">提出物</span></div>
+    <div class="del-list">
+      <div class="del-item">
+        <div class="del-num">1</div>
+        <div class="del-body">
+          <strong><span class="en">Prototype</span><span class="ja">プロトタイプ</span></strong>
+          <p><span class="en">Figma mockup, working demo, or recorded video walkthrough of your solution.</span><span class="ja">Figmaモックアップ、動くデモ、またはソリューションのビデオウォークスルー。</span></p>
+        </div>
+      </div>
+      <div class="del-item">
+        <div class="del-num">2</div>
+        <div class="del-body">
+          <strong><span class="en">User Flow</span><span class="ja">ユーザーフロー</span></strong>
+          <p><span class="en">A diagram or walkthrough showing how each persona navigates your solution.</span><span class="ja">各ペルソナがどのようにソリューションを使うかを示す図またはウォークスルー。</span></p>
+        </div>
+      </div>
+      <div class="del-item">
+        <div class="del-num">3</div>
+        <div class="del-body">
+          <strong><span class="en">Feature Description</span><span class="ja">機能説明</span></strong>
+          <p><span class="en">What does it do? How does it work? What key decisions did you make and why?</span><span class="ja">何ができるか？どう動くか？どんな判断をし、なぜその判断をしたか？</span></p>
+        </div>
+      </div>
+      <div class="del-item">
+        <div class="del-num" style="background:var(--muted);">+</div>
+        <div class="del-body">
+          <strong><span class="en">Optional: Technical Architecture</span><span class="ja">任意：技術構成</span></strong>
+          <p><span class="en">If relevant — how would this be built and maintained in the real world?</span><span class="ja">関連する場合——実世界でこれはどう構築・維持されるか？</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="sec-label">FAQ</div>
+    <h2><span class="en">Quick answers</span><span class="ja">よくある質問</span></h2>
+    <div class="faq">
+      <details>
+        <summary><span class="en">Do we need to model all services?</span><span class="ja">全サービスをモデル化する必要がありますか？</span></summary>
+        <div class="faq-ans"><strong><span class="en">No.</span><span class="ja">いいえ。</span></strong> <span class="en">Pick 3–4 services. Show that your approach would scale. Include at least one simple (age-based) and one complex (multiple documents required).</span><span class="ja">3〜4サービスに絞ってください。スケールできるアプローチを示す。簡単なもの（年齢のみ）と複雑なもの（複数書類が必要）を最低1つずつ含める。</span></div>
+      </details>
+      <details>
+        <summary><span class="en">Do we need to handle real data or backend?</span><span class="ja">本物のデータやバックエンドが必要ですか？</span></summary>
+        <div class="faq-ans"><strong><span class="en">No.</span><span class="ja">いいえ。</span></strong> <span class="en">A prototype or mockup is sufficient. Focus on the user experience, not the technical infrastructure. Judges want to see the "what" and "why," not a production-ready app.</span><span class="ja">プロトタイプやモックアップで十分です。技術インフラではなくユーザー体験に集中してください。審査員が見たいのは「何を」「なぜ」であり、本番アプリではありません。</span></div>
+      </details>
+      <details>
+        <summary><span class="en">Must we address all three personas?</span><span class="ja">3つのペルソナ全員に対応する必要がありますか？</span></summary>
+        <div class="faq-ans"><strong><span class="en">Try to — but focus on one if needed.</span><span class="ja">できればすべて——でも必要なら一つに集中。</span></strong> <span class="en">The social worker mode (Persona 2) is particularly interesting because it creates an outsized impact per user. But any persona is valid.</span><span class="ja">ソーシャルワーカーモード（ペルソナ②）は特に興味深いです。1ユーザーあたりのインパクトが大きいため。でもどのペルソナでも有効です。</span></div>
+      </details>
+      <details>
+        <summary><span class="en">How do we handle the privacy question?</span><span class="ja">プライバシーの問題はどう扱いますか？</span></summary>
+        <div class="faq-ans"><strong><span class="en">Address it explicitly — don't ignore it.</span><span class="ja">明示的に対処する——無視しない。</span></strong> <span class="en">You don't need a full HIPAA solution, but show that you've thought about it. What data do you store? For how long? Who can see it? A clear stance earns points.</span><span class="ja">完全なHIPAAソリューションは不要ですが、考えたことを示してください。何を保存するか？どのくらい？誰が見られるか？明確な立場を示すと評価されます。</span></div>
+      </details>
+      <details>
+        <summary><span class="en">What does success look like in one sentence?</span><span class="ja">成功を一言で言うと？</span></summary>
+        <div class="faq-ans"><span class="en">A user who needed help — and previously gave up — completes an application because of what you built.</span><span class="ja">助けが必要で、以前は諦めていたユーザーが、あなたが作ったもののおかげで申請を完了できた。</span></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <div class="footer-dot"></div>
+    <span style="color:rgba(255,255,255,0.3); font-size:0.8rem; font-weight:700;">Hack for Social Impact · Seattle 2026</span>
+  </div>
+  <p><a href="../index.html"><span class="en">← Back to main site</span><span class="ja">← メインサイトへ</span></a></p>
+  <p style="margin-top:10px; font-size:0.72rem; opacity:0.4;">
+    <span class="en">Challenge pack · Hopelink Transportation Access · April 26, 2026</span>
+    <span class="ja">チャレンジパック · Hopelink 交通アクセス · 2026年4月26日</span>
+  </p>
+</footer>
+
+<script>
+(function () {
+  var lang = localStorage.getItem('hsi-hopelink-lang') || 'en';
+  function setLang(l) {
+    lang = l;
+    localStorage.setItem('hsi-hopelink-lang', l);
+    document.documentElement.lang = l;
+    var btn = document.getElementById('lang-btn');
+    if (btn) btn.textContent = l === 'en' ? '日本語' : 'English';
+  }
+  var btn = document.getElementById('lang-btn');
+  if (btn) btn.addEventListener('click', function () { setLang(lang === 'en' ? 'ja' : 'en'); });
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var el = document.querySelector(this.getAttribute('href'));
+      if (!el) return;
+      e.preventDefault();
+      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 60, behavior: 'smooth' });
+    });
+  });
+  setLang(lang);
+})();
+</script>
+</body>
+</html>
