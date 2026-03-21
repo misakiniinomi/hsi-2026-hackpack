@@ -91,8 +91,8 @@
       display: flex; align-items: center; justify-content: space-between;
       font-size: 0.8rem; font-weight: 700; color: var(--color-primary);
     }
-    .challenge-card-footer span { transition: transform 0.2s; display: inline-block; }
-    .challenge-card:hover .challenge-card-footer span { transform: translateX(4px); }
+    .challenge-card-footer .arrow { transition: transform 0.2s; display: inline-block; }
+    .challenge-card:hover .challenge-card-footer .arrow { transform: translateX(4px); }
 
     /* Lang */
     .lang-en, .lang-ja { display: none; }
@@ -166,7 +166,7 @@
           </div>
           <div class="challenge-card-footer" style="color:#003087;">
             <span class="lang-en">View Hackpack</span><span class="lang-ja">ハックパックを見る</span>
-            <span>→</span>
+            <span class="arrow">→</span>
           </div>
         </a>
 
@@ -187,7 +187,7 @@
           </div>
           <div class="challenge-card-footer" style="color:#007A6E;">
             <span class="lang-en">View Hackpack</span><span class="lang-ja">ハックパックを見る</span>
-            <span>→</span>
+            <span class="arrow">→</span>
           </div>
         </a>
 
