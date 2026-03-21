@@ -531,46 +531,5 @@
   </footer>
 
   <script src="../js/main.js"></script>
-  <script>
-  (function () {
-    'use strict';
-    var currentLang = localStorage.getItem('hsi-lang') || 'en';
-    function setLanguage(lang) {
-      currentLang = lang;
-      localStorage.setItem('hsi-lang', lang);
-      document.documentElement.lang = lang;
-      var btn = document.getElementById('lang-btn');
-      if (btn) btn.textContent = lang === 'en' ? '\u65E5\u672C\u8A9E' : 'English';
-    }
-    var langBtn = document.getElementById('lang-btn');
-    if (langBtn) langBtn.addEventListener('click', function () { setLanguage(currentLang === 'en' ? 'ja' : 'en'); });
-    var navbar = document.getElementById('navbar');
-    if (navbar) { window.addEventListener('scroll', function() { navbar.classList.add('scrolled'); }, { passive: true }); }
-    var hamburger = document.getElementById('hamburger');
-    var navMenu = document.getElementById('nav-menu');
-    if (hamburger && navMenu) {
-      hamburger.addEventListener('click', function () {
-        var isOpen = navMenu.classList.toggle('open');
-        hamburger.classList.toggle('active', isOpen);
-        hamburger.setAttribute('aria-expanded', String(isOpen));
-      });
-    }
-    document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-      anchor.addEventListener('click', function (e) {
-        var t = this.getAttribute('href'); if (t === '#') return;
-        var el = document.querySelector(t); if (!el) return;
-        e.preventDefault();
-        var offset = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height'), 10) || 72;
-        window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
-      });
-    });
-    // Scroll animation
-    var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('[data-animate]').forEach(function(el) { observer.observe(el); });
-    setLanguage(currentLang);
-  })();
-  </script>
 </body>
 </html>
