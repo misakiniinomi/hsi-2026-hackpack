@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Challenge: Rainier Vista Boys & Girls Club | HSI Seattle 2026</title>
+  <meta name="description" content="Hack for Social Impact Seattle 2026 — Help more Rainier Valley families find, trust, and join the Boys & Girls Club.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:   #0057A8;
+      --blue-dk:#003f7a;
+      --red:    #D62828;
+      --yellow: #F4A726;
+      --bg:     #F8F9FB;
+      --surface:#FFFFFF;
+      --border: #E2E6EC;
+      --text:   #1A1D23;
+      --muted:  #6B7280;
+      --radius: 12px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section { padding: 72px 0; }
+    section:nth-child(even) { background: var(--surface); }
+
+    /* ── Sticky Nav ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--blue); text-decoration: none; }
+
+    /* ── Hero ── */
+    #hero {
+      background: linear-gradient(150deg, #003f7a 0%, #0057A8 50%, #1975C8 100%);
+      padding: 88px 24px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 70% 80%, rgba(244,167,38,0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
+    .hero-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 40px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.9);
+      padding: 5px 16px;
+      margin-bottom: 28px;
+    }
+    .hero-title {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      letter-spacing: -0.5px;
+    }
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.8);
+      max-width: 580px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+    .hero-cta-group {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-white {
+      background: #fff;
+      color: var(--blue-dk);
+    }
+    .btn-white:hover { background: #f0f4ff; text-decoration: none; }
+    .btn-outline-white {
+      background: transparent;
+      color: #fff;
+      border: 2px solid rgba(255,255,255,0.6);
+    }
+    .btn-outline-white:hover { background: rgba(255,255,255,0.1); text-decoration: none; }
+
+    /* ── Section header ── */
+    .sec-badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: rgba(0,87,168,0.08);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .sec-badge.red { color: var(--red); background: rgba(214,40,40,0.08); }
+    .sec-badge.yellow { color: #B97A00; background: rgba(244,167,38,0.12); }
+
+    h2 {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      line-height: 1.25;
+      margin-bottom: 14px;
+    }
+    .sec-desc {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 620px;
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+
+    /* ── About ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .about-stat-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .about-stat-item {
+      background: var(--bg);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      border-left: 4px solid var(--blue);
+    }
+    .about-stat-item .num {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--blue);
+      line-height: 1;
+    }
+    .about-stat-item .label {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .about-text p { color: var(--muted); margin-bottom: 14px; line-height: 1.75; }
+    .program-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    .tag {
+      background: rgba(0,87,168,0.08);
+      color: var(--blue-dk);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 20px;
+    }
+
+    /* ── Why This Matters ── */
+    .impact-box {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dk) 100%);
+      border-radius: 16px;
+      padding: 48px 40px;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .impact-box .big-text {
+      font-size: clamp(1.3rem, 3.5vw, 1.9rem);
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 16px;
+    }
+    .impact-box .sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.75);
+    }
+
+    /* ── Challenge stats ── */
+    .challenge-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .challenge-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .challenge-card .icon { font-size: 1.8rem; margin-bottom: 10px; }
+    .challenge-card .metric {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--red);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .challenge-card .desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .challenge-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .challenge-list li {
+      display: flex;
+      gap: 14px;
+      padding: 16px 20px;
+      background: var(--bg);
+      border-radius: var(--radius);
+      border-left: 3px solid var(--red);
+      align-items: flex-start;
+    }
+    .challenge-list .ci {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .challenge-list .ct { font-size: 0.92rem; color: var(--text); line-height: 1.5; }
+    .challenge-list .ct strong { display: block; font-weight: 700; margin-bottom: 2px; }
+
+    /* ── Constraints ── */
+    .constraint-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .constraint-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .constraint-item .ci {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .constraint-item .ct { font-size: 0.88rem; color: var(--text); line-height: 1.5; }
+    .constraint-item .ct strong { display: block; font-weight: 700; margin-bottom: 3px; font-size: 0.9rem; }
+
+    .constraint-note {
+      margin-top: 20px;
+      padding: 16px 20px;
+      background: #FFF8E1;
+      border-left: 4px solid var(--yellow);
+      border-radius: 8px;
+      font-size: 0.88rem;
+      color: #6B5200;
+      line-height: 1.6;
+    }
+
+    /* ── Opportunity ── */
+    .opp-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .opp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 22px;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .opp-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+    .opp-card .opp-num {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+    .opp-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .opp-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+    .opp-card .examples {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .opp-card .ex-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: rgba(0,87,168,0.07);
+      color: var(--blue-dk);
+      padding: 3px 9px;
+      border-radius: 12px;
+    }
+
+    /* ── Journey ── */
+    .journey-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+    .journey-steps::before {
+      content: '';
+      position: absolute;
+      left: 27px;
+      top: 28px;
+      bottom: 28px;
+      width: 2px;
+      background: var(--border);
+    }
+    .journey-step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding: 20px 0;
+      position: relative;
+    }
+    .step-num {
+      width: 56px;
+      height: 56px;
+      flex-shrink: 0;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
+      z-index: 1;
+      box-shadow: 0 0 0 4px var(--bg);
+    }
+    .journey-step.friction .step-num { background: var(--red); }
+    .step-body { flex: 1; padding-top: 12px; }
+    .step-body h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; }
+    .step-body p { font-size: 0.88rem; color: var(--muted); line-height: 1.55; }
+    .friction-badge {
+      display: inline-block;
+      background: rgba(214,40,40,0.1);
+      color: var(--red);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-bottom: 4px;
+    }
+
+    /* ── Success metrics ── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .metric-card .m-icon { font-size: 2rem; margin-bottom: 10px; }
+    .metric-card .m-val {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--blue);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .metric-card .m-label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .ideas-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .idea-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .idea-item .ii { font-size: 1.2rem; flex-shrink: 0; }
+    .idea-item .it { font-size: 0.85rem; font-weight: 600; line-height: 1.4; }
+
+    /* ── Resources ── */
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .resource-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+    }
+    .resource-card h3 {
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .resource-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .resource-card ul li {
+      font-size: 0.84rem;
+      color: var(--muted);
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .resource-card ul li::before {
+      content: '·';
+      position: absolute;
+      left: 0;
+      color: var(--blue);
+      font-weight: 800;
+    }
+    .resource-card .brand-colors {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .color-swatch {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+
+    /* ── FAQ ── */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    details {
+      border-bottom: 1px solid var(--border);
+    }
+    details:last-child { border-bottom: none; }
+    summary {
+      padding: 18px 22px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface);
+      transition: background 0.15s;
+    }
+    summary:hover { background: var(--bg); }
+    summary::after {
+      content: '+';
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    details[open] summary::after { content: '−'; }
+    .faq-answer {
+      padding: 0 22px 20px;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+      background: var(--surface);
+    }
+    .faq-answer strong { color: var(--text); }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--text);
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      padding: 36px 24px;
+      font-size: 0.84rem;
+    }
+    footer a { color: rgba(255,255,255,0.8); }
+
+    /* ── Responsive ── */
+    @media (max-width: 680px) {
+      .about-grid,
+      .challenge-grid,
+      .constraint-grid,
+      .opp-grid,
+      .metrics-grid,
+      .ideas-grid,
+      .resources-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      section { padding: 52px 0; }
+      .impact-box { padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-brand">HSI Seattle 2026 · Challenge Pack</span>
+    <ul class="nav-links">
+      <li><a href="#challenge">Challenge</a></li>
+      <li><a href="#constraints">Constraints</a></li>
+      <li><a href="#opportunities">Opportunities</a></li>
+      <li><a href="#journey">User Journey</a></li>
+      <li><a href="#metrics">Success</a></li>
+      <li><a href="#resources">Resources</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── 1. HERO ── -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Rainier Vista Boys &amp; Girls Club · Hack for Social Impact 2026</div>
+    <h1 class="hero-title">More kids could benefit from the Club—if they can find it, trust it, and join it.</h1>
+    <p class="hero-subtitle">Rainier Vista Boys &amp; Girls Club has life-changing programs for youth in Rainier Valley. The problem isn't the programs. It's that too many families never find them.</p>
+    <div class="hero-cta-group">
+      <a href="#challenge" class="btn btn-white">See the Challenge</a>
+      <a href="#opportunities" class="btn btn-outline-white">Explore Opportunities</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── 2. ABOUT ── -->
+<section id="about">
+  <div class="container">
+    <div class="sec-badge">About the Club</div>
+    <h2>Rainier Vista Boys &amp; Girls Club</h2>
+    <p class="sec-desc">A community anchor in South Seattle, providing after-school and teen programs for youth in one of the city's most diverse neighborhoods.</p>
+
+    <div class="about-grid">
+      <div class="about-text">
+        <p>The Smilow Rainier Vista Boys &amp; Girls Club serves youth and teens in the Rainier Vista neighborhood — a vibrant, diverse community in Southeast Seattle. For many families in this area, the Club represents a safe, affordable, and enriching place for their kids after school.</p>
+        <p>The Club runs programs in sports, academic support, arts, and leadership — but the community it could serve is much larger than its current membership reflects.</p>
+        <div class="program-tags">
+          <span class="tag">🏀 Basketball</span>
+          <span class="tag">🏈 Flag Football</span>
+          <span class="tag">📚 Homework Help</span>
+          <span class="tag">🎨 Arts &amp; Crafts</span>
+          <span class="tag">🎮 Teen Center</span>
+          <span class="tag">🌟 Leadership Programs</span>
+        </div>
+      </div>
+      <div class="about-stat-group">
+        <div class="about-stat-item">
+          <div class="num">K–12</div>
+          <div class="label">Youth served, from elementary to high school</div>
+        </div>
+        <div class="about-stat-item">
+          <div class="num">1</div>
+          <div class="label">Marketing staff member for 30+ clubs nationwide</div>
+        </div>
+        <div class="about-stat-item">
+          <div class="num">$0</div>
+          <div class="label">Local marketing budget</div>
+        </div>
+        <div class="about-stat-item">
+          <div class="num">Near 0</div>
+          <div class="label">Canva-only design tools, no dedicated media resources</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 3. WHY THIS MATTERS ── -->
+<section id="why">
+  <div class="container">
+    <div class="sec-badge">Why This Matters</div>
+    <h2>The gap between who the Club serves and who it <em>could</em> serve</h2>
+
+    <div class="impact-box">
+      <div class="big-text">"The problem is not just awareness.<br>It's awareness + trust + the first step."</div>
+      <div class="sub">Families must discover the Club, believe it's right for their child, and then successfully navigate enrollment. Any one of these steps can fail.</div>
+    </div>
+
+    <div class="challenge-grid">
+      <div class="challenge-card">
+        <div class="icon">📉</div>
+        <div class="metric">↓ Membership</div>
+        <div class="desc">After-school and teen enrollment has been declining</div>
+      </div>
+      <div class="challenge-card">
+        <div class="icon">🏙️</div>
+        <div class="metric">Nearby rivals</div>
+        <div class="desc">Competing programs are in the same neighborhood</div>
+      </div>
+      <div class="challenge-card">
+        <div class="icon">🌍</div>
+        <div class="metric">Multilingual</div>
+        <div class="desc">Community includes families who don't speak English as their first language</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 4. THE CHALLENGE ── -->
+<section id="challenge">
+  <div class="container">
+    <div class="sec-badge red">The Challenge</div>
+    <h2>Help more Rainier Valley families discover and join the Club</h2>
+    <p class="sec-desc">Today, most families find the Club through word of mouth or random luck. Here's what's making it hard to grow.</p>
+
+    <ul class="challenge-list">
+      <li>
+        <span class="ci">📊</span>
+        <div class="ct">
+          <strong>Membership is declining</strong>
+          After-school participation is down. Teen enrollment and elementary programs like basketball and flag football have fewer new members than before.
+        </div>
+      </li>
+      <li>
+        <span class="ci">📣</span>
+        <div class="ct">
+          <strong>Word-of-mouth is the main channel — but it doesn't scale</strong>
+          Most families hear about the Club from friends or neighbors. There's no reliable way to reach families who don't already know someone who's a member.
+        </div>
+      </li>
+      <li>
+        <span class="ci">🗓️</span>
+        <div class="ct">
+          <strong>Flyers are inconsistent and manual</strong>
+          Some clubs distribute flyers at schools, but there's no system — it depends on individual staff motivation and isn't done regularly. Flyers are made in Canva by non-designers.
+        </div>
+      </li>
+      <li>
+        <span class="ci">🖥️</span>
+        <div class="ct">
+          <strong>Enrollment flow causes drop-off</strong>
+          Families who get interested sometimes don't complete enrollment. The national signup page is complex, and phone-based alternatives exist but aren't well known.
+        </div>
+      </li>
+      <li>
+        <span class="ci">📱</span>
+        <div class="ct">
+          <strong>Social media is not manageable at local scale</strong>
+          One marketing person covers 30+ clubs. Local clubs can't maintain consistent social presence on their own. Individual clubs' events and programs go unannounced.
+        </div>
+      </li>
+      <li>
+        <span class="ci">🏢</span>
+        <div class="ct">
+          <strong>Competitors are visible; the Club is not</strong>
+          Other after-school programs in the neighborhood have more visible marketing. Families who are looking for options may not encounter the Club.
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── 5. CONSTRAINTS ── -->
+<section id="constraints">
+  <div class="container">
+    <div class="sec-badge yellow">Constraints</div>
+    <h2>What teams must work within</h2>
+    <p class="sec-desc">These are hard limits — not flexible. Understanding them early will help you build something that could actually be used on Monday.</p>
+
+    <div class="constraint-grid">
+      <div class="constraint-item">
+        <span class="ci">🔒</span>
+        <div class="ct">
+          <strong>National enrollment page cannot be changed</strong>
+          The signup URL is managed by Boys &amp; Girls Clubs of America nationally. The local club has no ability to modify it.
+        </div>
+      </div>
+      <div class="constraint-item">
+        <span class="ci">✏️</span>
+        <div class="ct">
+          <strong>Local web page: limited edits only</strong>
+          A local landing page exists and can be edited slightly, but it's within a national template system.
+        </div>
+      </div>
+      <div class="constraint-item">
+        <span class="ci">💸</span>
+        <div class="ct">
+          <strong>No local marketing budget</strong>
+          The Club does not have funds for paid ads, printed materials at scale, or new software subscriptions.
+        </div>
+      </div>
+      <div class="constraint-item">
+        <span class="ci">🎨</span>
+        <div class="ct">
+          <strong>Canva is the primary design tool</strong>
+          Staff are comfortable with Canva. Solutions that require complex design or video production skills won't be sustainable.
+        </div>
+      </div>
+      <div class="constraint-item">
+        <span class="ci">☎️</span>
+        <div class="ct">
+          <strong>Phone enrollment support is possible</strong>
+          Staff can help families enroll by phone — but families need to know this option exists first.
+        </div>
+      </div>
+      <div class="constraint-item">
+        <span class="ci">👤</span>
+        <div class="ct">
+          <strong>Staff capacity is limited</strong>
+          Club staff are focused on running programs. Solutions that require significant ongoing staff time are unlikely to stick.
+        </div>
+      </div>
+    </div>
+
+    <div class="constraint-note">
+      <strong>The sweet spot:</strong> Low-cost, low-maintenance solutions that a busy club director or volunteer could actually use — ideally things that get easier over time, not harder.
+    </div>
+  </div>
+</section>
+
+<!-- ── 6. OPPORTUNITY AREAS ── -->
+<section id="opportunities">
+  <div class="container">
+    <div class="sec-badge">Opportunity Areas</div>
+    <h2>Where your team can make an impact</h2>
+    <p class="sec-desc">These are directions to explore — not requirements. The best ideas will focus on one area and go deep.</p>
+
+    <div class="opp-grid">
+      <div class="opp-card">
+        <div class="opp-num">Area 01</div>
+        <h3>📣 Awareness — Making the Club visible</h3>
+        <p>Most families have never heard of the Club. How do you reach parents and kids who aren't already connected?</p>
+        <div class="examples">
+          <span class="ex-tag">QR codes at community spots</span>
+          <span class="ex-tag">School outreach kits</span>
+          <span class="ex-tag">Social media content templates</span>
+        </div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-num">Area 02</div>
+        <h3>🤝 Trust — Helping families feel confident</h3>
+        <p>Even if families hear about the Club, they need to feel it's safe, welcoming, and right for their child.</p>
+        <div class="examples">
+          <span class="ex-tag">Multilingual info sheets</span>
+          <span class="ex-tag">Parent testimonials format</span>
+          <span class="ex-tag">Program explainer cards</span>
+        </div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-num">Area 03</div>
+        <h3>👣 First Step — Lowering the barrier to join</h3>
+        <p>Interested families drop off when the enrollment process feels unclear or too complex. How do you make the first step obvious and easy?</p>
+        <div class="examples">
+          <span class="ex-tag">Enrollment guide / cheat sheet</span>
+          <span class="ex-tag">Call-to-action flyer with QR</span>
+          <span class="ex-tag">Phone support awareness</span>
+        </div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-num">Area 04</div>
+        <h3>🛠️ Staff Enablement — Making marketing sustainable</h3>
+        <p>Staff want to do outreach but don't have time or tools. Can you build something that makes it much easier for a non-marketer to promote the Club?</p>
+        <div class="examples">
+          <span class="ex-tag">Canva template pack</span>
+          <span class="ex-tag">Event announcement playbook</span>
+          <span class="ex-tag">Social post automation ideas</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 7. CURRENT FAMILY JOURNEY ── -->
+<section id="journey">
+  <div class="container">
+    <div class="sec-badge">Current Family Journey</div>
+    <h2>How families find — or fail to find — the Club today</h2>
+    <p class="sec-desc">This is the real path a family takes right now. Notice where it falls apart.</p>
+
+    <div class="journey-steps">
+      <div class="journey-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Rare touchpoint: community event or word of mouth</h3>
+          <p>A small number of families encounter the Club at a local event or hear about it from a friend. This is the primary discovery channel — but it's unpredictable and limited in reach.</p>
+        </div>
+      </div>
+      <div class="journey-step friction">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="friction-badge">Friction point</div>
+          <h3>School flyers — inconsistent and unappealing</h3>
+          <p>Some clubs distribute flyers at schools, but coverage is patchy. They're made in Canva by staff who aren't designers, and the quality varies. Many families throw them away or never see them.</p>
+        </div>
+      </div>
+      <div class="journey-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Family gets interested and looks for more info</h3>
+          <p>If a family gets curious, they may search online or visit the local page. The information available can be hard to navigate or incomplete.</p>
+        </div>
+      </div>
+      <div class="journey-step friction">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="friction-badge">Friction point</div>
+          <h3>Enrollment page is confusing or overwhelming</h3>
+          <p>The national enrollment system is designed for all clubs across the country — not optimized for a first-time family in Rainier Valley. Some families give up here. Phone enrollment is available but not well advertised.</p>
+        </div>
+      </div>
+      <div class="journey-step friction">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="friction-badge">Structural problem</div>
+          <h3>Social media: one person, 30+ clubs</h3>
+          <p>The national marketing team has one person managing social media for 30+ clubs. Local events and programs rarely get promoted. Each club's unique story goes untold.</p>
+        </div>
+      </div>
+      <div class="journey-step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <h3>If a family makes it through: they love it</h3>
+          <p>Members and families who join tend to stay. The Club's programs are genuinely strong — the barrier is reaching and enrolling new families, not retaining them.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 8. SUCCESS METRICS ── -->
+<section id="metrics">
+  <div class="container">
+    <div class="sec-badge">Success Metrics</div>
+    <h2>What a winning solution looks like</h2>
+    <p class="sec-desc">A great hackathon submission doesn't have to solve everything — it should move one of these needles.</p>
+
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="m-icon">📈</div>
+        <div class="m-val">+5%</div>
+        <div class="m-label">After-school membership growth over next season</div>
+      </div>
+      <div class="metric-card">
+        <div class="m-icon">🏀</div>
+        <div class="m-val">More kids</div>
+        <div class="m-label">New elementary &amp; middle school members, especially in basketball and flag football</div>
+      </div>
+      <div class="metric-card">
+        <div class="m-icon">⏱️</div>
+        <div class="m-val">Less effort</div>
+        <div class="m-label">Club staff can do outreach without it becoming a second job</div>
+      </div>
+    </div>
+
+    <div class="sec-badge" style="margin-top:36px;">Ideas We'd Love to See</div>
+    <h2 style="margin-bottom:20px;">What kinds of solutions could work?</h2>
+
+    <div class="ideas-grid">
+      <div class="idea-item">
+        <span class="ii">📄</span>
+        <span class="it">Simple landing page concepts that tell the local story</span>
+      </div>
+      <div class="idea-item">
+        <span class="ii">📢</span>
+        <span class="it">Community outreach campaign ideas (events, schools, partners)</span>
+      </div>
+      <div class="idea-item">
+        <span class="ii">🎨</span>
+        <span class="it">Social media content kits staff can reuse each week</span>
+      </div>
+      <div class="idea-item">
+        <span class="ii">📱</span>
+        <span class="it">QR-based event outreach that requires no design skills</span>
+      </div>
+      <div class="idea-item">
+        <span class="ii">👨‍👩‍👧</span>
+        <span class="it">Parent-friendly enrollment guidance (multilingual welcome)</span>
+      </div>
+      <div class="idea-item">
+        <span class="ii">📘</span>
+        <span class="it">Staff marketing playbook: "How to promote your club in 30 min/month"</span>
+      </div>
+    </div>
+    <div class="constraint-note" style="margin-top:20px;">
+      <strong>Note:</strong> Redesigning the national enrollment system is out of scope. Focus on what can be done locally, with minimal budget, using tools like Canva, Google Docs, or free web pages.
+    </div>
+  </div>
+</section>
+
+<!-- ── 9. RESOURCES ── -->
+<section id="resources">
+  <div class="container">
+    <div class="sec-badge">Resources</div>
+    <h2>Assets &amp; context for your team</h2>
+    <p class="sec-desc">Use these to ground your solution in real context.</p>
+
+    <div class="resources-grid">
+      <div class="resource-card">
+        <h3>🎨 Brand</h3>
+        <ul>
+          <li>Primary color: Boys &amp; Girls Club Blue (#0057A8)</li>
+          <li>Accent: Red (#D62828), Yellow (#F4A726)</li>
+          <li>Design tool: Canva (staff-accessible)</li>
+          <li>Font: Clean, readable sans-serif preferred</li>
+        </ul>
+        <div class="brand-colors" style="margin-top:12px;">
+          <div class="color-swatch" style="background:#0057A8;" title="#0057A8"></div>
+          <div class="color-swatch" style="background:#D62828;" title="#D62828"></div>
+          <div class="color-swatch" style="background:#F4A726;" title="#F4A726"></div>
+        </div>
+      </div>
+      <div class="resource-card">
+        <h3>🌐 Online Presence</h3>
+        <ul>
+          <li>National enrollment: bgca.net (cannot be changed)</li>
+          <li>Local page: limited editing within national template</li>
+          <li>Social media: managed centrally, low local presence</li>
+          <li>No dedicated local website currently</li>
+        </ul>
+      </div>
+      <div class="resource-card">
+        <h3>👥 Target Audience</h3>
+        <ul>
+          <li>Elementary school kids (K–5) — new participants</li>
+          <li>Middle school teens (6–8) — especially sports programs</li>
+          <li>Parents and guardians making decisions</li>
+          <li>Multilingual community (English may not be first language)</li>
+        </ul>
+      </div>
+      <div class="resource-card">
+        <h3>📋 Programs to Highlight</h3>
+        <ul>
+          <li>After-school program (main revenue + membership driver)</li>
+          <li>Basketball team — strong community interest</li>
+          <li>Flag football — popular with middle schoolers</li>
+          <li>Academic support / homework help</li>
+          <li>Teen Center programs</li>
+        </ul>
+      </div>
+      <div class="resource-card">
+        <h3>🤝 Contacts &amp; Support</h3>
+        <ul>
+          <li>Point of contact: Club director (ask organizers for intro)</li>
+          <li>Staff can answer questions during the hackathon</li>
+          <li>Phone enrollment process can be demonstrated</li>
+        </ul>
+      </div>
+      <div class="resource-card">
+        <h3>📁 Files &amp; Materials</h3>
+        <ul>
+          <li>Existing flyer examples (available via organizers)</li>
+          <li>Program descriptions and schedules</li>
+          <li>Community demographic context</li>
+          <li>Google Drive: ask your team lead for the link</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 10. FAQ ── -->
+<section id="faq">
+  <div class="container">
+    <div class="sec-badge">FAQ</div>
+    <h2>Frequently Asked Questions</h2>
+    <p class="sec-desc">Quick answers to the most common questions from hackathon participants.</p>
+
+    <div class="faq-list">
+      <details>
+        <summary>Can we change the national enrollment page?</summary>
+        <div class="faq-answer">
+          <strong>No.</strong> The enrollment page at bgca.net is managed nationally by Boys &amp; Girls Clubs of America. The local club has no ability to modify it. Your solution should work around this constraint — not try to replace it.
+        </div>
+      </details>
+      <details>
+        <summary>Can we edit the local Club page?</summary>
+        <div class="faq-answer">
+          <strong>Partially.</strong> There is a local landing page within the national template system. Some elements can be edited. Ask the club contact what's editable — and design your solution with those limits in mind.
+        </div>
+      </details>
+      <details>
+        <summary>Is there a budget for implementation?</summary>
+        <div class="faq-answer">
+          <strong>Essentially no.</strong> There is no local marketing budget. Solutions should rely on free tools (Canva, Google Docs, free web hosting, etc.) or things the Club already has access to. Paid ads, subscriptions, or purchased materials are not feasible.
+        </div>
+      </details>
+      <details>
+        <summary>Who is the primary target audience?</summary>
+        <div class="faq-answer">
+          <strong>Elementary and middle school youth — and their parents.</strong> The Club especially wants to grow participation among K–8 kids, particularly for after-school programs, basketball, and flag football. Parents are often the decision-makers.
+        </div>
+      </details>
+      <details>
+        <summary>Who should be able to use what we build?</summary>
+        <div class="faq-answer">
+          <strong>Club staff and local leaders — not full-time marketers.</strong> If a busy Club director can use your solution in 30 minutes a month, that's ideal. Solutions that require marketing expertise or constant attention won't stick.
+        </div>
+      </details>
+      <details>
+        <summary>Can families enroll by phone?</summary>
+        <div class="faq-answer">
+          <strong>Yes — but most families don't know this.</strong> Staff can support phone-based enrollment. This is an underutilized option that could reduce drop-off for families who find the online process confusing.
+        </div>
+      </details>
+      <details>
+        <summary>What kinds of solutions are NOT welcome?</summary>
+        <div class="faq-answer">
+          <strong>Don't redesign the enrollment system, propose paid ad campaigns, or build tools requiring ongoing tech staff to maintain.</strong> The best solutions are low-cost, low-maintenance, and immediately usable.
+        </div>
+      </details>
+      <details>
+        <summary>What does a great submission look like?</summary>
+        <div class="faq-answer">
+          <strong>Small scope, real impact, actually usable.</strong> A Canva template pack the Club can use next week beats a complex app that requires months of development. We want ideas that are grounded in the real constraints and could be put into action.
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p>Hack for Social Impact Seattle 2026 &nbsp;·&nbsp; <a href="../index.html">Back to main site</a></p>
+  <p style="margin-top:8px; font-size:0.78rem; opacity:0.5;">Challenge pack for Rainier Vista Boys &amp; Girls Club · April 26, 2026</p>
+</footer>
+
+</body>
+</html>
