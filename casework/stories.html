@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Stories | Hope Strategic | HSI Seattle 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --color-accent:      #0F7B6C;
+      --color-accent-dark: #0A5C51;
+      --maria:   #0F7B6C;
+      --lucia:   #D97706;
+    }
+
+    .stories-hero {
+      background: linear-gradient(160deg, #051A18 0%, #0A3830 50%, #0F5C4E 100%);
+      padding: calc(var(--nav-height) + 40px) 24px 56px;
+      text-align: center;
+    }
+    .stories-hero h1 { font-size: clamp(1.4rem,4vw,2.4rem); font-weight: 300; color: #fff; line-height: 1.4; margin-bottom: 12px; }
+    .stories-hero p  { font-size: 0.95rem; color: rgba(255,255,255,0.65); max-width: 560px; margin: 0 auto; }
+
+    /* ── Tab switcher ── */
+    .tab-bar { display: flex; gap: 0; border-bottom: 2px solid var(--color-border); margin-bottom: 48px; }
+    .tab-btn {
+      padding: 14px 28px; font-size: 0.9rem; font-weight: 800; cursor: pointer;
+      border: none; background: none; border-bottom: 3px solid transparent; margin-bottom: -2px;
+      color: var(--color-text-muted); transition: all 0.2s;
+    }
+    .tab-btn.active-maria { border-bottom-color: var(--maria); color: var(--maria); }
+    .tab-btn.active-lucia { border-bottom-color: var(--lucia); color: var(--lucia); }
+    .tab-btn:hover { color: var(--color-primary-dark); }
+
+    .story-panel { display: none; }
+    .story-panel.active { display: block; }
+
+    /* ── Phase timeline ── */
+    .phase { margin-bottom: 48px; padding: 32px 36px; background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-lg); position: relative; }
+    .phase-label { font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+    .phase h2 { font-size: 1.2rem; font-weight: 800; color: var(--color-primary-dark); margin-bottom: 16px; }
+    .phase-body { font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.85; max-width: 800px; margin-bottom: 24px; }
+
+    .meta-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 20px; }
+    .meta-box { background: var(--color-bg-alt); border-radius: var(--radius); padding: 16px 18px; }
+    .meta-box h4 { font-size: 0.7rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
+    .meta-box ul { list-style: none; font-size: 0.825rem; color: var(--color-text-muted); line-height: 1.8; }
+
+    /* Maria color accents */
+    .phase--maria { border-left: 5px solid var(--maria); }
+    .phase--maria .phase-label { color: var(--maria); }
+    .phase--maria .meta-box h4 { color: var(--maria); }
+
+    /* Lucia color accents */
+    .phase--lucia { border-left: 5px solid var(--lucia); }
+    .phase--lucia .phase-label { color: var(--lucia); }
+    .phase--lucia .meta-box h4 { color: var(--lucia); }
+
+    /* ── Outcome box ── */
+    .outcome { background: var(--color-bg-alt); border-radius: var(--radius-lg); padding: 32px 36px; margin-bottom: 48px; }
+    .outcome h2 { font-size: 1.1rem; font-weight: 800; color: var(--color-primary-dark); margin-bottom: 16px; }
+    .outcome ul { list-style: none; font-size: 0.9rem; color: var(--color-text-muted); line-height: 2; }
+    .outcome ul li::before { content: '✓ '; color: #059669; font-weight: 800; }
+
+    /* ── Back link ── */
+    .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 700; color: var(--color-primary); margin-bottom: 40px; transition: color var(--transition); }
+    .back-link:hover { color: var(--color-accent); }
+
+    /* ── Language ── */
+    .lang-en, .lang-ja { display: none; }
+    html[lang="en"] .lang-en { display: inline; }
+    html[lang="ja"] .lang-ja { display: inline; }
+
+    /* ── Lang btn fixed ── */
+    #lang-btn { }
+
+    @media (max-width: 700px) {
+      .meta-grid { grid-template-columns: 1fr; }
+      .phase { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar" class="scrolled">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">
+        <img src="https://www.hackforsocialimpact.com/hsi-logo.gif" alt="HSI Seattle" class="nav-logo-img">
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="./index.html" class="nav-link"><span class="lang-en">← Hackpack</span><span class="lang-ja">← ハックパック</span></a></li>
+        <li><button class="lang-btn" id="lang-btn" aria-label="Switch language">日本語</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="stories-hero">
+    <h1><span class="lang-en">Client Stories</span><span class="lang-ja">クライアントストーリー</span></h1>
+    <p><span class="lang-en">These scenarios illustrate the human stakes behind the Hope Strategic challenge. The tool you build will be used in moments like these.</span><span class="lang-ja">これらのシナリオは、Hope Strategicのチャレンジの背景にある人間的な重みを示しています。あなたが作るツールは、このような瞬間に使われます。</span></p>
+  </section>
+
+  <main>
+    <div class="container" style="padding-top:48px; padding-bottom:80px;">
+
+      <a href="./index.html" class="back-link">← <span class="lang-en">Back to Hackpack</span><span class="lang-ja">ハックパックに戻る</span></a>
+
+      <!-- Tab switcher -->
+      <div class="tab-bar">
+        <button class="tab-btn active-maria" onclick="showStory('maria', this)">
+          👩‍👧‍👦 <span class="lang-en">Maria — DV Survivor Journey</span><span class="lang-ja">Maria — DVサバイバーのジャーニー</span>
+        </button>
+        <button class="tab-btn" onclick="showStory('lucia', this)">
+          👩‍👦 <span class="lang-en">Lucía — Undocumented Survivor</span><span class="lang-ja">Lucía — 非正規滞在のサバイバー</span>
+        </button>
+      </div>
+
+      <!-- ══════════════════════ MARIA ══════════════════════ -->
+      <div id="maria" class="story-panel active">
+
+        <div style="margin-bottom:32px;">
+          <p style="font-size:0.95rem; color:var(--color-text-muted); line-height:1.85; max-width:780px;">
+            <span class="lang-en">After a physical assault witnessed by her children, Maria flees and navigates the DV shelter system over 6 months — from crisis call to permanent housing. This journey map shows where language support and caseworker tools make the most critical difference.</span>
+            <span class="lang-ja">子どもたちが目撃する暴力を受けたMariaは逃げ出し、6ヶ月間DVシェルターシステムを経る——危機対応の電話から恒久的な住宅まで。このジャーニーマップは、言語サポートとケースワーカーツールが最も重要な違いをもたらす場所を示しています。</span>
+          </p>
+        </div>
+
+        <!-- Phase 1 -->
+        <div class="phase phase--maria" id="maria-p1">
+          <div class="phase-label"><span class="lang-en">Phase 1 · Week 1</span><span class="lang-ja">フェーズ 1 · 第1週</span></div>
+          <h2><span class="lang-en">Crisis &amp; Flight</span><span class="lang-ja">危機と逃走</span></h2>
+          <div class="phase-body">
+            <span class="lang-en">After a physical assault witnessed by her children, Maria waits until her partner falls asleep, then quietly drives to a nearby parking lot. From her car, she searches online for "domestic violence help near me." She calls the DV crisis hotline in a whisper while her children sleep in the backseat. The advocate conducts a lethality assessment and connects her to a shelter with an available bed.</span>
+            <span class="lang-ja">子どもたちが目撃する暴力を受けたMariaは、パートナーが眠るのを待ち、静かに近くの駐車場まで車を走らせます。車の中から「近くにDV支援はないか」とオンラインで検索し、子どもたちが後部座席で眠る中、小声でDV危機ホットラインに電話します。アドボケートは致死性評価を行い、空きベッドのあるシェルターにつなぎます。</span>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-box">
+              <h4><span class="lang-en">Emotional State</span><span class="lang-ja">感情状態</span></h4>
+              <ul><li><span class="lang-en">Fearful</span><span class="lang-ja">恐怖</span></li><li><span class="lang-en">Hypervigilant</span><span class="lang-ja">過覚醒</span></li><li><span class="lang-en">Overwhelmed</span><span class="lang-ja">圧倒されている</span></li><li><span class="lang-en">Protective of her children</span><span class="lang-ja">子どもを守ろうとしている</span></li></ul>
+            </div>
+            <div class="meta-box">
+              <h4><span class="lang-en">Touchpoints</span><span class="lang-ja">タッチポイント</span></h4>
+              <ul><li><span class="lang-en">Virtual hotline call</span><span class="lang-ja">バーチャルホットライン</span></li><li><span class="lang-en">Phone intake screening</span><span class="lang-ja">電話インテークスクリーニング</span></li><li><span class="lang-en">Emergency shelter coordination</span><span class="lang-ja">緊急シェルター調整</span></li></ul>
+            </div>
+            <div class="meta-box">
+              <h4><span class="lang-en">Opportunity</span><span class="lang-ja">機会</span></h4>
+              <ul><li><span class="lang-en">Compassionate, trauma-informed communication reassures Maria she is not to blame and that help is available.</span><span class="lang-ja">思いやりのあるトラウマインフォームドなコミュニケーションが、Mariaに責任はなく助けがあることを伝える。</span></li></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 2 -->
+        <div class="phase phase--maria">
+          <div class="phase-label"><span class="lang-en">Phase 2 · Weeks 1–3</span><span class="lang-ja">フェーズ 2 · 第1〜3週</span></div>
+          <h2><span class="lang-en">Intake &amp; Stabilization</span><span class="lang-ja">インテークと安定化</span></h2>
+          <div class="phase-body">
+            <span class="lang-en">Maria completes intake paperwork and a safety plan, meets her case manager, and receives basic necessities. Her children are enrolled in a nearby school. She struggles with guilt and second-guesses her decision to leave when her partner begins sending apologies and threats.</span>
+            <span class="lang-ja">Mariaはインテーク書類と安全計画を作成し、ケースマネージャーと会い、基本的な必需品を受け取ります。子どもたちは近くの学校に入学。パートナーが謝罪と脅迫のメッセージを送り始めると、罪悪感に苦しみ、逃げた決断を疑います。</span>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-box">
+              <h4><span class="lang-en">Emotional State</span><span class="lang-ja">感情状態</span></h4>
+              <ul><li><span class="lang-en">Exhausted</span><span class="lang-ja">疲弊</span></li><li><span class="lang-en">Anxious</span><span class="lang-ja">不安</span></li><li><span class="lang-en">Ambivalent</span><span class="lang-ja">複雑な気持ち</span></li><li><span class="lang-en">Relieved but uncertain</span><span class="lang-ja">安堵しながらも不確か</span></li></ul>
+            </div>
+            <div class="meta-box">
+              <h4><span class="lang-en">Touchpoints</span><span class="lang-ja">タッチポイント</span></h4>
+              <ul><li><span class="lang-en">In-person intake assessment</span><span class="lang-ja">対面インテーク評価</span></li><li><span class="lang-en">Safety planning session</span><span class="lang-ja">安全計画セッション</span></li><li><span class="lang-en">Children's school enrollment</span><span class="lang-ja">子どもの学校入学手続き</span></li><li><span class="lang-en">Crisis counseling</span><span class="lang-ja">危機カウンセリング</span></li></ul>
+            </div>
+            <div class="meta-box">
+              <h4><span class="lang-en">Opportunity</span><span class="lang-ja">機会</span></h4>
+              <ul><li><span class="lang-en">Consistent messaging around safety planning and empowerment helps Maria focus on long-term stability.</span><span class="lang-ja">安全計画とエンパワーメントに関する一貫したメッセージが、Mariaが長期的な安定に集中するのを助ける。</span></li></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 3 -->
+        <div class="phase phase--maria">
+          <div class="phase-label"><span class="lang-en">Phase 3 · Month 1–3</span><span class="lang-ja">フェーズ 3 · 1〜3ヶ月目</span></div>
+          <h2><span class="lang-en">Engagement in Supportive Services</span><span class="lang-ja">支援サービスへの参加</span></h2>
+          <div class="phase-body">
+            <span class="lang-en">Maria begins weekly counseling sessions for trauma symptoms. She works with her case manager on public benefits, childcare assistance, and a protective order. A legal advocate accompanies her to court for a restraining order hearing. She successfully obtains temporary protection and enrolls in a workforce readiness program.</span>
+            <span class="lang-ja">Mariaはトラウマ症状に対する週1回のカウンセリングを開始します。公的給付・保育支援・保護命令の申請をケースマネージャーと進めます。法的アドボケートが接近禁止命令の審問に同行し、一時的な保護を取得。職業準備プログラムにも参加します。</span>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-box">
+              <h4><span class="lang-en">Emotional State</span><span class="lang-ja">感情状態</span></h4>
+              <ul><li><span class="lang-en">Vulnerable</span><span class="lang-ja">傷つきやすい</span></li><li><span class="lang-en">Gradually hopeful</span><span class="lang-ja">徐々に希望が見える</span></li><li><span class="lang-en">Empowered in moments</span><span class="lang-ja">時にエンパワーされる</span></li><li><span class="lang-en">Triggered by court proceedings</span><span class="lang-ja">法的手続きで再トリガー</span></li></ul>
+            </div>
+            <div class="meta-box">
+              <h4><span class="lang-en">Touchpoints</span><span class="lang-ja">タッチポイント</span></h4>
+              <ul><li><span class="lang-en">Counseling sessions</span><span class="lang-ja">カウンセリングセッション</span></li><li><span class="lang-en">Legal advocacy &amp; court accompaniment</span><span class="lang-ja">法的支援・法廷同行</span></li><li><span class="lang-en">Benefits enrollment</span><span class="lang-ja">給付金申請</span></li><li><span class="lang-en">Employment readiness workshops</span><span class="lang-ja">就労準備ワークショップ</span></li></ul>
+            </div>
+            <div class="meta-box">
+              <h4><span class="lang-en">Opportunity</span><span class="lang-ja">機会</span></h4>
+              <ul><li><span class="lang-en">Integrated services reduce the burden of navigating multiple systems alone, increasing stability and confidence.</span><span class="lang-ja">統合サービスが複数システムを単独でナビゲートする負担を軽減し、安定性と自信を高める。</span></li></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 4 -->
+        <div class="phase phase--maria">
+          <div class="phase-label"><span class="lang-en">Phase 4 · Month 3–5</span><span class="lang-ja">フェーズ 4 · 3〜5ヶ月目</span></div>
+          <h2><span class="lang-en">Housing Navigation</span><span class="lang-ja">住宅探し</span></h2>
+          <div class="phase-body">
+            <span class="lang-en">Maria works with a housing advocate to search for affordable units. Barriers include: limited rental history in her name, damaged credit from financial abuse, landlords requiring income verification, and long waitlists for subsidized housing. After several rental denials, her case manager helps her prepare a rental packet explaining her circumstances as a survivor.</span>
+            <span class="lang-ja">Mariaは住宅アドボケートと手頃な物件を探します。自分名義の賃貸履歴の少なさ・財務的虐待によるクレジット損傷・収入証明を求める家主・補助住宅の長い待機リストなどのバリアに直面。数回の入居拒否後、ケースマネージャーがサバイバーとしての状況を説明する賃貸書類の準備を助けます。</span>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-box">
+              <h4><span class="lang-en">Emotional State</span><span class="lang-ja">感情状態</span></h4>
+              <ul><li><span class="lang-en">Frustrated</span><span class="lang-ja">フラストレーション</span></li><li><span class="lang-en">Discouraged</span><span class="lang-ja">意気消沈</span></li><li><span class="lang-en">Stressed about time limits</span><span class="lang-ja">期限へのストレス</span></li><li><span class="lang-en">Determined</span><span class="lang-ja">決意</span></li></ul>
+            </div>
+            <div class="meta-box">
+              <h4><span class="lang-en">Touchpoints</span><span class="lang-ja">タッチポイント</span></h4>
+              <ul><li><span class="lang-en">Online housing searches</span><span class="lang-ja">オンライン住宅検索</span></li><li><span class="lang-en">Landlord communications</span><span class="lang-ja">家主とのコミュニケーション</span></li><li><span class="lang-en">Housing voucher application</span><span class="lang-ja">住宅バウチャー申請</span></li><li><span class="lang-en">Credit repair referrals</span><span class="lang-ja">クレジット修復紹介</span></li></ul>
+            </div>
+            <div class="meta-box">
+              <h4><span class="lang-en">Opportunity</span><span class="lang-ja">機会</span></h4>
+              <ul><li><span class="lang-en">Landlord advocacy and flexible funding for deposits increase her chances of securing safe housing.</span><span class="lang-ja">家主へのアドボカシーと敷金の柔軟な資金提供が安全な住宅確保の可能性を高める。</span></li></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 5 -->
+        <div class="phase phase--maria">
+          <div class="phase-label"><span class="lang-en">Phase 5 · Month 6</span><span class="lang-ja">フェーズ 5 · 6ヶ月目</span></div>
+          <h2><span class="lang-en">Transition to Permanent Housing</span><span class="lang-ja">恒久的な住宅への移行</span></h2>
+          <div class="phase-body">
+            <span class="lang-en">Maria is approved for a two-bedroom apartment through a supportive housing program. The shelter assists with security deposit, utility setup, basic furnishings, and safety planning for move-in day. A follow-up case management plan is established for continued support after exit.</span>
+            <span class="lang-ja">Mariaはサポート付き住宅プログラムを通じて2ベッドルームのアパートに承認されます。シェルターは敷金・公共料金の設定・基本的な家具・入居日の安全計画を支援します。退所後も継続的な支援を確保するためのフォローアップケア管理計画が策定されます。</span>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-box">
+              <h4><span class="lang-en">Emotional State</span><span class="lang-ja">感情状態</span></h4>
+              <ul><li><span class="lang-en">Guarded optimism</span><span class="lang-ja">慎重な楽観</span></li><li><span class="lang-en">Pride</span><span class="lang-ja">誇り</span></li><li><span class="lang-en">Residual fear</span><span class="lang-ja">残留する恐怖</span></li><li><span class="lang-en">Growing confidence</span><span class="lang-ja">高まる自信</span></li></ul>
+            </div>
+            <div class="meta-box">
+              <h4><span class="lang-en">Touchpoints</span><span class="lang-ja">タッチポイント</span></h4>
+              <ul><li><span class="lang-en">Lease signing</span><span class="lang-ja">賃貸契約の締結</span></li><li><span class="lang-en">Move-in coordination</span><span class="lang-ja">入居調整</span></li><li><span class="lang-en">Post-shelter case management planning</span><span class="lang-ja">退所後のケア管理計画</span></li></ul>
+            </div>
+            <div class="meta-box">
+              <h4><span class="lang-en">Opportunity</span><span class="lang-ja">機会</span></h4>
+              <ul><li><span class="lang-en">Warm handoffs to community-based services reduce risk of housing instability or returning to the abuser.</span><span class="lang-ja">地域サービスへの温かい引き継ぎが住宅不安定や加害者への帰還リスクを軽減する。</span></li></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Outcome -->
+        <div class="outcome">
+          <h2><span class="lang-en">Six-Month Outcome</span><span class="lang-ja">6ヶ月後の成果</span></h2>
+          <ul>
+            <li><span class="lang-en">Maria has stable housing</span><span class="lang-ja">安定した住宅を持つ</span></li>
+            <li><span class="lang-en">She maintains a protective order</span><span class="lang-ja">保護命令を維持している</span></li>
+            <li><span class="lang-en">She is employed part-time</span><span class="lang-ja">パートタイムで就労中</span></li>
+            <li><span class="lang-en">Her children are engaged in school and counseling</span><span class="lang-ja">子どもたちは学校とカウンセリングに参加している</span></li>
+            <li><span class="lang-en">She continues outpatient trauma therapy</span><span class="lang-ja">外来トラウマ療法を継続中</span></li>
+          </ul>
+          <p style="font-size:0.875rem; color:var(--color-text-muted); margin-top:16px; line-height:1.8;">
+            <span class="lang-en">While healing is ongoing, Maria has transitioned from crisis survival to early-stage independence.</span>
+            <span class="lang-ja">回復は続いていますが、Mariaは危機的な生存から初期段階の自立へと移行しました。</span>
+          </p>
+        </div>
+
+      </div><!-- /maria -->
+
+      <!-- ══════════════════════════ LUCÍA ══════════════════════ -->
+      <div id="lucia" class="story-panel">
+
+        <div style="margin-bottom:32px;">
+          <p style="font-size:0.95rem; color:var(--color-text-muted); line-height:1.85; max-width:780px;">
+            <span class="lang-en">Lucía, 34, is an undocumented immigrant and mother of two escaping a long-term abusive relationship involving coercive control, financial abuse, and threats of deportation. With limited English and no legal documentation, she faces compounded barriers at every stage — showing exactly where language access failures cause the most harm.</span>
+            <span class="lang-ja">34歳のLucíaは、強制的支配・財務的虐待・強制送還の脅しを含む長期的な虐待関係から逃れる非正規滞在の移民で、2人の母親です。英語が限られ法的書類もない中で、各段階で重なり合うバリアに直面——言語アクセスの失敗が最も大きな被害をもたらす場所を正確に示しています。</span>
+          </p>
+        </div>
+
+        <!-- Stage 1 -->
+        <div class="phase phase--lucia">
+          <div class="phase-label"><span class="lang-en">Stage 1</span><span class="lang-ja">ステージ 1</span></div>
+          <h2><span class="lang-en">Crisis Line Contact</span><span class="lang-ja">危機ラインへの連絡</span></h2>
+          <div class="phase-body">
+            <span class="lang-en">After a violent incident, Lucía flees with her children and calls the DV Hotline. She panics at the English prompts but reaches a bilingual advocate who reassures her about confidentiality and immigrant protections.</span>
+            <span class="lang-ja">暴力的な事件の後、Lucíaは子どもたちを連れて逃げ、DVホットラインに電話します。英語のプロンプトにパニックになりますが、機密性と移民保護について安心させてくれるバイリンガルのアドボケートにつながります。</span>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-box">
+              <h4><span class="lang-en">Emotional State</span><span class="lang-ja">感情状態</span></h4>
+              <ul><li><span class="lang-en">Fear of deportation</span><span class="lang-ja">強制送還への恐怖</span></li><li><span class="lang-en">Distrust of systems</span><span class="lang-ja">システムへの不信</span></li><li><span class="lang-en">Shame</span><span class="lang-ja">羞恥心</span></li><li><span class="lang-en">Fragile hope</span><span class="lang-ja">脆い希望</span></li></ul>
+            </div>
+            <div class="meta-box">
+              <h4><span class="lang-en">Barriers</span><span class="lang-ja">バリア</span></h4>
+              <ul><li><span class="lang-en">Language obstacles</span><span class="lang-ja">言語の壁</span></li><li><span class="lang-en">Fear of information shared with immigration</span><span class="lang-ja">入管への情報共有への恐れ</span></li><li><span class="lang-en">Confusing legal terminology</span><span class="lang-ja">混乱させる法律用語</span></li></ul>
+            </div>
+            <div class="meta-box">
+              <h4><span class="lang-en">What Helps</span><span class="lang-ja">助けになるもの</span></h4>
+              <ul><li><span class="lang-en">Immediate bilingual support</span><span class="lang-ja">即座のバイリンガルサポート</span></li><li><span class="lang-en">Clear statements about confidentiality and immigrant rights</span><span class="lang-ja">機密性と移民の権利についての明確な説明</span></li></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 2 -->
+        <div class="phase phase--lucia">
+          <div class="phase-label"><span class="lang-en">Stage 2</span><span class="lang-ja">ステージ 2</span></div>
+          <h2><span class="lang-en">Shelter Referrals &amp; Applications</span><span class="lang-ja">シェルター紹介と申請</span></h2>
+          <div class="phase-body">
+            <span class="lang-en">The advocate begins shelter referrals. Lucía worries she lacks required documents (ID, SSN, financial records) and fears signing forms she cannot read.</span>
+            <span class="lang-ja">アドボケートがシェルターの紹介を始めます。Lucíaは必要書類（ID・SSN・財務記録）がないことを心配し、読めない書類への署名を恐れます。</span>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-box">
+              <h4><span class="lang-en">Emotional State</span><span class="lang-ja">感情状態</span></h4>
+              <ul><li><span class="lang-en">Anxiety about paperwork</span><span class="lang-ja">書類への不安</span></li><li><span class="lang-en">Fear of exposure</span><span class="lang-ja">露見への恐れ</span></li><li><span class="lang-en">Frustration with unfamiliar systems</span><span class="lang-ja">慣れないシステムへの苛立ち</span></li></ul>
+            </div>
+            <div class="meta-box">
+              <h4><span class="lang-en">Barriers</span><span class="lang-ja">バリア</span></h4>
+              <ul><li><span class="lang-en">Repeating traumatic details</span><span class="lang-ja">トラウマの詳細を繰り返す</span></li><li><span class="lang-en">Re-explaining immigration status</span><span class="lang-ja">移民ステータスを再説明する</span></li><li><span class="lang-en">Signing English-only documents</span><span class="lang-ja">英語のみの書類への署名</span></li></ul>
+            </div>
+            <div class="meta-box">
+              <h4><span class="lang-en">What Helps</span><span class="lang-ja">助けになるもの</span></h4>
+              <ul><li><span class="lang-en">Translated materials</span><span class="lang-ja">翻訳された資料</span></li><li><span class="lang-en">Verbal explanations before signatures</span><span class="lang-ja">署名前の口頭説明</span></li><li><span class="lang-en">Reduced documentation requirements</span><span class="lang-ja">書類要件の軽減</span></li></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 3 -->
+        <div class="phase phase--lucia">
+          <div class="phase-label"><span class="lang-en">Stage 3</span><span class="lang-ja">ステージ 3</span></div>
+          <h2><span class="lang-en">Intake Assessments</span><span class="lang-ja">インテーク評価</span></h2>
+          <div class="phase-body">
+            <span class="lang-en">Lucía completes virtual intake calls. One interpreter lacks DV vocabulary, causing confusion. One shelter declines due to limited bilingual capacity; another tentatively accepts her.</span>
+            <span class="lang-ja">Lucíaはバーチャルインテーク通話を完了します。1人の通訳者がDV語彙を欠き混乱を引き起こします。1つのシェルターはバイリンガル対応の限界から断り、別のシェルターが暫定的に受け入れます。</span>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-box">
+              <h4><span class="lang-en">Emotional State</span><span class="lang-ja">感情状態</span></h4>
+              <ul><li><span class="lang-en">Exhaustion</span><span class="lang-ja">消耗</span></li><li><span class="lang-en">Embarrassment</span><span class="lang-ja">恥ずかしさ</span></li><li><span class="lang-en">Fear of rejection</span><span class="lang-ja">拒絶への恐れ</span></li></ul>
+            </div>
+            <div class="meta-box">
+              <h4><span class="lang-en">Barriers</span><span class="lang-ja">バリア</span></h4>
+              <ul><li><span class="lang-en">Poor interpreter quality</span><span class="lang-ja">通訳の質の低さ</span></li><li><span class="lang-en">Re-explaining abuse in a second language</span><span class="lang-ja">第2言語で虐待を再説明</span></li><li><span class="lang-en">Fear that immigration status affects eligibility</span><span class="lang-ja">移民ステータスが資格に影響するという恐れ</span></li></ul>
+            </div>
+            <div class="meta-box">
+              <h4><span class="lang-en">What Helps</span><span class="lang-ja">助けになるもの</span></h4>
+              <ul><li><span class="lang-en">DV-trained interpreters</span><span class="lang-ja">DV訓練を受けた通訳者</span></li><li><span class="lang-en">Language-compatible intake processes</span><span class="lang-ja">言語対応のインテークプロセス</span></li><li><span class="lang-en">Advocate presence during calls</span><span class="lang-ja">通話中のアドボケートの存在</span></li></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 4 -->
+        <div class="phase phase--lucia">
+          <div class="phase-label"><span class="lang-en">Stage 4</span><span class="lang-ja">ステージ 4</span></div>
+          <h2><span class="lang-en">Shelter Placement &amp; Legal Navigation</span><span class="lang-ja">シェルター入所と法的手続き</span></h2>
+          <div class="phase-body">
+            <span class="lang-en">Lucía and her children are accepted. She receives Spanish-language materials and meets a bilingual case manager. She wants a divorce but fears retaliation and immigration consequences. Legal advocates explain she can file regardless of immigration status and may qualify for certain protections.</span>
+            <span class="lang-ja">LucíaとZ子どもたちが受け入れられます。スペイン語の資料を受け取り、バイリンガルのケースマネージャーと会います。離婚を望みますが、報復と入管への影響を恐れます。法的アドボケートが移民ステータスに関わらず申請できること、一定の保護を受けられる可能性があることを説明します。</span>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-box">
+              <h4><span class="lang-en">Emotional State</span><span class="lang-ja">感情状態</span></h4>
+              <ul><li><span class="lang-en">Relief</span><span class="lang-ja">安堵</span></li><li><span class="lang-en">Intimidation in court</span><span class="lang-ja">法廷での萎縮</span></li><li><span class="lang-en">Confusion about legal terms</span><span class="lang-ja">法律用語の混乱</span></li><li><span class="lang-en">Empowerment when supported</span><span class="lang-ja">サポートされた時のエンパワーメント</span></li></ul>
+            </div>
+            <div class="meta-box">
+              <h4><span class="lang-en">Barriers</span><span class="lang-ja">バリア</span></h4>
+              <ul><li><span class="lang-en">English-only paperwork</span><span class="lang-ja">英語のみの書類</span></li><li><span class="lang-en">Transportation</span><span class="lang-ja">交通手段</span></li><li><span class="lang-en">Fear of public systems</span><span class="lang-ja">公的システムへの恐れ</span></li><li><span class="lang-en">Financial dependence</span><span class="lang-ja">経済的依存</span></li></ul>
+            </div>
+            <div class="meta-box">
+              <h4><span class="lang-en">What Helps</span><span class="lang-ja">助けになるもの</span></h4>
+              <ul><li><span class="lang-en">Court accompaniment</span><span class="lang-ja">法廷同行</span></li><li><span class="lang-en">Interpretation during hearings</span><span class="lang-ja">審問中の通訳</span></li><li><span class="lang-en">Simplified legal education in Spanish</span><span class="lang-ja">スペイン語での簡略化された法的教育</span></li></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Outcome -->
+        <div class="outcome">
+          <h2><span class="lang-en">Six-Month Outcome</span><span class="lang-ja">6ヶ月後の成果</span></h2>
+          <ul>
+            <li><span class="lang-en">Divorce filed</span><span class="lang-ja">離婚申請済み</span></li>
+            <li><span class="lang-en">Temporary custody secured</span><span class="lang-ja">一時的な親権を確保</span></li>
+            <li><span class="lang-en">Ongoing legal support</span><span class="lang-ja">継続的な法的サポート</span></li>
+            <li><span class="lang-en">Transitional housing obtained</span><span class="lang-ja">移行期住宅を取得</span></li>
+            <li><span class="lang-en">Children enrolled in school</span><span class="lang-ja">子どもたちが学校に入学</span></li>
+            <li><span class="lang-en">Increased sense of agency</span><span class="lang-ja">自己効力感の向上</span></li>
+          </ul>
+        </div>
+
+      </div><!-- /lucia -->
+
+    </div>
+  </main>
+
+  <footer style="background:var(--color-primary-dark); color:rgba(255,255,255,0.6); text-align:center; padding:32px 24px; font-size:0.82rem;">
+    <p>Hack for Social Impact Seattle 2026 &nbsp;|&nbsp; April 26, 2026 &nbsp;|&nbsp; AI House, Seattle</p>
+    <p style="margin-top:8px;">
+      Challenge partner: <strong style="color:rgba(255,255,255,0.7);">Hope Strategic</strong>
+      &nbsp;|&nbsp;
+      <a href="https://www.hackforsocialimpact.com/" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.5); font-weight:700;">hackforsocialimpact.com ↗</a>
+    </p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    function showStory(id, btn) {
+      document.querySelectorAll('.story-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.className = 'tab-btn');
+      document.getElementById(id).classList.add('active');
+      btn.classList.add('active-' + id);
+    }
+
+    // Auto-select from URL hash
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash.replace('#','');
+      if (hash === 'lucia') {
+        showStory('lucia', document.querySelectorAll('.tab-btn')[1]);
+      }
+    });
+  </script>
+</body>
+</html>
