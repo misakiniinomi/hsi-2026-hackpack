@@ -114,6 +114,7 @@
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-menu" id="nav-menu">
+        <li><a href="#about"        class="nav-link"><span class="lang-en">About</span><span class="lang-ja">概要</span></a></li>
         <li><a href="#challenge"    class="nav-link"><span class="lang-en">Challenge</span><span class="lang-ja">チャレンジ</span></a></li>
         <li><a href="#languages"    class="nav-link"><span class="lang-en">Languages</span><span class="lang-ja">言語</span></a></li>
         <li><a href="#personas"     class="nav-link"><span class="lang-en">Stories</span><span class="lang-ja">ストーリー</span></a></li>
@@ -150,6 +151,19 @@
       <a href="../index.html" class="back-link">
         &larr; <span class="lang-en">All Challenges</span><span class="lang-ja">チャレンジ一覧</span>
       </a>
+
+      <!-- ══════════════════════════════ ABOUT ══ -->
+      <section id="about" style="margin-bottom:72px;" data-animate>
+        <div class="section-badge"><span class="lang-en">About Hope Strategic</span><span class="lang-ja">Hope Strategicについて</span></div>
+        <h2 class="section-title" style="text-align:left; margin-bottom:20px; font-size:clamp(1.4rem,3.5vw,2.2rem);">
+          Hope Strategic
+        </h2>
+
+        <p style="font-size:0.95rem; color:var(--color-text-muted); line-height:1.8; max-width:780px; margin-bottom:24px;">
+          <span class="lang-en">Hope Strategic partners with government and human-service leaders to apply policy-informed AI in environments shaped by law, risk, and real-world constraints — reducing administrative burden while preserving professional judgment.</span>
+          <span class="lang-ja">Hope Strategicは、政府および人間サービスのリーダーと協力し、法律・リスク・現実の制約に基づく環境において政策に即したAIを活用します。専門家の判断を尊重しながら、行政負担の軽減を目指します。</span>
+        </p>
+      </section>
 
       <!-- ══════════════════════════════ CHALLENGE ══ -->
       <section id="challenge" style="margin-bottom:72px; background:var(--color-bg-alt); border-radius:var(--radius-lg); padding:48px 40px;" data-animate>
@@ -230,55 +244,6 @@
           </p>
         </div>
 
-        <!-- Language comparison table -->
-        <div style="overflow-x:auto;">
-          <table style="width:100%; border-collapse:collapse; font-size:0.875rem;">
-            <thead>
-              <tr style="background:var(--color-primary-dark); color:#fff;">
-                <th style="padding:12px 16px; text-align:left;"><span class="lang-en">Language</span><span class="lang-ja">言語</span></th>
-                <th style="padding:12px 16px; text-align:left;"><span class="lang-en">OIRA Rank</span><span class="lang-ja">OIRA順位</span></th>
-                <th style="padding:12px 16px; text-align:left;"><span class="lang-en">Interpreter Pipeline</span><span class="lang-ja">通訳パイプライン</span></th>
-                <th style="padding:12px 16px; text-align:left;"><span class="lang-en">Gap Assessment</span><span class="lang-ja">ギャップ評価</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr style="background:rgba(15,123,108,0.08); border-bottom:1px solid var(--color-border);">
-                <td style="padding:12px 16px; font-weight:800; color:var(--color-primary-dark);">Spanish</td>
-                <td style="padding:12px 16px;">#1</td>
-                <td style="padding:12px 16px;"><span class="lang-en">Certified — deepest pipeline</span><span class="lang-ja">認定済——最も充実</span></td>
-                <td style="padding:12px 16px; color:var(--color-accent-dark); font-weight:700;"><span class="lang-en">✅ Covered</span><span class="lang-ja">✅ 対応済</span></td>
-              </tr>
-              <tr style="border-bottom:1px solid var(--color-border);">
-                <td style="padding:12px 16px;">Chinese</td>
-                <td style="padding:12px 16px;">#2</td>
-                <td style="padding:12px 16px;"><span class="lang-en">Certified — strong infrastructure</span><span class="lang-ja">認定済——強固なインフラ</span></td>
-                <td style="padding:12px 16px; color:var(--color-text-muted);"><span class="lang-en">Large population, smaller gap</span><span class="lang-ja">人口大、ギャップ小</span></td>
-              </tr>
-              <tr style="border-bottom:1px solid var(--color-border);">
-                <td style="padding:12px 16px;">Vietnamese</td>
-                <td style="padding:12px 16px;">#3</td>
-                <td style="padding:12px 16px;"><span class="lang-en">Certified — established for decades</span><span class="lang-ja">認定済——数十年の実績</span></td>
-                <td style="padding:12px 16px; color:var(--color-text-muted);"><span class="lang-en">Moderate gap; less urgent than Somali</span><span class="lang-ja">中程度のギャップ；ソマリより緊急性低</span></td>
-              </tr>
-              <tr style="background:rgba(15,123,108,0.08); border-bottom:1px solid var(--color-border);">
-                <td style="padding:12px 16px; font-weight:800; color:var(--color-primary-dark);">Somali ✓</td>
-                <td style="padding:12px 16px; font-weight:800;">#4</td>
-                <td style="padding:12px 16px;"><span class="lang-en">Screened — limited interpreter pool</span><span class="lang-ja">スクリーニング——通訳プール限定的</span></td>
-                <td style="padding:12px 16px; color:#0A5C51; font-weight:800;"><span class="lang-en">✅ High need, meaningful gap. Best +1.</span><span class="lang-ja">✅ 高ニーズ、大きなギャップ。最優先。</span></td>
-              </tr>
-              <tr style="border-bottom:1px solid var(--color-border);">
-                <td style="padding:12px 16px;">Amharic</td>
-                <td style="padding:12px 16px;">#7</td>
-                <td style="padding:12px 16px;"><span class="lang-en">Screened — limited interpreter pool</span><span class="lang-ja">スクリーニング——通訳プール限定的</span></td>
-                <td style="padding:12px 16px; color:var(--color-text-muted);"><span class="lang-en">Strong v2 candidate</span><span class="lang-ja">v2 の有力候補</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p style="font-size:0.78rem; color:var(--color-text-muted); margin-top:12px; line-height:1.6;">
-          <span class="lang-en">Sources: Seattle OIRA 2023 Top Languages Report; Seattle Public Schools Top Languages; WA HCA Interpreter Services Dashboard; DSHS Language Testing &amp; Certification Program; Bowie et al. 2017.</span>
-          <span class="lang-ja">出典：シアトルOIRA 2023年主要言語レポート；シアトル公立学校主要言語；WA HCA 通訳サービスダッシュボード；DSHS 言語テスト・認定プログラム；Bowie et al. 2017。</span>
-        </p>
       </section>
 
       <!-- ══════════════════════════════ PERSONAS ══ -->
